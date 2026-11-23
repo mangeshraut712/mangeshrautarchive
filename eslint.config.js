@@ -7,6 +7,7 @@ export default [
     ignores: [
       'dist/**',
       '.cache/**',
+      '.tmp/**',
       'build/**',
       'node_modules/**',
       'src/assets/**',

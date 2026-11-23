@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Linux CI follow-up (2026-11-24): GPT-6 / Codex shortens repo-local browser temporary paths to fit Linux socket limits and adds regression coverage. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Development safety (2026-11-24): GPT-6 / Codex adds credential-free test isolation, guarded cleanup, CI policy checks, and fail-closed notification quotas. See [development safety](docs/DEVELOPMENT_SAFETY.md) for manual rollout and account controls. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Clean portfolio design (2026-11-24): GPT-6 / Codex applies flat surfaces, regular/medium typography, sentence case, restrained motion, and responsive interaction checks across the site. Exact model variant, reasoning mode, and token usage: unavailable.

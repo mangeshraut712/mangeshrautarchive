@@ -38,7 +38,7 @@ node scripts/utils/run-local.mjs npm run test:tester-army:ci
 node scripts/deployment/deploy-status-worker.mjs --plan
 ```
 
-No remote deployment, credentialed check, or account mutation is part of local verification. Host `HOME` is preserved; npm auth configuration is ignored and supported caches/temp files go under `.cache/local-runtime`. Do not treat the command wrapper as safe for arbitrary unreviewed programs. The local network guard can be replaced by test mocks and does not constrain every possible native transport.
+No remote deployment, credentialed check, or account mutation is part of local verification. Host `HOME` is preserved; npm auth configuration is ignored and supported caches/temp files go under `.cache/local-runtime` (Linux uses the shorter repo-local `.tmp` for browser socket compatibility). Do not treat the command wrapper as safe for arbitrary unreviewed programs. The local network guard can be replaced by test mocks and does not constrain every possible native transport.
 
 ## Notification rollout (manual)
 

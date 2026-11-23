@@ -54,3 +54,14 @@ test('cleanup refuses escapes and links, preserves dry-run, and deletes only pla
     await rm(base, { recursive: true });
   }
 });
+
+test('Linux browser sockets fit inside the repository temporary path', () => {
+  const root = '/home/runner/work/mangeshrautarchive/mangeshrautarchive';
+  const env = localEnvironment({ HOME: '/home/runner' }, root, {
+    createDirectories: false,
+    platform: 'linux',
+  });
+  assert.equal(env.TMPDIR, `${root}/.tmp`);
+  assert.ok(Buffer.byteLength(`${env.TMPDIR}/com.google.Chrome.XXXXXX/SingletonSocket`) < 108);
+  assert.equal(env.PLAYWRIGHT_BROWSERS_PATH, '/home/runner/.cache/ms-playwright');
+});

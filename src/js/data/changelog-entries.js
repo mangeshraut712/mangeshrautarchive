@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'linux-browser-isolation-20261124',
+    date: '2026-11-24',
+    type: 'fix',
+    title: 'Reliable isolated browser checks on Linux',
+    summary:
+      'Keeps browser temporary files in the repository with a shorter path that fits the Linux socket limit.',
+    tags: ['deploy'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Repair the CI browser startup failure while preserving local test isolation.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'development-safety-20261124',
     date: '2026-11-24',
     type: 'improvement',

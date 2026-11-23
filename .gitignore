@@ -200,3 +200,6 @@ skills-lock.json
 *.tfvars
 *.tfvars.json
 .cache/local-runtime/
+
+# Short Linux browser socket path, confined to this repository.
+.tmp/

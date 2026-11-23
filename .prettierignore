@@ -18,3 +18,5 @@ src/assets/css/tailwind-output.css
 .superpowers/
 .agents/
 tools/
+
+.tmp/

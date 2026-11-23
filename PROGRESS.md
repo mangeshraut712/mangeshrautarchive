@@ -8,7 +8,7 @@ Reviewed November 10, 2026. This page describes the repository; dated test and d
 - The journal contains 20 articles across January–October 2026. The [November 9 content review](docs/qa/blog-content-review-2026-11-09.md) records primary-source research, worked examples, comparison tables, media provenance, and source-access limits.
 - The browser interface preserves its Apple-inspired design and light/dark themes. [Screenshot evidence](docs/screenshots/README.md) is a dated view of the real site, not a mockup.
 - The entire system architecture, data flows, and risk matrix are documented in [ARCHITECTURE.md](ARCHITECTURE.md).
-- API (218 tests), Worker (69 tests), Unit (66 tests), critical Chrome (20 journeys), and Tester Army checks form the release path. See [tests](tests/README.md) for commands and scope.
+- API (218 tests), Worker (69 tests), Unit (67 tests), critical Chrome (20 journeys), and Tester Army checks form the release path. See [tests](tests/README.md) for commands and scope.
 
 ## November 10 repository updates
 

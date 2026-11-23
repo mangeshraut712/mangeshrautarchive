@@ -67,7 +67,7 @@ mangeshrautarchive/
 ├── tests/                    # ★ Complete Automated Test Suite
 │   ├── api/                  # pytest coverage for FastAPI routes, streaming, OAuth, and middleware
 │   ├── e2e/                  # Playwright multi-browser end-to-end specifications across 16 targets
-│   ├── unit/                 # URL boundaries, analytics, rendering, and data regression tests (66 tests)
+│   ├── unit/                 # URL boundaries, analytics, rendering, and data regression tests (67 tests)
 │   ├── tester-army/          # Tester Army deterministic end-to-end journeys (desktop + mobile WebKit)
 │   └── worker/               # Edge worker routing, stream boundaries, and durable uptime tests (69 tests)
 │

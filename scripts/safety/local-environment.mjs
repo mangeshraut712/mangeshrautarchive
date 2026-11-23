@@ -17,7 +17,11 @@ export function assertLocalEndpoint(name, value) {
   }
 }
 
-export function localEnvironment(source, root, { createDirectories = true } = {}) {
+export function localEnvironment(
+  source,
+  root,
+  { createDirectories = true, platform = process.platform } = {}
+) {
   for (const name of [
     'DATABASE_URL',
     'SUPABASE_URL',
@@ -52,8 +56,11 @@ export function localEnvironment(source, root, { createDirectories = true } = {}
     if (source[name] !== undefined) env[name] = source[name];
   }
   const cache = resolve(root, '.cache/local-runtime');
+  // Chrome's Linux singleton socket must fit sockaddr_un (108 bytes).
+  const temporary = platform === 'linux' ? resolve(root, '.tmp') : resolve(cache, 'tmp');
   if (createDirectories) {
-    mkdirSync(resolve(cache, 'tmp'), { recursive: true });
+    mkdirSync(temporary, { recursive: true });
+    mkdirSync(cache, { recursive: true });
     writeFileSync(resolve(cache, 'empty-global.npmrc'), '', { mode: 0o600 });
   }
   return {
@@ -64,16 +71,16 @@ export function localEnvironment(source, root, { createDirectories = true } = {}
     PYTHONDONTWRITEBYTECODE: '1',
     PYTHONPATH: root,
     API_TARGET: 'http://127.0.0.1:8001',
-    TMPDIR: resolve(cache, 'tmp'),
-    TMP: resolve(cache, 'tmp'),
-    TEMP: resolve(cache, 'tmp'),
+    TMPDIR: temporary,
+    TMP: temporary,
+    TEMP: temporary,
     XDG_CACHE_HOME: cache,
     // Browser installations are read-only inputs; changing XDG_CACHE_HOME must not hide them.
     PLAYWRIGHT_BROWSERS_PATH:
       source.PLAYWRIGHT_BROWSERS_PATH ||
       resolve(
         source.HOME || root,
-        process.platform === 'darwin' ? 'Library/Caches/ms-playwright' : '.cache/ms-playwright'
+        platform === 'darwin' ? 'Library/Caches/ms-playwright' : '.cache/ms-playwright'
       ),
     UV_OFFLINE: '1',
     UV_CACHE_DIR: resolve(cache, 'uv'),
