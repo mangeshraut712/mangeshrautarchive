@@ -76,7 +76,7 @@ body.changelog-page .changelog-hero-top {
 body.changelog-page .changelog-hero h1 {
   margin: 0;
   font-size: clamp(1.75rem, 3.5vw, 2.25rem);
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: var(--cl-text);
@@ -97,9 +97,9 @@ body.changelog-page .changelog-meta {
   align-items: center;
   gap: 0.35rem 0.5rem;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--cl-muted);
 }
 
@@ -122,7 +122,7 @@ body.changelog-page .changelog-toolbar {
   background: var(--bg-primary) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: none !important;
   position: sticky !important;
   top: var(--subpage-sticky-top, 86px) !important;
   z-index: 100 !important;
@@ -134,7 +134,7 @@ body.changelog-page .changelog-toolbar {
 html.dark body.changelog-page .changelog-toolbar {
   background: var(--bg-primary) !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45) !important;
+  box-shadow: none !important;
 }
 
 body.changelog-page .changelog-type-row {
@@ -162,9 +162,9 @@ body.changelog-page .changelog-chip {
   padding: 0.4rem 0.95rem !important;
   font-family: var(--font-text) !important;
   font-size: 0.76rem !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.03em;
-  text-transform: uppercase;
+  text-transform: none;
   line-height: 1.2;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
@@ -175,7 +175,7 @@ body.changelog-page .changelog-chip {
   color: var(--cl-secondary, #6e6e73) !important;
   -webkit-text-fill-color: var(--cl-secondary, #6e6e73) !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: none !important;
   transition: all 0.2s ease;
 }
 
@@ -187,7 +187,7 @@ html.dark body.changelog-page .changelog-chip {
   -webkit-text-fill-color: var(--cl-secondary, #a1a1a6) !important;
   border: 1px solid #2c2c2e !important;
   border-color: #2c2c2e !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
 }
 
 body.changelog-page .changelog-chip i {
@@ -203,7 +203,7 @@ body.changelog-page .changelog-chip:hover {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
-  box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
+  box-shadow: none !important;
   transform: translateY(-1px) !important;
 }
 
@@ -214,17 +214,17 @@ html.dark body.changelog-page .changelog-chip:hover {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
-  box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
+  box-shadow: none !important;
 }
 
 body.changelog-page .changelog-chip.is-active,
 body.changelog-page .changelog-chip.active {
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
+  box-shadow: none !important;
   transform: none !important;
 }
 
@@ -316,9 +316,9 @@ body.changelog-page .changelog-filters-toggle {
   padding: 0.4rem 0.9rem !important;
   font-family: var(--font-text) !important;
   font-size: 0.76rem !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.03em;
-  text-transform: uppercase;
+  text-transform: none;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   cursor: pointer;
@@ -328,7 +328,7 @@ body.changelog-page .changelog-filters-toggle {
   color: var(--cl-secondary, #6e6e73) !important;
   -webkit-text-fill-color: var(--cl-secondary, #6e6e73) !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: none !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
@@ -340,7 +340,7 @@ html.dark body.changelog-page .changelog-filters-toggle {
   -webkit-text-fill-color: var(--cl-secondary, #a1a1a6) !important;
   border: 1px solid #2c2c2e !important;
   border-color: #2c2c2e !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
 }
 
 body.changelog-page .changelog-filters-toggle i.fa-filter {
@@ -381,7 +381,7 @@ body.changelog-page .changelog-filters-toggle:hover {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
-  box-shadow: 0 3px 10px rgba(0, 113, 227, 0.15) !important;
+  box-shadow: none !important;
   transform: translateY(-1px) !important;
 }
 
@@ -392,7 +392,7 @@ html.dark body.changelog-page .changelog-filters-toggle:hover {
   background: #000000 !important;
   background-color: #000000 !important;
   background-image: none !important;
-  box-shadow: 0 3px 10px rgba(41, 151, 255, 0.2) !important;
+  box-shadow: none !important;
 }
 
 html:not(.dark)
@@ -402,9 +402,9 @@ body.changelog-page .changelog-filters-toggle:is([aria-expanded='true'], .is-act
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;
+  box-shadow: none !important;
 }
 
 html:not(.dark)
@@ -427,9 +427,9 @@ html.dark body.changelog-page .changelog-filters-toggle:is([aria-expanded='true'
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 3px 14px rgba(0, 113, 227, 0.5) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.changelog-page .changelog-filters-toggle:is([aria-expanded='true'], .is-active) i,
@@ -456,10 +456,7 @@ body.changelog-page .changelog-filter-panel {
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
   border-radius: 16px !important;
   padding: 0.4rem !important;
-  box-shadow:
-    0 14px 40px rgba(0, 0, 0, 0.12),
-    0 3px 12px rgba(0, 0, 0, 0.05),
-    inset 0 0.5px 0 0 rgba(255, 255, 255, 0.8) !important;
+  box-shadow: none !important;
   z-index: 1000 !important;
   box-sizing: border-box !important;
   opacity: 0;
@@ -475,10 +472,7 @@ html.dark body.changelog-page .changelog-filter-panel {
   background: rgba(28, 28, 30, 0.96) !important;
   background-color: rgba(28, 28, 30, 0.96) !important;
   border-color: rgba(255, 255, 255, 0.14) !important;
-  box-shadow:
-    0 18px 48px rgba(0, 0, 0, 0.7),
-    0 4px 16px rgba(0, 0, 0, 0.45),
-    inset 0 0.5px 0 0 rgba(255, 255, 255, 0.15) !important;
+  box-shadow: none !important;
 }
 
 body.changelog-page .changelog-filter-panel.is-open {
@@ -505,9 +499,9 @@ html.dark body.changelog-page .changelog-menu-header {
 body.changelog-page .changelog-toolbar__label {
   margin: 0 !important;
   font-size: 0.75rem !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.06em !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   color: var(--cl-muted, #86868b) !important;
   text-align: left !important;
 }
@@ -538,10 +532,10 @@ body.changelog-page .changelog-menu-item {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
-  box-shadow: none !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   font-family: var(--font-text) !important;
   font-size: 0.82rem !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   line-height: 1.3 !important;
   color: var(--cl-text, #1d1d1f) !important;
   -webkit-text-fill-color: var(--cl-text, #1d1d1f) !important;
@@ -577,7 +571,7 @@ body.changelog-page .changelog-menu-item.is-active {
   background-color: rgba(0, 113, 227, 0.12) !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark body.changelog-page .changelog-menu-item.is-active {
@@ -585,7 +579,7 @@ html.dark body.changelog-page .changelog-menu-item.is-active {
   background-color: rgba(41, 151, 255, 0.2) !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 body.changelog-page .changelog-menu-item .changelog-menu-check {
@@ -610,7 +604,7 @@ body.changelog-page .changelog-menu-item.is-active .changelog-menu-check {
 body.changelog-page .changelog-results-label {
   margin: 0.15rem 0 0.35rem;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   color: var(--cl-muted);
   text-align: left;
 }
@@ -645,7 +639,7 @@ body.changelog-page .changelog-month__title {
   margin: 0 0 0.25rem !important;
   padding: 1.25rem 0 0.5rem !important;
   font-size: 1.75rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.025em;
   line-height: 1.15;
   color: var(--cl-text) !important;
@@ -732,9 +726,9 @@ body.changelog-page .changelog-entry__meta {
 
 body.changelog-page .changelog-entry__meta time {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.02em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--cl-badge-text);
   white-space: nowrap;
 }
@@ -745,9 +739,9 @@ body.changelog-page .changelog-entry__badge {
   border-radius: 0.35rem;
   padding: 0.2rem 0.4rem;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+  text-transform: none;
   background: var(--cl-badge-bg);
   color: var(--cl-badge-text);
   border: 1px solid var(--cl-border);
@@ -787,7 +781,7 @@ body.changelog-page .changelog-entry__title {
   flex: 1 1 auto;
   min-width: 0;
   font-size: 1rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.015em;
   line-height: 1.4;
   color: var(--cl-text) !important;
@@ -815,9 +809,9 @@ body.changelog-page .changelog-entry__area {
   margin: 0.15rem 0 0;
   flex: 0 0 auto;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--cl-muted);
   white-space: nowrap;
   max-width: 12rem;
@@ -840,14 +834,14 @@ body.changelog-page .changelog-entry__details[open] {
   background-color: var(--cl-surface, #ffffff) !important;
   border-color: var(--cl-border);
   padding: 0.85rem 1.1rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
 }
 
 html.dark body.changelog-page .changelog-entry__details[open] {
   background: var(--cl-surface, #000000) !important;
   background-color: var(--cl-surface, #000000) !important;
   border-color: var(--cl-border);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
 }
 
 body.changelog-page .changelog-entry__details summary {
@@ -858,7 +852,7 @@ body.changelog-page .changelog-entry__details summary {
   padding: 0.28rem 0.65rem;
   border-radius: 9999px;
   font-size: 0.78rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   color: var(--cl-secondary);
   background: rgba(0, 0, 0, 0.03);
   border: 1px solid var(--cl-border);
@@ -915,7 +909,7 @@ body.changelog-page .changelog-entry__details-content {
 body.changelog-page .changelog-entry__detail-title {
   margin: 0;
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   line-height: 1.4;
   color: var(--cl-text);
   letter-spacing: -0.01em;
@@ -955,16 +949,16 @@ body.changelog-page .changelog-entry__provenance {
 
 body.changelog-page .changelog-entry__attribution dt {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.05em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--cl-muted);
 }
 
 body.changelog-page .changelog-entry__attribution dd {
   margin: 0;
   font-size: 0.78rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   color: var(--cl-secondary);
   line-height: 1.4;
   word-break: break-word;
@@ -977,7 +971,7 @@ body.changelog-page .changelog-entry__commit {
   width: fit-content;
   min-height: 40px;
   font-size: 0.78rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   color: var(--cl-blue);
   text-decoration: none;
   padding: 0.25rem 0.55rem;
@@ -1056,12 +1050,8 @@ body.changelog-page .changelog-empty {
     overflow-x: auto !important;
     scrollbar-width: none !important;
     -webkit-overflow-scrolling: touch !important;
-    mask-image: linear-gradient(to right, black calc(100% - 24px), transparent 100%) !important;
-    -webkit-mask-image: linear-gradient(
-      to right,
-      black calc(100% - 24px),
-      transparent 100%
-    ) !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
     padding-right: 0.35rem !important;
   }
 

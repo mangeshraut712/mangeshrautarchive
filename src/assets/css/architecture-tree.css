@@ -7,7 +7,7 @@
   border-radius: 20px;
   background: var(--glass-bg, rgba(255, 255, 255, 0.75));
   border: 1px solid var(--card-border-rest, rgba(0, 0, 0, 0.08));
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   margin: 2rem 0;
@@ -19,7 +19,7 @@
 html.dark .arch-tree-wrapper {
   background: var(--glass-bg-dark, rgba(22, 22, 24, 0.75));
   border-color: var(--card-border-rest-dark, rgba(255, 255, 255, 0.1));
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .arch-tree-header {
@@ -35,9 +35,9 @@ html.dark .arch-tree-wrapper {
   display: inline-block;
   padding: 0.3rem 0.75rem;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--apple-blue, #0071e3);
   background: rgba(0, 113, 227, 0.08);
   border: 1px solid rgba(0, 113, 227, 0.2);
@@ -54,7 +54,7 @@ html.dark .arch-tree-pill {
 .arch-tree-heading {
   margin: 0;
   font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.02em;
   color: var(--text-primary, #1d1d1f);
   font-family: var(--font-display);
@@ -69,7 +69,7 @@ html.dark .arch-tree-heading {
   align-items: center;
   gap: 1.25rem;
   font-size: 0.8rem;
-  font-weight: 550;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-secondary, #6e6e73);
 }
 
@@ -85,12 +85,12 @@ html.dark .arch-tree-heading {
   border-radius: 50%;
   background: #0071e3;
   display: inline-block;
-  box-shadow: 0 0 8px rgba(0, 113, 227, 0.6);
+  box-shadow: none;
 }
 
 .arch-dot.tool {
   background: #34c759;
-  box-shadow: 0 0 8px rgba(52, 199, 89, 0.6);
+  box-shadow: none;
 }
 
 .arch-tree-viewport {
@@ -121,17 +121,17 @@ html.dark .arch-path {
 
 .arch-particle {
   fill: #0071e3;
-  filter: drop-shadow(0 0 4px #0071e3);
+  filter: none;
 }
 
 .arch-particle.tool {
   fill: #34c759;
-  filter: drop-shadow(0 0 4px #34c759);
+  filter: none;
 }
 
 html.dark .arch-particle {
   fill: #2997ff;
-  filter: drop-shadow(0 0 6px #2997ff);
+  filter: none;
 }
 
 /* ─── SVG Nodes ─── */
@@ -155,27 +155,27 @@ html.dark .arch-particle {
     fill 0.2s ease,
     stroke 0.2s ease,
     filter 0.2s ease;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.05));
+  filter: none;
 }
 
 html.dark .arch-node-rect {
   fill: #1c1c1e;
   stroke: rgba(255, 255, 255, 0.12);
-  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.35));
+  filter: none;
 }
 
 .arch-node-group:hover .arch-node-rect,
 .arch-node-group.is-active .arch-node-rect {
   stroke: #0071e3;
   fill: #fbfbfd;
-  filter: drop-shadow(0 8px 24px rgba(0, 113, 227, 0.18));
+  filter: none;
 }
 
 html.dark .arch-node-group:hover .arch-node-rect,
 html.dark .arch-node-group.is-active .arch-node-rect {
   stroke: #2997ff;
   fill: #242426;
-  filter: drop-shadow(0 8px 24px rgba(41, 151, 255, 0.25));
+  filter: none;
 }
 
 .arch-node-icon-bg {
@@ -197,7 +197,7 @@ html.dark .arch-node-icon-symbol {
 
 .arch-node-title {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   fill: #1d1d1f;
   font-family: var(--font-display);
 }
@@ -208,7 +208,7 @@ html.dark .arch-node-title {
 
 .arch-node-badge {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   fill: #86868b;
   font-family: var(--font-text);
 }
@@ -224,7 +224,7 @@ html.dark .arch-node-divider {
 
 .arch-node-subtext {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.03em;
   fill: #0071e3;
   font-family: var(--font-text);
@@ -258,7 +258,7 @@ html.dark .arch-details-drawer {
   gap: 0.75rem;
   color: var(--text-secondary, #86868b);
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
 }
 
 .arch-drawer-content {
@@ -299,7 +299,7 @@ html.dark .arch-details-drawer {
 .arch-drawer-title {
   margin: 0;
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary, #1d1d1f);
 }
 
@@ -309,7 +309,7 @@ html.dark .arch-drawer-title {
 
 .arch-drawer-badge {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: var(--apple-blue, #0071e3);
 }
 
@@ -349,9 +349,9 @@ html.dark .arch-metric-tile {
 .arch-metric-key {
   display: block;
   font-size: 0.7rem;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.05em;
-  font-weight: 650;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-secondary, #86868b);
   margin-bottom: 0.2rem;
 }
@@ -359,7 +359,7 @@ html.dark .arch-metric-tile {
 .arch-metric-val {
   display: block;
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary, #1d1d1f);
 }
 

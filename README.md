@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Clean portfolio design (2026-11-24): GPT-6 / Codex applies flat surfaces, regular/medium typography, sentence case, restrained motion, and responsive interaction checks across the site. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Automatic work sync (2026-11-23): GPT-6 / Codex adds six-hour gated publication, topic-based hackathon classification, stable-identity deduplication, and regression coverage. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Showcase CI follow-up (2026-11-23): GPT-6 / Codex corrects the lazy-graph verification sequence. Exact model variant, reasoning mode, and token usage: unavailable.

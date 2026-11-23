@@ -1361,7 +1361,7 @@ class LastFmService {
     this.hero.artistName.textContent = artistName;
     this.hero.artistName.title = artistName;
     if (this.hero.statusText) {
-      this.hero.statusText.textContent = isNowPlaying ? 'Now Playing' : 'Recently Played';
+      this.hero.statusText.textContent = isNowPlaying ? 'Now Playing' : 'Recently played';
     }
     if (this.hero.spotifyLink) {
       const spotifyUrl = this.buildSpotifySearchUrl(trackName, artistName);

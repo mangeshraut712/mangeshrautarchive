@@ -41,7 +41,7 @@ html[data-lg-mode='clear'] .a11y-toolbar,
 html[data-lg-mode='clear'] .a11y-glass-popover,
 html[data-lg-mode='clear'] #chatbot-widget,
 html[data-lg-mode='clear'] .live-activity-strip {
-  box-shadow: none !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 html.dark[data-lg-mode='clear'] body #global-nav.global-nav.dynamic-island,
@@ -49,7 +49,7 @@ html.dark[data-lg-mode='clear'] .a11y-toolbar,
 html.dark[data-lg-mode='clear'] .a11y-glass-popover,
 html.dark[data-lg-mode='clear'] #chatbot-widget,
 html.dark[data-lg-mode='clear'] .live-activity-strip {
-  box-shadow: none !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 html[data-lg-mode='clear'] .experience-icon,
@@ -252,22 +252,22 @@ footer .footer-tagline {
   height: 8px;
   border-radius: 50%;
   background: #34c759;
-  box-shadow: 0 0 0 0 rgb(52 199 89 / 55%);
-  animation: liveActivityPulse 2s infinite;
+  box-shadow: none;
+  animation: none;
 }
 
 @keyframes liveActivityPulse {
   70% {
-    box-shadow: 0 0 0 8px rgb(52 199 89 / 0%);
+    box-shadow: none;
   }
 
   100% {
-    box-shadow: 0 0 0 0 rgb(52 199 89 / 0%);
+    box-shadow: none;
   }
 }
 
 .live-activity-strip__label {
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
 }
 
 .live-activity-strip__detail {
@@ -300,7 +300,7 @@ footer .footer-tagline {
   border: 1px solid rgb(0 0 0 / 8%);
   background: rgb(255 255 255 / 65%);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   cursor: pointer;
 }
 
@@ -333,7 +333,7 @@ body.systems-page .uses-control-tile {
   background: #ffffff !important;
   background-color: #ffffff !important;
   border-color: var(--systems-card-border, rgb(0 0 0 / 10%)) !important;
-  box-shadow: 0 8px 22px rgb(0 0 0 / 6%) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.uses-page .uses-control-tile,
@@ -343,7 +343,7 @@ html.dark body.systems-page .uses-control-tile {
   background: #000000 !important;
   background-color: #000000 !important;
   border-color: rgb(255 255 255 / 14%) !important;
-  box-shadow: 0 10px 28px rgb(0 0 0 / 46%) !important;
+  box-shadow: none !important;
 }
 
 body.uses-page .uses-control-tile i,
@@ -400,18 +400,14 @@ body.systems-page .uses-control-tile.is-active i {
   background: rgb(255 255 255 / 92%);
   backdrop-filter: saturate(180%) blur(28px);
   -webkit-backdrop-filter: saturate(180%) blur(28px);
-  box-shadow:
-    0 1px 2px rgb(0 0 0 / 4%),
-    0 24px 64px rgb(0 0 0 / 18%);
+  box-shadow: none;
   overflow: hidden;
 }
 
 html.dark #search-overlay .search-panel {
   border-color: rgb(255 255 255 / 12%);
   background: rgb(28 28 30 / 92%);
-  box-shadow:
-    0 1px 2px rgb(0 0 0 / 40%),
-    0 28px 72px rgb(0 0 0 / 55%);
+  box-shadow: none;
 }
 
 #search-overlay .search-header {
@@ -440,7 +436,7 @@ html.dark #search-overlay .search-header {
   background: transparent !important;
   box-shadow: none !important;
   font-size: 1.125rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.02em;
   outline: none;
   color: var(--text-primary, #1d1d1f);
@@ -505,9 +501,9 @@ html.dark #search-overlay #search-close:active {
 
 #search-overlay .search-section-title {
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: none;
   color: #86868b;
   margin: 0.55rem 0.55rem 0.35rem;
   padding: 0;
@@ -547,7 +543,7 @@ html.dark #search-overlay .search-result-icon {
 
 #search-overlay .search-result-title {
   font-size: 0.95rem;
-  font-weight: 650;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.015em;
   color: #1d1d1f;
 }

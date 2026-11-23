@@ -1,0 +1,335 @@
+/* The shared presentation contract. Important rules live in the first cascade
+   layer so deferred legacy styles cannot restore retired decorative treatments. */
+@layer portfolio-foundation;
+
+:root {
+  --ui-surface: #ffffff;
+  --ui-surface-muted: #f5f5f7;
+  --ui-text: #1d1d1f;
+  --ui-text-secondary: #626268;
+  --ui-accent: #0071e3;
+  --ui-on-accent: #ffffff;
+  --ui-border: #d2d2d7;
+  --ui-weight-regular: 400;
+  --ui-weight-medium: 500;
+  --ui-motion-fast: 180ms;
+  --ui-motion-enter: 240ms;
+  --ui-shadow-floating: 0 8px 28px rgb(0 0 0 / 10%);
+}
+
+html.dark,
+html[data-theme='dark'] {
+  --ui-surface: #000000;
+  --ui-surface-muted: #161617;
+  --ui-text: #f5f5f7;
+  --ui-text-secondary: #a1a1a6;
+  --ui-accent: #2997ff;
+  --ui-border: #424245;
+  --ui-shadow-floating: 0 8px 28px rgb(0 0 0 / 30%);
+}
+
+@layer portfolio-foundation {
+  :where(*, *::before, *::after) {
+    box-shadow: none !important;
+    background-image: none !important;
+    text-shadow: none !important;
+    text-transform: none !important;
+    transition-duration: var(--ui-motion-fast) !important;
+    transition-timing-function: ease-out !important;
+    animation-duration: var(--ui-motion-enter) !important;
+    animation-timing-function: ease-out !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  :where(
+    body,
+    p,
+    span,
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    label,
+    li,
+    td,
+    th,
+    div,
+    summary,
+    small,
+    strong,
+    b
+  ) {
+    font-weight: var(--ui-weight-regular) !important;
+  }
+
+  :where(h1, h2, h3, h4, h5, h6, strong, b, th, button, summary, [role='tab']) {
+    font-weight: var(--ui-weight-medium) !important;
+  }
+
+  :where(.fa, .fas, .fa-solid) {
+    font-weight: 900 !important;
+  }
+
+  :where(.fab, .fa-brands, .far, .fa-regular) {
+    font-weight: 400 !important;
+  }
+
+  :where(
+    dialog,
+    [role='dialog'],
+    [role='menu'],
+    [role='tooltip'],
+    .navbar,
+    .monitor-page-nav,
+    .travel-nav,
+    .toast,
+    .ai-chat-window,
+    .share-panel
+  ) {
+    box-shadow: var(--ui-shadow-floating) !important;
+  }
+
+  :where(p, span, label, small, a, button) {
+    letter-spacing: normal !important;
+  }
+
+  :where(.btn, .hero-cta, .button-primary, .button-secondary, .project-action-btn) {
+    border-radius: 12px !important;
+  }
+
+  :where(select) {
+    appearance: auto !important;
+  }
+
+  :where(
+    .hero-identity-item,
+    .hero-pill-badge,
+    .vibe-coder-badge,
+    .vibe-badge,
+    .hero-availability
+  ) {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  :where(
+    .card:hover,
+    .bento-card:hover,
+    .showcase-project-card:hover,
+    .contact-card:hover,
+    .blog-card:hover
+  ) {
+    transform: none !important;
+  }
+
+  :where(
+    .glow-ring,
+    .voice-mode-orb-glow,
+    .voice-mode-orb-halo,
+    .voice-mode-orb-sheen,
+    [aria-hidden='true'][class*='glow']
+  ) {
+    display: none !important;
+  }
+
+  :where(.fa-spin, .spinner, [class$='__spinner'], [class$='-spinner']) {
+    animation-iteration-count: infinite !important;
+  }
+
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--ui-accent) !important;
+    outline-offset: 3px !important;
+  }
+
+  :where(
+    [class*='eyebrow'],
+    .monitor-page-nav__kicker,
+    .travel-nav__kicker,
+    .section-kicker,
+    .blog-index-kicker,
+    .blog-kicker,
+    .article-kicker,
+    .article-related-kicker,
+    .keynote-hero__badge-row
+  ) {
+    display: none !important;
+  }
+
+  :where([class*='kicker']) {
+    color: var(--ui-text-secondary) !important;
+    letter-spacing: normal !important;
+    font-size: 0.875rem !important;
+  }
+
+  :where(.card, [class$='-card']) :where(.card, [class$='-card']) {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  :where(
+    .icon-box,
+    .icon-wrapper,
+    .contact-info-icon,
+    .contact-icon,
+    .contact-channel-icon,
+    .feature-icon,
+    .stat-icon,
+    .skill-icon,
+    .skill-badge-icon,
+    .education-proof-icon
+  ) {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  :where(
+    .experience-tag,
+    .experience-period,
+    .timeline-section-header h3,
+    .education-badge,
+    .skill-category-count,
+    .blog-topic-pill,
+    .project-tag,
+    .skill-tag,
+    .tech-tag,
+    .tag,
+    .badge,
+    .pronoun-badge,
+    .status-badge,
+    .work-event-context
+  ) {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  :where(
+    .contact-info-item,
+    .contact-detail-item,
+    .contact-channel-item,
+    .contact-method,
+    .systems-stat,
+    .systems-metric
+  ) {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  :where(.contact-channel-item) {
+    border: 0 !important;
+    border-bottom: 1px solid var(--ui-border) !important;
+    padding-inline: 0 !important;
+  }
+
+  :where(.contact-channel-label) {
+    letter-spacing: normal !important;
+    color: var(--ui-text-secondary) !important;
+  }
+
+  :where(.world-clock, .case-study-metric, .keynote-metric-card, .systems-hero-stat) {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border-bottom: 1px solid var(--ui-border) !important;
+  }
+
+  :where(.education-proof, .skill-scroll-container, .skill-badge) {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  :where(.education-badge) {
+    color: var(--ui-text-secondary) !important;
+    padding-inline: 0 !important;
+  }
+
+  :where(.skill-scroll-wrapper) {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    width: 100% !important;
+    min-width: 0 !important;
+    animation: none !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  :where(.skill-badge-icon) {
+    flex: 0 0 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  @media (width <= 600px) {
+    :where(.skill-scroll-wrapper) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px !important;
+    }
+  }
+
+  :where(.skill-scroll-wrapper .skill-badge) {
+    min-width: 0 !important;
+    max-width: none !important;
+    padding: 8px 0 !important;
+  }
+
+  :where(#builder-profile .eng-card-q) {
+    display: none !important;
+  }
+
+  :where(.work-story, .work-security-list li) {
+    border-radius: 0 !important;
+    border-inline: 0 !important;
+    border-bottom: 0 !important;
+    padding-inline: 0 !important;
+  }
+
+  :where(
+    .hero-name-text,
+    .hero-title,
+    #home h1,
+    section h2,
+    .section-title,
+    .section-header h2,
+    .work-impact-number strong
+  ) {
+    color: var(--ui-text) !important;
+    -webkit-text-fill-color: currentcolor !important;
+  }
+
+  :where(.wrapper .icon, .contact-social-wrapper .icon) {
+    box-shadow: none !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  :where(
+    .aurora,
+    .aurora-bg,
+    .hero-orb,
+    .hero-glow,
+    .gradient-orb,
+    .cursor-glow,
+    .shine-overlay,
+    .shimmer-overlay
+  ) {
+    display: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(*, *::before, *::after) {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

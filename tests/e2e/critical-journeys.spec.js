@@ -402,7 +402,7 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
     .evaluateAll(cards =>
       cards.slice(0, 2).map(card => card.querySelector('h3').textContent.trim())
     );
-  expect(leftCards).toEqual(['Follow Me', 'Send a Message']);
+  expect(leftCards).toEqual(['Follow me', 'Send a message']);
   await page.locator('.filter-tab[data-filter="all"]').click();
   await expect(page.locator('.reminder-card:visible')).toHaveCount(5);
   await page.getByRole('button', { name: /View all \d+ items/ }).click();

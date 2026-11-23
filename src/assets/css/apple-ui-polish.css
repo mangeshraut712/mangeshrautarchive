@@ -65,7 +65,7 @@ body {
   font-size: 17px;
   line-height: 1.4706; /* Apple body */
   letter-spacing: -0.022em;
-  font-weight: 400;
+  font-weight: var(--ui-weight-regular);
   color: #1d1d1f !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -236,7 +236,7 @@ h6 {
   background-image: none;
   letter-spacing: -0.025em;
   line-height: 1.14;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
 }
 
 html.dark h1,
@@ -267,7 +267,7 @@ main section h2[id$='-heading'],
 #debug-runner-section h2,
 #currently-section h2 {
   font-size: clamp(2rem, 4vw, 2.75rem) !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.03em !important;
   line-height: 1.12 !important;
   margin-top: 0 !important;
@@ -311,7 +311,7 @@ main section > .container > h2 + .section-subtitle,
 main section > .container > h2 + p.section-subtitle,
 #experience .section-subtitle {
   font-size: clamp(1.05rem, 1.5vw, 1.3125rem) !important;
-  font-weight: 400 !important;
+  font-weight: var(--ui-weight-regular) !important;
   line-height: 1.4211 !important;
   letter-spacing: -0.016em !important;
   color: #48484a !important;
@@ -366,7 +366,7 @@ main#main-content > section > .container {
 #home .hero-name-text {
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  font-weight: 800 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.03em !important;
   background: none !important;
 }
@@ -380,7 +380,7 @@ html.dark #home .hero-name-text {
   color: #6e6e73 !important;
   -webkit-text-fill-color: #6e6e73 !important;
   font-size: clamp(1.05rem, 1.4vw, 1.25rem) !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.016em !important;
   line-height: 1.35 !important;
 }
@@ -397,7 +397,7 @@ html body #home .hero-description.hero-description-lines {
   color: #6e6e73 !important;
   font-size: clamp(0.8125rem, 0.95vw, 0.9rem) !important;
   line-height: 1.44 !important;
-  font-weight: 400 !important;
+  font-weight: var(--ui-weight-regular) !important;
   letter-spacing: -0.012em !important;
   opacity: 1 !important;
   max-width: 44rem !important;
@@ -573,7 +573,7 @@ html.dark .wrapper .whoop:not(:hover):not(:focus-within) {
 /* Skills badges */
 .skill-badge-name {
   color: #1d1d1f !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.014em;
 }
 
@@ -606,14 +606,10 @@ html.dark .skill-badge-percentage {
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
   background-color: rgba(0, 0, 0, 0.04) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(245, 245, 247, 0.7) 100%
-  ) !important;
+  background-image: none !important;
   border: 1px solid rgba(0, 0, 0, 0.12) !important;
   border-radius: 980px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
@@ -621,15 +617,11 @@ html.dark .skill-badge-percentage {
 #home a.hero-cta-secondary:hover,
 #home .hero-cta-secondary:hover {
   background-color: rgba(0, 113, 227, 0.08) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(0, 113, 227, 0.08) 0%,
-    rgba(0, 113, 227, 0.04) 100%
-  ) !important;
+  background-image: none !important;
   border-color: rgba(0, 113, 227, 0.4) !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.18) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
@@ -638,13 +630,9 @@ html.dark #home .hero-cta-secondary {
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
   background-color: rgba(255, 255, 255, 0.08) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.04) 100%
-  ) !important;
+  background-image: none !important;
   border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: none !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
@@ -652,15 +640,11 @@ html.dark #home .hero-cta-secondary {
 html.dark #home a.hero-cta-secondary:hover,
 html.dark #home .hero-cta-secondary:hover {
   background-color: rgba(41, 151, 255, 0.16) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(41, 151, 255, 0.2) 0%,
-    rgba(41, 151, 255, 0.08) 100%
-  ) !important;
+  background-image: none !important;
   border-color: rgba(41, 151, 255, 0.4) !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  box-shadow: 0 4px 18px rgba(41, 151, 255, 0.25) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
@@ -676,7 +660,7 @@ main .section-preview-btn {
   background-image: none !important;
   border: 1px solid rgba(0, 113, 227, 0.35) !important;
   border-radius: 980px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   min-height: 44px !important;
@@ -691,11 +675,11 @@ button.section-preview-btn:hover *,
 main button.section-preview-btn:hover *,
 main .section-preview-btn:hover * {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
@@ -710,7 +694,7 @@ html.dark main .section-preview-btn {
   background-image: none !important;
   border: 1px solid rgba(41, 151, 255, 0.45) !important;
   border-color: rgba(41, 151, 255, 0.45) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
@@ -724,11 +708,11 @@ html.dark .section-preview-btn:hover *,
 html.dark main button.section-preview-btn:hover *,
 html.dark main .section-preview-btn:hover * {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.55) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
@@ -796,7 +780,7 @@ html.dark #projects .project-repo-link {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   background: #000000 !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .about-tab-btn {
@@ -890,7 +874,7 @@ html[data-lg-mode] #chatbot-widget.visible {
   border: 1px solid #e5e5ea !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14) !important;
+  box-shadow: none !important;
   opacity: 1 !important;
 }
 
@@ -904,7 +888,7 @@ html.dark[data-lg-mode] #chatbot-widget.visible {
   border-color: #2c2c2e !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55) !important;
+  box-shadow: none !important;
 }
 
 #chatbot-widget .chatbot-header,
@@ -1011,13 +995,11 @@ body #chatbot-toggle,
 #go-to-top,
 body #go-to-top {
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow:
-    0 4px 16px rgba(0, 113, 227, 0.38),
-    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: none !important;
 }
 
 html.dark #chatbot-toggle,
@@ -1025,13 +1007,11 @@ html.dark body #chatbot-toggle,
 html.dark #go-to-top,
 html.dark body #go-to-top {
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow:
-    0 4px 16px rgba(0, 113, 227, 0.45),
-    0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: none !important;
 }
 
 #chatbot-toggle:hover,
@@ -1039,12 +1019,10 @@ body #chatbot-toggle:hover,
 #go-to-top:hover,
 body #go-to-top:hover {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow:
-    0 8px 24px rgba(0, 113, 227, 0.48),
-    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) scale(1.04) !important;
 }
 
@@ -1053,10 +1031,8 @@ html.dark body #chatbot-toggle:hover,
 html.dark #go-to-top:hover,
 html.dark body #go-to-top:hover {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
-  box-shadow:
-    0 8px 24px rgba(0, 113, 227, 0.55),
-    0 3px 8px rgba(0, 0, 0, 0.25) !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 
 /* A11y toolbar share control — solid tile, readable glyph */
@@ -1098,7 +1074,7 @@ html.dark .a11y-toolbar #website-share-toggle {
   border: none;
   font-family: var(--font-text);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.01em;
   text-decoration: none;
   min-height: 44px;
@@ -1144,10 +1120,7 @@ html.dark .a11y-toolbar #website-share-toggle {
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
   padding: 6px;
-  box-shadow:
-    0 0 0 0.5px rgba(0, 0, 0, 0.04),
-    0 18px 48px rgba(0, 0, 0, 0.18),
-    0 6px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ui-shadow-floating);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -1163,10 +1136,7 @@ html.dark .a11y-toolbar #website-share-toggle {
 html.dark .resume-dropdown-menu {
   background: rgba(44, 44, 46, 0.88);
   border-color: rgba(255, 255, 255, 0.14);
-  box-shadow:
-    0 0 0 0.5px rgba(255, 255, 255, 0.06),
-    0 22px 56px rgba(0, 0, 0, 0.55),
-    0 8px 20px rgba(0, 0, 0, 0.35);
+  box-shadow: var(--ui-shadow-floating);
 }
 
 .resume-dropdown-wrapper.is-open .resume-dropdown-menu,
@@ -1229,19 +1199,19 @@ html.dark .resume-dropdown-item:focus-visible {
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(0, 113, 227, 0.16), rgba(0, 113, 227, 0.08));
+  background: var(--ui-surface);
   color: #0071e3;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: inset 0 0 0 0.5px rgba(0, 113, 227, 0.12);
+  box-shadow: none;
 }
 
 html.dark .resume-item-icon {
-  background: linear-gradient(180deg, rgba(10, 132, 255, 0.28), rgba(10, 132, 255, 0.14));
+  background: var(--ui-surface);
   color: #64b5ff;
-  box-shadow: inset 0 0 0 0.5px rgba(10, 132, 255, 0.2);
+  box-shadow: none;
 }
 
 .resume-item-icon svg {
@@ -1259,7 +1229,7 @@ html.dark .resume-item-icon {
 
 .resume-item-title {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   line-height: 1.25;
   letter-spacing: -0.01em;
 }

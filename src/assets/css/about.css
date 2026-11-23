@@ -17,7 +17,7 @@
 #about #about-heading {
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 2.75rem);
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.028em;
   line-height: 1.1;
   margin: 0 auto 0.65rem auto;
@@ -121,9 +121,7 @@ html.dark .about-image {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
   border: 1px solid rgba(255, 255, 255, 0.6);
   z-index: 3;
 }
@@ -131,7 +129,7 @@ html.dark .about-image {
 html.dark .about-image-badge {
   background: rgba(28, 28, 30, 0.85);
   border-color: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+  box-shadow: none;
 }
 
 .about-image-badge i {
@@ -145,7 +143,7 @@ html.dark .about-image-badge i {
 
 .about-image-badge span {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.01em;
   color: var(--text-primary);
 }
@@ -246,7 +244,7 @@ html.dark .about-text-card:hover {
 .about-intro-title {
   font-family: var(--font-display);
   font-size: clamp(1.65rem, 2.5vw, 2.05rem);
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.025em;
   line-height: 1.2;
   color: var(--text-primary, #1d1d1f);
@@ -256,7 +254,7 @@ html.dark .about-text-card:hover {
 .about-brand-line {
   font-family: var(--font-text);
   font-size: 0.94rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: var(--apple-blue, #0071e3);
   letter-spacing: 0.03em;
   line-height: 1.4;
@@ -281,7 +279,7 @@ html:not(.dark) .about-intro-title {
   letter-spacing: -0.01em;
   color: var(--text-primary);
   margin: 0 0 2rem 0;
-  font-weight: 400;
+  font-weight: var(--ui-weight-regular);
 }
 
 html.dark .about-intro-text {
@@ -294,7 +292,7 @@ html:not(.dark) .about-intro-text {
 
 .about-intro-text strong {
   color: #0071e3;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
 }
 
 html.dark .about-intro-text strong {
@@ -307,7 +305,7 @@ html.dark .about-intro-text strong {
   letter-spacing: -0.005em;
   color: var(--text-secondary);
   margin: 0 0 1.75rem 0;
-  font-weight: 400;
+  font-weight: var(--ui-weight-regular);
 }
 
 html.dark .about-description {
@@ -320,7 +318,7 @@ html:not(.dark) .about-description {
 
 .about-description strong {
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
 }
 
 html.dark .about-description strong {
@@ -375,12 +373,12 @@ html.dark .about-highlight-card:hover {
   width: 56px;
   height: 56px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #0071e3, #2997ff);
+  background: var(--ui-surface);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  box-shadow: 0 8px 20px rgb(0 113 227 / 30%);
+  box-shadow: none;
 }
 
 .about-highlight-icon i {
@@ -390,7 +388,7 @@ html.dark .about-highlight-card:hover {
 
 .about-highlight-title {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary);
   margin: 0 0 0.75rem;
 }
@@ -539,7 +537,7 @@ html:not(.dark) .about-highlight-text {
     width: 100% !important;
     border-radius: 24px !important;
     overflow: hidden !important;
-    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: none !important;
   }
 
   .about-image-wrapper img.about-image,
@@ -569,7 +567,7 @@ html:not(.dark) .about-highlight-text {
     display: flex !important;
     flex-direction: column !important;
     border-radius: 24px !important;
-    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.06) !important;
+    box-shadow: none !important;
   }
 
   .about-content,
@@ -639,7 +637,7 @@ html.dark .about-segmented-control {
   background-image: none !important;
   font-family: var(--font-text) !important;
   font-size: 0.82rem !important;
-  font-weight: 590 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   padding: 6px 12px !important;
   border-radius: 9999px !important;
@@ -679,25 +677,21 @@ html.dark .about-tab-btn {
 }
 
 .about-tab-btn.active {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   border: none !important;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.12),
-    0 2px 8px rgba(0, 113, 227, 0.38) !important;
+  box-shadow: none !important;
 }
 
 html.dark .about-tab-btn.active {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.2),
-    0 2px 8px rgba(0, 113, 227, 0.45) !important;
+  box-shadow: none !important;
 }
 
 .about-tab-btn:active {
@@ -778,7 +772,7 @@ html.dark .about-paragraph {
 #about .about-paragraph strong,
 .about-paragraph strong {
   font-family: inherit !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: var(--text-primary, #1d1d1f) !important;
 }
 
@@ -834,12 +828,12 @@ html.dark .about-text-card.speech-active .highlight-target.is-speaking {
   padding: 0.4rem 0.85rem;
   border-radius: 980px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.01em;
   background: rgba(0, 113, 227, 0.08);
   color: #0071e3;
   border: 1px solid rgba(0, 113, 227, 0.2);
-  box-shadow: 0 1px 3px rgba(0, 113, 227, 0.06);
+  box-shadow: none;
   transition:
     transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
     background-color 0.2s ease,
@@ -853,19 +847,19 @@ html.dark .about-text-card.speech-active .highlight-target.is-speaking {
 .about-milestone-badge:hover {
   transform: translateY(-1.5px) scale(1.02);
   background: rgba(0, 113, 227, 0.14);
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.18);
+  box-shadow: none;
 }
 
 html.dark .about-milestone-badge {
   background: rgba(41, 151, 255, 0.12);
   color: #2997ff;
   border-color: rgba(41, 151, 255, 0.28);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 html.dark .about-milestone-badge:hover {
   background: rgba(41, 151, 255, 0.22);
-  box-shadow: 0 4px 16px rgba(41, 151, 255, 0.25);
+  box-shadow: none;
 }
 
 /* Summary Bento Grid Layout (Apple Keynote Style) */
@@ -913,14 +907,14 @@ html.dark .summary-item {
   transform: translateY(-2px);
   background: rgba(0, 0, 0, 0.04);
   border-color: rgba(0, 113, 227, 0.3);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
 }
 
 html.dark .about-summary-item:hover,
 html.dark .summary-item:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(41, 151, 255, 0.4);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  box-shadow: none;
 }
 
 .about-summary-icon {
@@ -951,7 +945,7 @@ html.dark .about-summary-icon {
 .summary-label {
   display: block;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.01em;
   color: #1d1d1f;
   margin-bottom: 0.3rem;
@@ -978,7 +972,7 @@ html.dark .summary-text {
 
 .about-summary-text strong,
 .summary-text strong {
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: #1d1d1f !important;
 }
 

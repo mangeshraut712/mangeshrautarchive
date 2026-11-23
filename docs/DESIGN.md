@@ -1,314 +1,80 @@
-# DESIGN.md — Apple Human Interface Portfolio Design System
-
-> **Standard:** Apple Human Interface Guidelines (HIG) + Liquid Glass Design Language (2026)  
-> **Source of Truth:** `docs/DESIGN.md` & `src/assets/css/`  
-> **Rule for Agents & Contributors:** Read and follow this specification before creating, updating, or modifying any page, card, section, button, theme, or component.
-
----
-
-## 1. Design Philosophy
-
-The portfolio follows authentic **Apple Design Principles**:
-
-1. **Clarity & Content First**: Typography and hierarchy guide the eye effortlessly. Text is crisp with high contrast (WCAG AA compliant, ≥ 4.5:1 for body, ≥ 3.0:1 for large text).
-2. **Authentic Apple Colors & Gradients**: Vibrant Apple system colors with polished depth (Apple Blue `#0071e3`, Apple Red `#ff3b30`, Apple Green `#34c759`, Apple Purple `#af52de`). Primary CTAs feature vibrant Apple linear gradients (`135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%`) paired with specular metallic sweep sheen animations.
-3. **Restrained Depth & Glassmorphism**: Frosted translucency (`backdrop-filter: blur(20px)`), subtle 1px border highlights (`rgba(255, 255, 255, 0.15)` in dark, `rgba(0, 0, 0, 0.08)` in light), and soft ambient shadows.
-4. **Physicality & Tactile Feedback**: Micro-interactions use cubic-bezier curves (`cubic-bezier(0.16, 1, 0.3, 1)` or `scale(0.98)` on press).
-5. **Zero Cliché Anti-Patterns**:
-   - 🚫 **NO raw horizontal overflow** or layout shift.
-   - 🚫 **NO low-contrast text** (e.g. white text on light backgrounds or faint gray comments in code blocks).
-
----
-
-## 1.1 Motion & Animation Standards
-
-All transitions and animations follow Apple HIG motion principles: purposeful, fluid, fast,
-and interruptible. Decorative motion that doesn't communicate state change is forbidden.
-
-### Canonical easing curves
-
-| Curve                 | CSS value                        | When to use                                                             |
-| :-------------------- | :------------------------------- | :---------------------------------------------------------------------- |
-| **Apple Spring**      | `cubic-bezier(0.16, 1, 0.3, 1)`  | Primary interaction feedback: hover lift, press spring-back, modal open |
-| **Apple Ease-Out**    | `cubic-bezier(0.25, 1, 0.5, 1)`  | Exit transitions: modal close, tooltip fade, scroll-triggered reveals   |
-| **Apple Ease-In-Out** | `cubic-bezier(0.45, 0, 0.55, 1)` | Continuous loops: skeleton pulse, loading spinners                      |
-| **Linear**            | `linear`                         | Progress bars, specular shine sweeps                                    |
-
-### Duration guide
-
-| Interaction                   | Duration    | Curve             |
-| :---------------------------- | :---------- | :---------------- |
-| Hover lift (buttons, cards)   | 200–250ms   | Apple Spring      |
-| Active / press spring-back    | 100–150ms   | Apple Spring      |
-| Modal / sheet open            | 300–350ms   | Apple Spring      |
-| Modal / sheet close           | 200–250ms   | Apple Ease-Out    |
-| Tooltip / popover appear      | 150–200ms   | Apple Ease-Out    |
-| Skeleton pulse cycle          | 1500–2000ms | Apple Ease-In-Out |
-| Specular shine sweep (Tier 1) | 4500ms      | Linear            |
-| Scroll-reveal entry           | 300–400ms   | Apple Spring      |
-
-### Performance rules
-
-**Always animate** (GPU-composited, no layout thrash):
-`transform`, `opacity`, `filter`
-
-**Never animate** (triggers layout or paint):
-`width`, `height`, `top`, `left`, `margin`, `padding`, `border-width`, `font-size`
-
-Use `will-change: transform` on frequently animated elements during animation only.
-Remove after completion to avoid compositor memory waste.
-
-### Reduce-motion compliance
-
-Every animation and transition must include a `prefers-reduced-motion` override:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-  .animated-element {
-    transition: opacity 150ms ease;
-    transform: none !important;
-    animation: none !important;
-  }
-}
-```
-
-Looping animations (specular shine, particle effects, breathing nodes) must fully
-pause under reduced motion. Skeleton and loading indicators may retain opacity-only
-fading at reduced duration.
-
----
-
-## 1.2 Spacing & Grid System
-
-The portfolio uses an 8pt grid system aligned with Apple HIG spatial conventions.
-
-### Base unit
-
-All spacing values derive from a 4px half-step base. Prefer multiples of 8px for
-primary spacing (padding, margins, gaps). Use 4px for fine optical adjustments only.
-
-| Token        | Value  | Common usage                          |
-| :----------- | :----- | :------------------------------------ |
-| `--space-1`  | `4px`  | Inline icon gaps, fine optical nudges |
-| `--space-2`  | `8px`  | Compact element padding, chip gaps    |
-| `--space-3`  | `12px` | Button internal padding (vertical)    |
-| `--space-4`  | `16px` | Card internal padding, section gaps   |
-| `--space-5`  | `20px` | Card padding (primary), grid gaps     |
-| `--space-6`  | `24px` | Section margins, group separators     |
-| `--space-8`  | `32px` | Major section gaps                    |
-| `--space-10` | `40px` | Page-level section separators         |
-| `--space-12` | `48px` | Hero spacing, viewport-edge margins   |
-
-### Border radius scale
-
-| Surface                 | Radius   | CSS                     |
-| :---------------------- | :------- | :---------------------- |
-| Cards, containers       | `18px`   | `border-radius: 18px`   |
-| Buttons (standard)      | `12px`   | `border-radius: 12px`   |
-| Chips, pills, segmented | `9999px` | `border-radius: 9999px` |
-| FABs, close buttons     | `50%`    | `border-radius: 50%`    |
-| Code blocks             | `12px`   | `border-radius: 12px`   |
-| Inline code             | `6px`    | `border-radius: 6px`    |
-
----
-
-## 2. Design Tokens & Palette
-
-### System Color Palette
-
-| Token                               | Light Mode Value                                | Dark Mode Value              | Usage                                                              |
-| :---------------------------------- | :---------------------------------------------- | :--------------------------- | :----------------------------------------------------------------- |
-| `--apple-blue` (Primary CTA)        | `#0071e3` (Hover: `#0077ed`, Active: `#0062c4`) | `#0071e3` / `#0a84ff`        | Primary action buttons, active tabs, active chips, key links, FABs |
-| `--apple-red` (Destructive / Close) | `#ff3b30` (Hover: `#ff453a`, Active: `#d70015`) | `#ff3b30` (Hover: `#ff453a`) | All modal close buttons, stop buttons, error indicators            |
-| `--apple-green` (Success)           | `#34c759` (Hover: `#30d158`)                    | `#30d158` / `#34c759`        | Live statuses, success copy toasts, online badges                  |
-| `--apple-purple` (Accent / AI)      | `#5856d6` / `#af52de` (Tinted text: `#4338ca`)  | `#bf5af2` / `#5e5ce6`        | Agentic AI features, Liquid Glass tinted badges                    |
-| `--apple-orange` (Warning)          | `#ff9500`                                       | `#ff9f0a`                    | Notice tags, warning badges, highlighted tokens                    |
-
-### Surfaces & Backgrounds
-
-Neutral page, card, grouped-control, and inactive-tab fills must use solid white in light mode
-and solid black in dark mode through `--bg-primary`. Avoid gray fills and neutral translucent
-overlays on these surfaces. Use borders for separation and Apple Blue for selected controls.
-
-| Token / Surface                   | Light Mode (Solid White)                    | Dark Mode (Solid Black)                            | High-Contrast Mode                          |
-| :-------------------------------- | :------------------------------------------ | :------------------------------------------------- | :------------------------------------------ |
-| **Canvas Background**             | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#ffffff` / `#000000`                       |
-| **Secondary Background / Card**   | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#ffffff` / `#000000` with 2px solid border |
-| **Tertiary / Grouped Background** | `#ffffff` (Solid Pure White)                | `#000000` (Solid Pure Black)                       | `#000000` / `#ffffff`                       |
-| **Elevated Glass Card**           | `#ffffff` with subtle border `#e5e5ea`      | `#000000` with subtle border `#2c2c2e`             | Solid `#ffffff` / `#000000`                 |
-| **Terminal / Code Block**         | `#000000` (Dark Terminal)                   | `#000000` (1px border `rgba(255, 255, 255, 0.12)`) | Solid `#000000` with white monospace text   |
-| **Border Sub-surface**            | `1px solid #e5e5ea` (`rgba(0, 0, 0, 0.08)`) | `1px solid #2c2c2e` (`rgba(255, 255, 255, 0.12)`)  | `2px solid #000000` / `#ffffff`             |
-
-### Typography System (Canonical Apple HIG Architecture)
-
-The portfolio strictly enforces a unified, single-family Apple Human Interface typography system across all stylesheets and pages (`index.html`, `systems.html`, `monitor.html`, `travel.html`, `uses.html`, `changelog.html`, `404.html`):
-
-#### Canonical CSS Typography Tokens
-
-- **Display & Headings (`--font-display`, `--font-family-display`)**:
-  `-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif`
-- **Body, UI & Paragraphs (`--font-text`, `--font-primary`, `--font-sans`, `--ai-font`, `--ios-font`)**:
-  `-apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif`
-- **Monospace, Code & Telemetry (`--font-mono`, `--font-family-mono`)**:
-  `ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
-
-#### Typography Fluid Hierarchy & Metric Matrix
-
-| Level                  | Token / Variable      | Size / Fluid Clamp Formula                 | Weight           | Line Height | Tracking   |
-| :--------------------- | :-------------------- | :----------------------------------------- | :--------------- | :---------- | :--------- |
-| **Hero Title / H1**    | `var(--font-display)` | `clamp(2.25rem, 5.5vw, 3.85rem)`           | `750` / `800`    | `1.08`      | `-0.028em` |
-| **Section Title / H2** | `var(--font-display)` | `clamp(1.75rem, 3.8vw, 2.45rem)`           | `700` (Bold)     | `1.18`      | `-0.022em` |
-| **Card Header / H3**   | `var(--font-display)` | `clamp(1.25rem, 2.4vw, 1.55rem)`           | `650` (Semibold) | `1.28`      | `-0.018em` |
-| **Subhead / H4**       | `var(--font-display)` | `clamp(1.05rem, 1.8vw, 1.25rem)`           | `600` (Semibold) | `1.38`      | `-0.012em` |
-| **Body Paragraph**     | `var(--font-text)`    | `clamp(0.98rem, 1.1vw, 1.05rem)`           | `400` / `450`    | `1.65`      | `-0.005em` |
-| **UI & Controls**      | `var(--font-text)`    | `0.92rem` – `0.95rem`                      | `550` / `600`    | `1.25`      | `-0.01em`  |
-| **Caption / Eyebrow**  | `var(--font-text)`    | `0.75rem` – `0.82rem` (Uppercase `0.06em`) | `650` (Bold)     | `1.30`      | `+0.060em` |
-| **Code & Telemetry**   | `var(--font-mono)`    | `clamp(0.78rem, 0.9vw, 0.88rem)`           | `500` / `600`    | `1.55`      | `0`        |
-
-#### Contrast & Accessibility Ratios (WCAG AA/AAA)
-
-- **Light Mode**: Primary text `#1d1d1f` (16.2:1 contrast ratio on `#ffffff`), Secondary text `#6e6e73` (4.8:1 contrast ratio on `#ffffff`).
-- **Dark Mode**: Primary text `#f5f5f7` (18.6:1 contrast ratio on `#000000`), Secondary text `#a1a1a6` (7.2:1 contrast ratio on `#000000`).
-- **Font Smoothing**: `-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility;` applied globally on root.
-
----
-
-## 3. Standard 6-Tier Component & Button Hierarchy
-
-The design system enforces a strictly unified 6-tier button architecture across all 7 pages (`index.html`, `systems.html`, `monitor.html`, `travel.html`, `uses.html`, `changelog.html`, `404.html`):
-
-### Tier 1: Primary Action CTAs (`.btn-primary`, `.hero-cta-primary`, `.btn-resume`, `.contact-send-btn`, `.apple-submit-btn`, `.newsletter-submit-btn`, `.btn-demo`, `.project-action-btn.btn-demo`, `.projects-view-all-btn`, `.engineering-open-btn`, `.publication-read-btn`, `.error-btn--primary`, `.dictation-dock-btn.is-primary`)
-
-- **Visual Style**: Vibrant Apple Blue Gradient (`linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%)`) with specular metallic sweep animation (`@keyframes appleBtnShine`) and glowing drop shadow.
-- **Specifications**:
-  - `min-height: 48px; padding: 0.75rem 1.6rem; border-radius: 12px;` (or `9999px` for pill CTA)
-  - `background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;`
-  - `color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;`
-  - `border: 1px solid rgba(255, 255, 255, 0.25) !important;`
-  - `box-shadow: 0 4px 16px rgba(0, 113, 227, 0.38), 0 2px 4px rgba(0, 0, 0, 0.08) !important;`
-- **States**:
-  - **Hover**: `background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important; transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 24px rgba(0, 113, 227, 0.48), 0 3px 8px rgba(0, 0, 0, 0.12) !important;`
-  - **Active / Press**: `transform: scale(0.97);`
-  - **Shine Animation**: Specular translucent sweep on `::before` pseudo-element with 4.5s loop (`@keyframes appleBtnShine`).
-
-### Tier 2: Secondary & Frosted Glass Action Buttons (`.btn-secondary`, `.button-secondary`, `.apple-btn-secondary`, `.hero-cta-secondary`, `.btn-glass`, `.btn-github`, `.btn-ar`, `.error-btn--secondary`)
-
-- **Specifications**:
-  - `min-height: 48px; padding: 0.75rem 1.5rem; border-radius: 12px; font-weight: 600;`
-  - `backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);`
-- **Light Mode**:
-  - `background: var(--bg-primary); background-image: none;`
-  - `color: #1d1d1f !important; -webkit-text-fill-color: #1d1d1f !important;`
-  - `border: 1px solid rgba(0, 0, 0, 0.14); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);`
-  - **Hover**: `color: #0071e3; border-color: #0071e3; background-color: rgba(0, 113, 227, 0.06); box-shadow: 0 6px 18px rgba(0, 113, 227, 0.18); transform: translateY(-2px) scale(1.02);`
-- **Dark Mode**:
-  - `background: var(--bg-primary); background-image: none;`
-  - `color: #f5f5f7 !important; -webkit-text-fill-color: #f5f5f7 !important;`
-  - `border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);`
-  - **Hover**: `color: #2997ff; border-color: #2997ff; background-color: rgba(41, 151, 255, 0.14); box-shadow: 0 6px 18px rgba(41, 151, 255, 0.25); transform: translateY(-2px) scale(1.02);`
-
-### Tier 3: Filter Chips, Segmented Tabs & Category Pills (`.proj-filter-btn`, `.project-lens-chip`, `.about-tab-btn`, `.systems-arch-tab`, `.systems-filter-chip`, `.country-pill`, `.travel-filter-chip`, `.travel-action`, `.travel-advanced-toggle`, `.uses-filter-chip`, `.uses-control-tile`, `.changelog-chip`, `.changelog-filters-toggle`, `.log-tab-btn`, `.monitor-filter-btn`, `.skills-radar-pill`, `.share-mirror-tab`)
-
-- **Specifications**: `min-height: 38px; border-radius: 9999px; font-size: 0.88rem; font-weight: 580;`
-- **Inactive State**:
-  - Light Mode: `background: var(--bg-primary); background-image: none; color: #1d1d1f; border: 1px solid rgba(0, 0, 0, 0.14); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);`
-  - Dark Mode: `background: var(--bg-primary); background-image: none; color: #f5f5f7; border: 1px solid rgba(255, 255, 255, 0.16); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);`
-  - Hover: subtle elevation lift `translateY(-1px)`, border colored with Apple Blue (`#0071e3` / `#2997ff`).
-- **Active State (`.active`, `.is-active`, `[aria-selected="true"]`, `[aria-pressed="true"]`)**:
-  - `background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;`
-  - `color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;`
-  - `border: 1px solid rgba(255, 255, 255, 0.25) !important;`
-  - `box-shadow: 0 3px 12px rgba(0, 113, 227, 0.4) !important;`
-
-### Tier 4: Disclosure / Preview / "View More" Buttons (`.section-preview-btn`, `.skills-radar-toggle-btn`, `.arch-tree-toggle-btn`, `.blog-view-more-btn`, `.view-more-btn`, `.btn-view-more`, `.systems-view-more-btn`, `.travel-view-more-btn`, `.uses-view-more-btn`, `.engineering-open-btn`)
-
-- **Specifications**: `min-height: 46px; border-radius: 9999px; padding: 0.65rem 1.6rem; font-size: 0.92rem; font-weight: 600;`
-- **Rest State**: Frosted surface with Apple Blue outline and text.
-- **Hover State**: Vibrant Apple Blue gradient fill with pure white text and glowing shadow.
-
-### Tier 5: Floating Action Buttons (FABs) & System Controls (`#chatbot-toggle`, `#go-to-top`, `#website-share-toggle`, `.a11y-toolbar__main`, `.travel-nav__projection`, `.travel-nav__theme`, `.travel-nav__panel`, `.monitor-page-nav__theme`, `.error-theme-btn`)
-
-- **Dimensions**: `48px × 48px` circular (`border-radius: 50%`).
-- **Color**: Solid Apple Blue gradient or frosted glass with Apple Blue hover.
-- **Shadow**: `0 4px 16px rgba(0, 113, 227, 0.35)`.
-
-### Tier 6: Circular Red Close Buttons (`.apple-close-btn`, `.shortcuts-modal__close`, `.blog-modal-close`, `.publication-modal-close`, `#search-close`, `#close-menu-btn`, `.photo-gallery-close`, `.website-share-close`, `.chatbot-close-btn`, `.blessing-modal-close`)
-
-- **Dimensions**: `32px × 32px` (Min: `32px`, Max: `36px`)
-- **Shape**: `border-radius: 50% !important;`
-- **Color**: `background: #ff3b30 !important; color: #ffffff !important;`
-- **Icon**: Clean SVG cross vector or FontAwesome `xmark` (centered, white).
-- **Hover**: `background: #ff453a !important; transform: scale(1.08) !important; box-shadow: 0 4px 12px rgba(255, 59, 48, 0.45) !important;`
-- **Active**: `transform: scale(0.94) !important;`
-
----
-
-## 4. Cards, Containers, & Code Blocks
-
-### 1. Apple Glass Cards (`.bento-card`, `.project-card`, `.blog-card`)
-
-- **Light Mode**: `background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 18px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);`
-- **Dark Mode**: `background: #000000; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);`
-- **Hover**: Subtle lift `translateY(-3px)`, enhanced border luminescence.
-- **Repository gallery**: Lead with the real README screenshot when available, label conceptual maps accurately, and make the media open the project preview. Show language and activity once, keep demo/code links in one action row, and place Spatial and clone tools in the accessible More menu. Keep every action at least `44px` tall.
-
-### 2. Code Blocks (`.article-code-wrap`, `.article-code-block`)
-
-- **Container**: Solid black terminal `#000000` (Light Mode) / `#000000` (Dark Mode) with 1px border `#2c2c2e`.
-- **Header Bar (`.article-code-header`)**: `#000000` (both themes) with uppercase monospace language tag `#a1a1a6` and solid Apple Blue `#0071e3` copy button.
-- **Code Content (`pre`, `code`)**: Always transparent background with crisp, high-contrast `#f5f5f7 !important; -webkit-text-fill-color: #f5f5f7 !important; font-family: SFMono-Regular, Consolas, Menlo, monospace; font-size: 0.88rem; line-height: 1.65;`.
-- **Strict Theme Guard**: Global light mode rules (`html:not(.dark)`) must NEVER force `pre` or `code` inside terminal containers to `background: #ffffff`.
-- **Inline Code (`.article-inline-code`)**:
-  - Light Mode: `background: var(--bg-primary); border: 1px solid #d1d1d6; color: var(--apple-blue-dark, #0051a8); font-weight: 600;`
-  - Dark Mode: `background: var(--bg-primary); border: 1px solid #3a3a3c; color: #ff9f0a;`
-
-### 3. Author Byline & Profile Avatar Standard
-
-- **Avatar Image**: Always use Mangesh Raut's personal portrait (`assets/images/profile.webp` / `assets/images/profile-mobile.webp`), NEVER generic icons (`profile-icon.webp`), placeholder logos, or abstract symbols.
-- **Byline Typography**: Author name in bold `#1d1d1f` (Dark: `#f5f5f7`), date & read-time metadata in `#6e6e73` (Dark: `#a1a1a6`).
-
-### 4. Blog & Longform Article Typography System
-
-- **Kicker (`.article-kicker`)**: Apple Blue `#0071e3` (`#2997ff` in dark), `0.8rem`, `750` weight, uppercase with `0.06em` tracking.
-- **Title (`.article-title`)**: Heavy Display `-apple-system, BlinkMacSystemFont, 'SF Pro Display'`, `clamp(1.85rem, 4.5vw, 2.75rem)`, `800` weight, `#1d1d1f` (Dark: `#f5f5f7`), line height `1.12`.
-- **Reader Promise (`.article-promise`)**: `#515154` (Dark: `#a1a1a6`), `1.05rem` – `1.18rem`, line height `1.55`.
-- **Body Text (`.article-body`, `.article-p`)**: SF Pro Text, `1.0625rem` (`17px`), line height `1.75`, color `#1d1d1f` (Dark: `#f5f5f7`).
-- **Section Headings (`h2`, `h3`)**: SF Pro Display, bold `700`, `#1d1d1f` (Dark: `#f5f5f7`), with subtle 1px border underline on `h2`.
-- **Callouts (`.article-callout`)**: Light tinted backgrounds (Tip: Green, Architecture: Purple, Info: Blue) with 1px border and high-contrast dark text `#1d1d1f` in light mode.
-- **Tables (`.article-table`)**: Clean Apple Developer table style with `#f2f2f7` headers (Dark: `#2c2c2e`), 1px borders, and hover row highlights.
-- **Reading path**: Homepage cards show a direct full-article action first and a clearly labeled short preview second. The preview contains a summary and takeaways; the complete text belongs on the standalone article page.
-- **Article navigation**: Standalone articles use a numbered contents rail on desktop and a collapsible contents control on mobile. Headings must have stable anchor IDs and enough scroll offset to remain visible below navigation chrome.
-- **Evidence visuals**: Every longform article has a lead image and a conceptual diagram. Use measured charts only with named units and sources; label ordered opinion as an editorial framework without fabricated percentage scores.
-- **Original media first**: Prefer relevant images and screenshots from the original publisher. Link the original source beside a visible credit, record provenance in `src/assets/data/blog-media-sources.json`, and preserve full image content on cards. Use conceptual artwork only after documenting the absence of suitable original media; distinguish its technical reference from an original-image source.
-- **Evidence navigation**: Show publication and editorial update dates separately. Give readers direct links to the dated evidence update and original sources near the article header; label vendor-reported results and conceptual visuals.
-- **Monthly archive**: The January–September 2026 edition contains two articles per month. When an article moves to another issue, label the issue date and retain its original publication date in the byline, structured metadata, and feeds. Event dates belong in the article and must not silently become publication dates.
-
-### About Section (`#about`)
-
-- **Layout**: One two-column block — graduation photo + a single information card. No extra chapter cards or highlight grids below.
-- **Hierarchy**: Section title `About` → lede → Full Story / Quick Summary segmented control inside the card.
-- **Full Story**: Five narrative paragraphs in the card, then compact milestone pills (not duplicate cards). Body `#3c3c43` / Dark `#d2d2d7`.
-- **Quick Summary**: The same facts as a 2-column bento inside the same card (1-column ≤700px). Do not repeat those tiles outside the tab.
-- **Visibility**: Active tab uses Apple Blue with white text; inactive tabs keep high-contrast labels in both themes.
-
----
-
-## 5. CSS Cascade & File Organization
-
-CSS files in `src/assets/css/` are layered systematically:
-
-1. **Foundation & Variables**: `variables.css`, `apple-design-system.css`, `base.css`
-2. **Page Styles**: `index.css`, `systems.css`, `monitor.css`, `travel-atlas.css`, `uses.css`, `changelog.css`, `404.css`, `blog.css`, `about.css`
-3. **Feature Modules**: `ai-assistant.css`, `share-widget.css`, `accessibility.css`
-4. **Design Overrides**: `apple-premium-overrides.css`, `premium-enhancements.css`, `theme-solid-surfaces.css`, `sitewide-design-system.css`
-
-**Cascade Guidelines**:
-
-- When adding or modifying styles, prefer using standard CSS custom properties (`var(--apple-blue)`, `var(--apple-bg)`, etc.).
-- Avoid redundant `!important` declarations except where overriding third-party resets or legacy rules.
-- Test across both Light Mode (`html:not(.dark)`) and Dark Mode (`html.dark`), as well as High-Contrast mode (`html.high-contrast`).
-
----
+# Portfolio design system
+
+Updated November 24, 2026. This replaces the former gradient, glow, metallic-shine,
+and heavy-display styling. The user-approved reference is the clean design-rules
+image supplied in this conversation. Apple-style clarity, system typography, and
+functional continuity remain the goal.
+
+## 1. Visual contract
+
+- No UI gradients, glow, decorative shine, floating ornaments, or bounce.
+- Use sentence case. Preserve proper nouns, acronyms, source titles, and code.
+- Use regular (400) and medium (500) text. Semantic emphasis still uses `strong`.
+  Icon-font weights are glyph requirements and are not text styling.
+- Remove redundant eyebrow labels. Necessary chart titles and status information
+  remain readable, unembellished text.
+- No decorative pills or icons inside decorative rounded boxes. Functional tabs,
+  buttons, toggles, avatars, and status information remain available.
+- Flatten nested cards into rows or groups. Retain a container only when it clarifies
+  a distinct task or interactive item.
+- Shadows belong only to floating surfaces such as dialogs, menus, tooltips, and
+  navigation overlays. Static cards, images, and action buttons do not cast shadows.
+- Preserve original media, QR pixels and white margins, chart meanings, real data,
+  accessible names, keyboard behavior, and all existing actions.
+
+## 1.1 Motion
+
+Use `--ui-motion-fast` (180ms) for interactions and `--ui-motion-enter` (240ms) for
+entry. Use ease-out, no bounce or spring overshoot. Decorative loops are retired.
+Loading indicators may repeat while loading. Respect `prefers-reduced-motion`.
+
+## 1.2 Spacing and shape
+
+Use the existing 8pt spacing rhythm. Preserve established responsive layouts and
+safe-area padding. Keep 44px effective touch targets. Use 12px button corners and
+restrained 18px outer card corners where grouping helps; nested groups use spacing
+and separators instead of additional cards. Icon-only functional controls may be
+circular, with an accessible label and visible keyboard focus.
+
+## 2. Semantic tokens and typography
+
+`src/assets/css/foundation.css` owns the presentation contract and its semantic
+`--ui-*` tokens: surface, muted surface, text, secondary text, accent, on-accent,
+border, weights, motion, and floating shadow. Literal colors belong in token
+definitions; components consume semantic variables. Existing system/status and
+brand tokens retain their meaning. Light surfaces are white and dark surfaces black.
+
+Keep the existing SF Pro/system font stack and fluid sizes. Establish hierarchy
+through size, spacing, and medium weight, not bold text. Body text must retain
+4.5:1 contrast; large text and meaningful controls must retain 3:1. Links and focus
+rings use the accessible theme accent. Never lowercase names, acronyms, or code
+with a global text-transform.
+
+## 3. Controls
+
+Primary actions use a flat accent fill and contrasting text. Secondary actions use
+a plain surface or outline. Filters and tabs express selection through fill,
+underline, text, and ARIA state. Preserve disclosures, icon-only control labels,
+focus entry/restoration, Escape handling, and form error messaging.
+
+## 4. Content surfaces
+
+Use the original portrait and credited publisher/project images. Keep article
+reading width, contents navigation, source links, dates, tables, code copy actions,
+and image provenance. Preserve terminal code contrast and syntax semantics.
+Flatten decorative metadata containers without hiding useful information.
+
+## 5. Ownership and cascade
+
+Load `foundation.css` first on every rendered page, including generated journal
+and case-study pages. Its first named cascade layer protects global invariants
+from deferred legacy styles, including legacy important declarations. Component
+styles own layout and state; retired gradients, glow, heavy weights, and static
+shadows are removed at their source. Do not append competing style patches.
+
+Coding agent: GPT-6 / Codex. Purpose: apply the user-approved clean portfolio design
+while preserving behavior. Exact model variant, reasoning mode, and token usage:
+unavailable.
 
 ## 6. Mobile Responsiveness & Viewport Standards (iPhone 17 Pro Max & Apple HIG)
 
@@ -334,14 +100,11 @@ Keep Accessibility, Share, Chat, and Back to Top in a bottom row at widths up to
 - **Location**: Rendered dynamically below the Events & Reminders heading in `src/js/modules/calendar.js`.
 - **Aesthetic**: Compact year and remaining-day labels with a native progress bar, Apple blue fill, and coordinated light/dark text. Progress uses elapsed calendar days and accounts for leap years.
 
-### In-Built Tree/ICQR Aesthetic Share Card Experience (`#website-share-dialog`)
+### Share dialog
 
-- **Location**: Standalone share modal in `src/js/modules/share-widget.js` and `src/assets/css/share-widget.css`.
-- **Aesthetic**:
-  - **Generative Botanical Tree Canvas**: Organic procedural branch paths curving harmoniously around the QR code matrix with breathing luminescent nodes and synaptic light pulses.
-  - **Bioluminescent Particle Spores**: Lightweight, 60fps upward drifting spores that automatically pause on modal close to preserve 100% CPU and battery.
-  - **3D Apple Parallax Glass Tilt**: Interactive gyroscope/mouse perspective tilt with specular highlight gloss overlay.
-  - **Cyber/Apple Viewfinder Brackets & Laser Scanner**: Precision corner reticles and oscillating laser sweep line.
+Keep the QR code, copy/download actions, and platform choices clearly labeled.
+Use a flat surface with a floating-dialog shadow; no decorative scanner, glow,
+particle effects, or tilt. Preserve keyboard dismissal and focus restoration.
 
 ### Navigation and deferred map controls
 
@@ -366,19 +129,19 @@ section in this specification.
 
 ### Pre-commit visual checks
 
-- [ ] **Typography**: Font stack, size, weight, and tracking match §2 Metric Matrix
+- [ ] **Typography**: System font stack, fluid sizes, and regular/medium weights match §2
 - [ ] **Color tokens**: All colors reference CSS custom properties, not hardcoded hex
 - [ ] **Theme parity**: Component renders correctly in light, dark, and high-contrast
-- [ ] **Button tier**: Component uses the correct tier (1–6) from §3
+- [ ] **Button tier**: Primary, secondary, and selected controls follow §3
 - [ ] **Card surfaces**: Solid white/black through `--bg-primary`, no gray fills
-- [ ] **Border radius**: Matches §1.2 scale (18px cards, 12px buttons, 9999px pills)
+- [ ] **Border radius**: Matches §1.2 scale (18px cards, 12px buttons, functional segmented controls)
 - [ ] **Spacing**: Paddings and margins align to 8pt grid (§1.2)
 - [ ] **Motion**: Transitions use documented curves and durations (§1.1)
 - [ ] **Reduce-motion**: `prefers-reduced-motion` override present for all animations
 - [ ] **Contrast**: WCAG AA ratios verified (≥4.5:1 body, ≥3.0:1 large text)
 - [ ] **Touch targets**: All interactive elements ≥ 44×44px effective area
 - [ ] **Zero overflow**: `scrollWidth ≤ innerWidth` at 375px, 768px, and 1440px
-- [ ] **Close buttons**: 32×32px circular red `#ff3b30` per Tier 6
+- [ ] **Close buttons**: Existing visible close control inside a 44px hit area
 
 ### Hero music card
 
@@ -484,7 +247,7 @@ Persistent availability uses 90 daily bars with UTC details, sampled uptime, and
 
 ### Work showcase data and interaction
 
-The Projects & contributions surface uses the existing centered Apple Blue section header, then a restrained editorial milestone with verified external merged PRs, three source-linked contribution stories, and a searchable merge ledger. Projects, Hackathons, and Bug Bounties are mutually exclusive streams within the existing Projects destination. Original-project discovery excludes forks and profile infrastructure; hackathon context links to repository evidence and does not imply an award or accepted submission. The Bug Bounties stream distinguishes verified public disclosures from ordinary security fixes and makes no unverified payout claim. The wider GitHub statistics and contribution graph follow the curated work; unknown activity starts as an em dash rather than a fabricated number.
+The Projects & contributions surface uses the existing centered medium-weight section header, then a restrained editorial milestone with verified external merged PRs, three source-linked contribution stories, and a searchable merge ledger. Projects, Hackathons, and Bug Bounties are mutually exclusive streams within the existing Projects destination. Original-project discovery excludes forks and profile infrastructure; hackathon context links to repository evidence and does not imply an award or accepted submission. The Bug Bounties stream distinguishes verified public disclosures from ordinary security fixes and makes no unverified payout claim. The wider GitHub statistics and contribution graph follow the curated work; unknown activity starts as an em dash rather than a fabricated number.
 
 Public work snapshots refresh through the gated Pages pipeline every six hours. New original repositories tagged `hackathon`, `hackathons`, or `portfolio-hackathon` enter Hackathons; untagged, uncurated builds enter Projects. Stable repository IDs and normalized PR identities prevent duplicate cards and ledger rows.
 

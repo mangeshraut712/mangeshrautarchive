@@ -178,7 +178,7 @@ export function renderTelemetryBento(snapshot) {
         <p class="systems-tile-caption">Average connection latency</p>
       </div>
       <p class="systems-tile-foot" id="telemetry-tile-synced">Syncing telemetry…</p>
-      <a class="systems-tile-link" href="monitor.html" style="margin-top:0.4rem;display:inline-block;">Open System Monitor →</a>
+      <a class="systems-tile-link" href="monitor.html" style="margin-top:0.4rem;display:inline-block;">Open System monitor →</a>
     </article>
   `;
 }

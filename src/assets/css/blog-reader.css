@@ -16,7 +16,7 @@ body.blog-standalone-page .blog-article--editorial .article-header {
 
 body.blog-standalone-page .blog-article--editorial .article-title {
   font-size: clamp(2rem, 4.4vw, 3.25rem) !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   line-height: 1.1 !important;
   letter-spacing: -0.035em;
   text-wrap: balance;
@@ -204,7 +204,7 @@ body.blog-standalone-page .blog-reader-button:hover {
   gap: 8px;
   min-width: 0;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary);
 }
 

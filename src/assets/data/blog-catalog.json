@@ -25,7 +25,7 @@
     "title": "Grok 4.5 and Grok Build Field Notes: Model + Open Harness",
     "date": "2026-07-15",
     "summary": "A builder read on Grok 4.5 as a coding-first frontier model and the open-sourced Grok Build harness: what matters for agent loops, what to verify, and how I would adopt both without rewriting my stack.",
-    "tags": ["Grok 4.5", "Grok Build", "xAI", "Coding Agents", "Open Source"]
+    "tags": ["Grok 4.5", "Grok Build", "xAI", "Coding Agents", "Open source"]
   },
   {
     "id": "google-io-2026-developer-insights",
@@ -53,7 +53,7 @@
     "title": "OpenClaw Field Notes: Local Agents, Messaging Gateways, and Permission Reality",
     "date": "2026-01-25",
     "summary": "A skeptical builder’s read of OpenClaw-style open-source assistants: local gateways, chat channels, skills/plugins, and why transparency without scopes is still distributed risk.",
-    "tags": ["OpenClaw", "Open Source", "AI Agents", "Decentralization"]
+    "tags": ["OpenClaw", "Open source", "AI Agents", "Decentralization"]
   },
   {
     "id": "wispr-flow-dictation-2026",

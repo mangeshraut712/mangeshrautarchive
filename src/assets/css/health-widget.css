@@ -10,18 +10,8 @@
   --health-bg-filter: grayscale(85%) brightness(0.96) contrast(0.9) opacity(0.12);
   --health-overlay-bg: #ffffff;
   --health-status-accent: #0071e3;
-  --health-divider: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.03),
-    rgba(0, 0, 0, 0.12),
-    rgba(0, 0, 0, 0.03)
-  );
-  --health-divider-mobile: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.03),
-    rgba(0, 0, 0, 0.12),
-    rgba(0, 0, 0, 0.03)
-  );
+  --health-divider: var(--ui-surface);
+  --health-divider-mobile: var(--ui-surface);
   --health-row-border: rgba(0, 0, 0, 0.06);
   --health-footer-bg: rgba(0, 0, 0, 0.02);
   --health-footer-border: rgba(0, 0, 0, 0.06);
@@ -43,7 +33,7 @@
   background: var(--health-overlay-bg);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: var(--health-shadow);
+  box-shadow: none;
   border: 1px solid var(--health-border);
   transition:
     border-color 0.3s ease,
@@ -75,18 +65,8 @@ html.dark .health-widget-container {
   --health-overlay-bg: #000000;
   background: #000000 !important;
   background-color: #000000 !important;
-  --health-divider: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.15),
-    rgba(255, 255, 255, 0.03)
-  );
-  --health-divider-mobile: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0.15),
-    rgba(255, 255, 255, 0.03)
-  );
+  --health-divider: var(--ui-surface);
+  --health-divider-mobile: var(--ui-surface);
   --health-row-border: rgba(255, 255, 255, 0.05);
   --health-footer-bg: rgba(0, 0, 0, 0.2);
   --health-footer-border: rgba(255, 255, 255, 0.05);
@@ -116,11 +96,11 @@ html.dark .health-widget-container {
 
 .health-brand {
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.15em;
   color: var(--health-text-dim);
   margin-bottom: 0.85rem;
-  text-transform: uppercase;
+  text-transform: none;
   display: flex;
   align-items: center;
   gap: 0.35rem;
@@ -159,7 +139,7 @@ html.dark .health-widget-container {
 }
 
 .whoop-metric.highlight {
-  animation: pulseHighlight 0.8s ease;
+  animation: none;
 }
 
 .whoop-metric .metric-icon {
@@ -168,7 +148,7 @@ html.dark .health-widget-container {
   align-items: center;
   justify-content: center;
   height: 32px;
-  filter: drop-shadow(0 2px 6px var(--health-icon-shadow));
+  filter: none;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -178,7 +158,7 @@ html.dark .health-widget-container {
 
 .whoop-metric .metric-value {
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--health-text);
@@ -187,8 +167,8 @@ html.dark .health-widget-container {
 .whoop-metric .metric-label {
   font-size: 0.625rem;
   color: var(--health-text-label);
-  font-weight: 600;
-  text-transform: uppercase;
+  font-weight: var(--ui-weight-medium);
+  text-transform: none;
   letter-spacing: 0.05em;
 }
 
@@ -210,7 +190,7 @@ html.dark .health-widget-container {
   justify-content: space-between;
   align-items: center;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   padding: 0.15rem 0;
   border-bottom: 1px solid var(--health-row-border);
   transition: background-color 0.3s ease;
@@ -249,7 +229,7 @@ html.dark .health-widget-container {
 }
 
 .withings-metric-value {
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   font-size: 1.15rem;
   color: var(--health-text);
   display: flex;
@@ -259,7 +239,7 @@ html.dark .health-widget-container {
 
 .withings-metric-value .unit {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   color: var(--health-text-label);
   margin-left: 1px;
 }
@@ -280,9 +260,9 @@ html.dark .health-widget-container {
 .health-widget-live-label {
   color: var(--health-status-accent, var(--health-footer-text));
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+  text-transform: none;
   white-space: nowrap;
 }
 

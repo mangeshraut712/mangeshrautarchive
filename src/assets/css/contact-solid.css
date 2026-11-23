@@ -247,16 +247,14 @@ html:not(.dark) body #contact :is(.apple-submit-btn, .contact-assistme-btn, #con
   position: relative !important;
   overflow: hidden !important;
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   border-radius: 12px !important;
   min-height: 46px !important;
-  font-weight: 650 !important;
-  box-shadow:
-    0 4px 16px rgba(0, 113, 227, 0.38),
-    0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  font-weight: var(--ui-weight-medium) !important;
+  box-shadow: none !important;
   cursor: pointer !important;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
@@ -277,28 +275,22 @@ html.dark
     #contact-chatbot-cta
   ) {
   background-color: #0a84ff !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow:
-    0 4px 18px rgba(0, 113, 227, 0.45),
-    0 2px 4px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
 }
 
 html body #contact :is(.apple-submit-btn, .contact-assistme-btn, #contact-chatbot-cta):hover {
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   transform: translateY(-2px) scale(1.01) !important;
-  box-shadow:
-    0 8px 24px rgba(0, 113, 227, 0.48),
-    0 3px 8px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: none !important;
 }
 
 html.dark body #contact :is(.apple-submit-btn, .contact-assistme-btn, #contact-chatbot-cta):hover {
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
-  box-shadow:
-    0 8px 26px rgba(10, 132, 255, 0.55),
-    0 3px 8px rgba(0, 0, 0, 0.5) !important;
+  background-image: none !important;
+  box-shadow: none !important;
 }
 
 /* Secondary CTA — Luxury Outlined Pill with Vibrant Apple Blue Accent */
@@ -313,10 +305,8 @@ html[data-theme='light'] body #contact .calendly-panel-button {
   border-radius: 980px !important;
   min-height: 48px !important;
   font-size: 0.94rem !important;
-  font-weight: 600 !important;
-  box-shadow:
-    0 2px 8px rgba(0, 113, 227, 0.08),
-    0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  font-weight: var(--ui-weight-medium) !important;
+  box-shadow: none !important;
   cursor: pointer !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -334,12 +324,12 @@ html:not(.dark) body #contact .calendly-panel-button * {
 html:not(.dark) body #contact .calendly-panel-button:hover,
 html[data-theme='light'] body #contact .calendly-panel-button:hover {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   transform: translateY(-2px) scale(1.01) !important;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.4) !important;
+  box-shadow: none !important;
 }
 
 html:not(.dark) body #contact .calendly-panel-button:hover * {
@@ -358,8 +348,8 @@ html[data-theme='dark'] body #contact .calendly-panel-button {
   border-radius: 980px !important;
   min-height: 48px !important;
   font-size: 0.94rem !important;
-  font-weight: 600 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+  font-weight: var(--ui-weight-medium) !important;
+  box-shadow: none !important;
   cursor: pointer !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -377,12 +367,12 @@ html.dark body #contact .calendly-panel-button * {
 html.dark body #contact .calendly-panel-button:hover,
 html[data-theme='dark'] body #contact .calendly-panel-button:hover {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   transform: translateY(-2px) scale(1.01) !important;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.55) !important;
+  box-shadow: none !important;
 }
 
 html.dark body #contact .calendly-panel-button:hover * {
@@ -406,7 +396,7 @@ html body #contact .reminders-header {
 
 html body #contact .reminders-title {
   font-size: 1rem !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   margin: 0 !important;
   display: inline-flex !important;
@@ -449,12 +439,12 @@ html body #contact .reminders-header-actions .ios-btn-small {
   padding: 0 14px !important;
   border-radius: 9999px !important;
   font-size: 0.8rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;
+  box-shadow: none !important;
   cursor: pointer !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
@@ -465,9 +455,9 @@ html body #contact .reminders-header-actions .ios-btn-small * {
 }
 
 html body #contact .reminders-header-actions .ios-btn-small:hover {
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   transform: translateY(-1px) scale(1.04) !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.45) !important;
+  box-shadow: none !important;
 }
 
 html body #contact .reminders-header-actions .ios-btn-small:active {
@@ -490,7 +480,7 @@ html body #contact .filter-tab {
   min-height: 28px !important;
   border-radius: 9999px !important;
   font-size: 0.74rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   padding: 4px 11px !important;
   cursor: pointer !important;
   white-space: nowrap !important;
@@ -503,7 +493,7 @@ html body #contact .filter-tab {
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
@@ -530,7 +520,7 @@ html.dark body #contact .filter-tab {
   border: 1px solid #2c2c2e !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
 }
 
 html.dark body #contact .filter-tab:hover {
@@ -543,11 +533,11 @@ html.dark body #contact .filter-tab:hover {
 
 html body #contact .filter-tab.active,
 html.dark body #contact .filter-tab.active {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.38) !important;
+  box-shadow: none !important;
 }
 
 html body #contact .filter-tab.active i,
@@ -606,7 +596,7 @@ html body #contact .day-inspector-banner {
   padding: 6px 12px !important;
   border-radius: 10px !important;
   font-size: 0.76rem !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   background: rgba(0, 113, 227, 0.05) !important;
   border: 1px solid rgba(0, 113, 227, 0.15) !important;
   color: #0071e3 !important;
@@ -652,7 +642,7 @@ html body #contact .day-inspector-ai-brief {
   border: 1px solid rgba(0, 113, 227, 0.2) !important;
   border-radius: 980px !important;
   font-size: 0.7rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   padding: 2px 8px !important;
   cursor: pointer !important;
   color: #0071e3 !important;
@@ -688,7 +678,7 @@ html body #contact .day-inspector-clear {
   color: #6e6e73 !important;
   -webkit-text-fill-color: #6e6e73 !important;
   font-size: 0.7rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   padding: 2px 8px !important;
   border-radius: 9999px !important;
   transition: all 0.15s ease !important;
@@ -776,7 +766,7 @@ html
   :is(.support-stripe-btn.premium, .support-paypal-btn.premium, .support-coffee-btn.premium) {
   border-radius: 980px !important;
   min-height: 44px !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 /* ── Typography ── */
@@ -840,7 +830,7 @@ html body #contact .reminder-card {
   border-radius: 14px !important;
   background: #ffffff !important;
   border: 1px solid #e5e5ea !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   min-height: 64px !important;
   height: auto !important;
   flex-shrink: 0 !important;
@@ -853,20 +843,20 @@ html body #contact .reminder-card {
 html.dark body #contact .reminder-card {
   background: #000000 !important;
   border: 1px solid #2c2c2e !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
   color: #f5f5f7 !important;
 }
 
 html body #contact .reminder-card:hover {
   transform: translateY(-1px) !important;
   border-color: rgba(0, 113, 227, 0.35) !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.12) !important;
+  box-shadow: none !important;
 }
 
 html.dark body #contact .reminder-card:hover {
   background: #000000 !important;
   border-color: rgba(10, 132, 255, 0.45) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: none !important;
 }
 
 html body #contact .card-content {
@@ -897,9 +887,9 @@ html body #contact .card-time {
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   font-size: 0.72rem !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: #4a4a4f !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   letter-spacing: 0.03em !important;
 }
 
@@ -922,7 +912,7 @@ html body #contact .card-tag {
   align-items: center !important;
   gap: 3px !important;
   font-size: 0.68rem !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
   padding: 2px 7px !important;
   border-radius: 980px !important;
   white-space: nowrap !important;
@@ -1106,7 +1096,7 @@ html.dark body #contact .tag-luma-status--attended {
 
 html body #contact .card-title {
   font-size: 0.94rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   line-height: 1.35 !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
@@ -1189,7 +1179,7 @@ html body #contact .card-action-btn {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   padding: 0 !important;
   flex-shrink: 0 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
 }
 
 html body #contact .card-action-btn:hover {
@@ -1205,7 +1195,7 @@ html.dark body #contact .card-action-btn {
   border-color: #2c2c2e !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
 }
 
 html.dark body #contact .card-action-btn:hover {
@@ -1227,7 +1217,7 @@ html body #contact .luma-btn:hover {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border-color: #eb3634 !important;
-  box-shadow: 0 2px 10px rgba(235, 54, 52, 0.35) !important;
+  box-shadow: none !important;
 }
 
 html.dark body #contact .luma-btn {
@@ -1255,7 +1245,7 @@ html body #contact .ask-ai-btn:hover {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border-color: #0071e3 !important;
-  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.35) !important;
+  box-shadow: none !important;
 }
 
 html.dark body #contact .ask-ai-btn {
@@ -1429,11 +1419,11 @@ html body #contact .reminder-card.completed .status-circle {
     flex-shrink: 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: none !important;
   }
 
   html.dark body #contact .reminder-card {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+    box-shadow: none !important;
   }
 
   html body #contact .card-content {
@@ -1456,7 +1446,7 @@ html body #contact .reminder-card.completed .status-circle {
 
   html body #contact .card-time {
     font-size: 0.72rem !important;
-    font-weight: 700 !important;
+    font-weight: var(--ui-weight-medium) !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
   }
@@ -1471,7 +1461,7 @@ html body #contact .reminder-card.completed .status-circle {
   html body #contact .card-title {
     font-size: 0.92rem !important;
     line-height: 1.38 !important;
-    font-weight: 600 !important;
+    font-weight: var(--ui-weight-medium) !important;
     white-space: normal !important;
     word-break: break-word !important;
     overflow: hidden !important;
@@ -1599,11 +1589,7 @@ html[data-lg-mode='tinted']:not(.dark)
     div.reminder-card,
     div.health-widget-container
   ) {
-  box-shadow:
-    0 1px 0 rgb(255 255 255 / 70%) inset,
-    0 1px 2px rgb(0 0 0 / 4%),
-    0 8px 24px rgb(0 0 0 / 6%),
-    0 20px 48px rgb(15 23 42 / 4%) !important;
+  box-shadow: none !important;
   border-radius: 22px !important;
 }
 
@@ -1619,10 +1605,7 @@ html.dark[data-lg-mode='tinted']
     div.reminder-card,
     div.health-widget-container
   ) {
-  box-shadow:
-    0 1px 0 rgb(255 255 255 / 6%) inset,
-    0 1px 0 rgb(0 0 0 / 40%),
-    0 12px 40px rgb(0 0 0 / 55%) !important;
+  box-shadow: none !important;
   border-radius: 22px !important;
 }
 
@@ -1648,11 +1631,7 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
   ) {
   backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate, 180%)) blur(var(--lg-blur-card, 40px)) !important;
-  background-image: linear-gradient(
-    165deg,
-    rgb(255 255 255 / var(--lg-card-highlight-light, 70%)) 0%,
-    rgb(255 255 255 / 0%) 42%
-  ) !important;
+  background-image: none !important;
 }
 
 html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
@@ -1669,17 +1648,9 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
     div.contact-form-card,
     div.health-widget-container
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-light, 70%)) 0%,
-      rgb(255 255 255 / 0%) 42%
-    ),
-    rgb(255 255 255 / var(--lg-card-light-alpha, 48%)) !important;
+  background: var(--ui-surface) !important;
   border-color: rgb(255 255 255 / var(--lg-border-light, 40%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light, 70%)),
-    0 8px 32px rgb(0 0 0 / var(--lg-card-shadow-light, 12%)) !important;
+  box-shadow: none !important;
   color: #1d1d1f !important;
 }
 
@@ -1697,17 +1668,9 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     div.contact-form-card,
     div.health-widget-container
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-dark, 12%)) 0%,
-      rgb(255 255 255 / 0%) 40%
-    ),
-    rgb(0 0 0 / var(--lg-card-dark-alpha, 52%)) !important;
+  background: var(--ui-surface) !important;
   border-color: rgb(255 255 255 / var(--lg-border-dark, 14%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark, 12%)),
-    0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark, 45%)) !important;
+  box-shadow: none !important;
   color: #f5f5f7 !important;
 }
 
@@ -1761,11 +1724,7 @@ html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .reminder-c
 html[data-lg-mode='balanced']:not(.dark) body #main-content #contact .health-widget-container {
   background: rgb(255 255 255 / var(--lg-card-light-alpha, 82%)) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 82%)) !important;
-  background-image: linear-gradient(
-    165deg,
-    rgb(255 255 255 / var(--lg-card-highlight-light, 55%)) 0%,
-    rgb(255 255 255 / 0%) 45%
-  ) !important;
+  background-image: none !important;
   border: 1px solid #d2d2d7 !important;
   border-color: #d2d2d7 !important;
 }
@@ -1941,19 +1900,19 @@ html body #contact .calendly-panel-button {
   gap: 0.35rem;
   padding: 6px 12px;
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   border-radius: 980px;
-  background: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%);
+  background: var(--ui-accent);
   color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
+  box-shadow: none;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ios-btn-smart:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.5);
+  box-shadow: none;
 }
 
 .ios-btn-smart i {
@@ -1961,8 +1920,8 @@ html body #contact .calendly-panel-button {
 }
 
 html.dark .ios-btn-smart {
-  background: linear-gradient(135deg, #0a84ff 0%, #0071e3 50%, #005bb5 100%);
-  box-shadow: 0 2px 10px rgba(10, 132, 255, 0.45);
+  background: var(--ui-accent);
+  box-shadow: none;
 }
 
 /* ── Calendar Instant Search Bar ── */
@@ -2075,7 +2034,7 @@ html.dark .day-inspector-banner {
   align-items: center;
   gap: 0.3rem;
   font-size: 0.76rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   padding: 4px 10px;
   border-radius: 980px;
   background: rgba(0, 113, 227, 0.12);
@@ -2146,9 +2105,9 @@ html.dark .ai-daily-brief-hud {
   align-items: center;
   gap: 0.4rem;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: #0071e3;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.04em;
 }
 
@@ -2167,7 +2126,7 @@ html.dark .ai-brief-title {
   align-items: center;
   gap: 0.3rem;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   padding: 3px 8px;
   border-radius: 980px;
   border: 1px solid rgba(0, 113, 227, 0.3);
@@ -2221,7 +2180,7 @@ html.dark .ai-brief-discuss-btn {
   align-items: center;
   gap: 0.3rem;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   padding: 2px 8px;
   border-radius: 980px;
   background: rgba(0, 0, 0, 0.05);
@@ -2281,9 +2240,7 @@ html.dark .brief-stat-chip {
   border: 1px solid #e5e5ea !important;
   border-radius: 20px;
   padding: 1.5rem;
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.2),
-    0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--ui-shadow-floating);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -2305,9 +2262,7 @@ html.dark .brief-stat-chip {
 html.dark .smart-reminder-modal-card {
   background: #000000 !important;
   border-color: #2c2c2e !important;
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.65),
-    0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--ui-shadow-floating);
 }
 
 .smart-modal-header {
@@ -2321,7 +2276,7 @@ html.dark .smart-reminder-modal-card {
   align-items: center;
   gap: 0.5rem;
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--contact-solid-fg);
 }
 
@@ -2415,7 +2370,7 @@ html.dark .smart-modal-textarea:focus {
   align-items: center;
   gap: 0.3rem;
   font-size: 0.74rem;
-  font-weight: 550;
+  font-weight: var(--ui-weight-medium);
   padding: 4px 10px;
   border-radius: 980px;
   border: 1px solid #e5e5ea !important;
@@ -2459,8 +2414,8 @@ html.dark .smart-modal-preview-box {
 
 .smart-preview-label {
   font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: var(--ui-weight-medium);
+  text-transform: none;
   color: #0071e3;
   letter-spacing: 0.04em;
   display: flex;
@@ -2474,7 +2429,7 @@ html.dark .smart-preview-label {
 
 .smart-preview-title {
   font-size: 0.94rem;
-  font-weight: 650;
+  font-weight: var(--ui-weight-medium);
   color: var(--contact-solid-fg);
 }
 
@@ -2487,7 +2442,7 @@ html.dark .smart-preview-label {
 
 .preview-badge {
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   padding: 2px 8px;
   border-radius: 980px;
   background: rgba(0, 0, 0, 0.06);
@@ -2528,7 +2483,7 @@ html.dark .preview-badge {
   align-items: center;
   gap: 0.4rem;
   font-size: 0.76rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   padding: 6px 10px;
   border-radius: 8px;
 }
@@ -2556,7 +2511,7 @@ html.dark .preview-badge {
 .smart-modal-btn {
   padding: 8px 16px;
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   border-radius: 980px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2585,17 +2540,17 @@ html.dark .smart-modal-btn.btn-cancel:hover {
 }
 
 .smart-modal-btn.btn-save {
-  background: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%);
+  background: var(--ui-accent);
   color: #ffffff;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+  box-shadow: var(--ui-shadow-floating);
 }
 
 .smart-modal-btn.btn-save:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0, 113, 227, 0.45);
+  box-shadow: var(--ui-shadow-floating);
 }
 
 #calendar-widget .calendar-sync-status {

@@ -1,7 +1,7 @@
 /**
  * Architecture Tree & System Flow Visualizer — Apple Keynote-Grade Interactive Graph
  * Visualizes the agentic full-stack topology: Client -> Edge -> FastAPI -> Models + WebMCP Tools.
- * Pure Vanilla ESM + SVG (Zero external dependencies).
+ * Vanilla ESM + SVG (Zero external dependencies).
  */
 
 export class ArchitectureTree {

@@ -91,7 +91,7 @@ const FOLLOWUP_CHIPS = {
   agents: ['What can you do?', 'Schedule meeting', 'Download resume'],
   changelog: ['Latest releases?', 'Recent updates?', 'Git commit history?'],
   systems: ['Architecture diagrams?', 'Lighthouse score?', 'Quality gates?'],
-  travel: ['Cities visited?', 'USA state count?', 'Travel Atlas?'],
+  travel: ['Cities visited?', 'USA state count?', 'Travel atlas?'],
   uses: ['Hardware setup?', 'Dev stack?', 'AI tools used?'],
   monitor: ['API latency?', 'Health status?', 'System telemetry?'],
   code: ['FastAPI backend?', 'Vitest suite?', 'WebMCP tools?'],
@@ -207,7 +207,7 @@ const SECTION_CONTEXT_PROMPTS = {
 // Chip metadata keyed by agenticActions action names (post-execution)
 const AGENTIC_CHIP_BY_ACTION = {
   navigate: { icon: '🧭', label: 'Navigate' },
-  download_resume: { icon: '📥', label: 'Download Resume' },
+  download_resume: { icon: '📥', label: 'Download resume' },
   schedule_meeting: { icon: '📅', label: 'Schedule Meeting' },
   copy_contact: { icon: '📋', label: 'Copy Contact' },
   open_social: { icon: '🔗', label: 'Open Link' },
@@ -217,7 +217,7 @@ const AGENTIC_CHIP_BY_ACTION = {
   open_privacy: { icon: '🛡️', label: 'Privacy Dashboard' },
   open_blog_article: { icon: '📖', label: 'Read Article' },
   now_playing: { icon: '🎵', label: 'Now Playing' },
-  travel_stats: { icon: '✈️', label: 'Travel Atlas' },
+  travel_stats: { icon: '✈️', label: 'Travel atlas' },
   system_status: { icon: '🟢', label: 'System Status' },
   support_my_work: { icon: '💖', label: 'Support Work' },
   add_calendar_reminder: { icon: '⏰', label: 'Add Reminder' },
@@ -233,7 +233,7 @@ const AGENTIC_PATTERNS = [
     pattern: /\b(download|get)\s+(my\s+)?(resume|cv)\b/i,
     action: 'download_resume',
     icon: '📥',
-    label: 'Download Resume',
+    label: 'Download resume',
   },
   {
     pattern:

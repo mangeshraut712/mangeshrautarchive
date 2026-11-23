@@ -11,7 +11,7 @@ const ROLE_WORDS = [
   'Research-Driven Problem Solver',
   'Systems & Full-Stack Engineer',
   'Product Thinker',
-  'Open Source Creator',
+  'Open source Creator',
 ];
 const IST_TIME_ZONE = 'Asia/Kolkata';
 const EASTERN_TIME_ZONE = 'America/New_York';

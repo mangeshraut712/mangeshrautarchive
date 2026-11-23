@@ -67,7 +67,7 @@ html.dark .debug-runner-disclosure {
   padding: 0.9rem 1.25rem;
   box-sizing: border-box;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   font-size: 0.95rem;
   line-height: 1.3;
   color: #0071e3;
@@ -143,13 +143,13 @@ html.dark .debug-ascent-header {
   width: 36px;
   height: 36px;
   border-radius: 11px;
-  background: linear-gradient(135deg, #0071e3 0%, #0a84ff 100%);
+  background: var(--ui-surface);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   font-size: 0.95rem;
-  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.25);
+  box-shadow: none;
   flex-shrink: 0;
 }
 
@@ -161,8 +161,8 @@ html.dark .debug-ascent-header {
 
 .debug-ascent-series {
   font-size: 0.64rem;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-weight: var(--ui-weight-medium);
+  text-transform: none;
   letter-spacing: 0.04em;
   color: #0071e3;
 }
@@ -173,7 +173,7 @@ html.dark .debug-ascent-series {
 
 .debug-ascent-title {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary, #1d1d1f);
   letter-spacing: -0.015em;
   display: flex;
@@ -187,7 +187,7 @@ html.dark .debug-ascent-title {
 
 .debug-ascent-version-pill {
   font-size: 0.64rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   padding: 0.12rem 0.45rem;
   border-radius: 9999px;
   background: rgba(0, 113, 227, 0.1);
@@ -223,7 +223,7 @@ html.dark .apple-segmented-pill {
   border: none;
   background: transparent;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-secondary, #6e6e73);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -250,19 +250,19 @@ html.dark .apple-segmented-btn:hover {
 .apple-segmented-btn.active[data-mode='normal'] {
   background: #0071e3;
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
+  box-shadow: none;
 }
 
 .apple-segmented-btn.active[data-mode='hard'] {
   background: #ff9500;
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.35);
+  box-shadow: none;
 }
 
 .apple-segmented-btn.active[data-mode='nightmare'] {
   background: #ff3b30;
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(255, 59, 48, 0.35);
+  box-shadow: none;
 }
 
 /* Specular Metallic Shine Animation for Jump */
@@ -278,9 +278,9 @@ html.dark .apple-segmented-btn:hover {
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  background: none;
   transform: skewX(-20deg);
-  animation: specularShine 5s infinite;
+  animation: none;
 }
 
 @keyframes specularShine {
@@ -462,8 +462,8 @@ html.dark .game-stat-item {
   align-items: center;
   gap: 0.2rem;
   font-size: 0.62rem;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: var(--ui-weight-medium);
+  text-transform: none;
   letter-spacing: 0.04em;
   color: var(--text-secondary, #6e6e73);
   line-height: 1;
@@ -480,7 +480,7 @@ html.dark .game-stat-tag {
 
 .game-stat-num {
   font-size: 1.05rem;
-  font-weight: 800;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary, #1d1d1f);
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -515,8 +515,8 @@ html.dark .game-leaderboard-header {
 
 .game-leaderboard-header .game-stat-title {
   font-size: 0.64rem;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: var(--ui-weight-medium);
+  text-transform: none;
   letter-spacing: 0.05em;
   color: var(--text-secondary, #6e6e73);
   line-height: 1.2;
@@ -583,7 +583,7 @@ html.dark .game-leaderboard-list li {
 
 .game-leaderboard-score {
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary, #1d1d1f);
   letter-spacing: -0.02em;
 }
@@ -664,7 +664,7 @@ html.dark .game-leaderboard-score {
     color: #1d1d1f !important;
     border: 1px solid var(--card-border-rest, #e5e5ea) !important;
     border-radius: 16px !important;
-    font-weight: 700 !important;
+    font-weight: var(--ui-weight-medium) !important;
     font-size: 13px !important;
     display: flex !important;
     flex-direction: column !important;
@@ -701,7 +701,7 @@ html.dark .game-leaderboard-score {
 
   .debug-runner-mobile-controls .debug-game-btn--jump {
     border-bottom: 3px solid #0071e3 !important;
-    background: linear-gradient(180deg, #0077ed 0%, #0062c4 100%) !important;
+    background: var(--ui-accent) !important;
     color: #ffffff !important;
   }
 

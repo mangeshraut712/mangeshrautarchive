@@ -70,7 +70,7 @@ html.dark .award-card {
   height: 56px;
   min-width: 56px;
   border-radius: 14px;
-  background: linear-gradient(145deg, #ffd60a 0%, #ff9f0a 100%);
+  background: var(--ui-surface);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,7 +97,7 @@ html.dark .award-icon i {
 
 .award-title {
   font-size: clamp(1.15rem, 1.6vw, 1.35rem);
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary);
   margin: 0;
   line-height: 1.25;
@@ -121,7 +121,7 @@ html:not(.dark) .award-title {
 
 .award-institution {
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: #0071e3;
   margin: 0;
   line-height: 1.35;

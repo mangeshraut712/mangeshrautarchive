@@ -211,20 +211,8 @@ html.dark .global-nav.dynamic-island.scrolled {
 
 /* When rail overflows, re-enable edge fade for scroll affordance */
 .global-nav.dynamic-island .nav-links.is-overflowing {
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 12px,
-    black calc(100% - 12px),
-    transparent
-  ) !important;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 12px,
-    black calc(100% - 12px),
-    transparent
-  ) !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
 }
 
 /* Individual nav links - Apple style */
@@ -275,7 +263,7 @@ html.dark .global-nav.dynamic-island .nav-links-sep {
 /* Separate HTML pages — slightly stronger weight so they read as destinations */
 .global-nav.dynamic-island .nav-link--page {
   opacity: 1;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
 }
 
@@ -294,7 +282,7 @@ html.dark #global-nav.global-nav.dynamic-island .nav-link {
 /* Active state — keep padding/size identical to idle to avoid Primary sections CLS */
 .global-nav.dynamic-island .nav-link.active {
   color: var(--island-link-color-active) !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   background: var(--island-link-active-bg);
   padding-inline: 10px !important;
 }
@@ -383,7 +371,7 @@ html.dark .global-nav.dynamic-island .nav-link::after {
   align-items: center;
   justify-content: center;
   font-size: var(--island-control-icon-size) !important;
-  box-shadow: none !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   padding: 0 !important;
   font-family: var(--island-font) !important;
   line-height: 1 !important;
@@ -456,7 +444,7 @@ html.dark .global-nav.dynamic-island #menu-btn:hover {
   pointer-events: none;
   background: transparent !important;
   background-color: transparent !important;
-  box-shadow: none !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 .global-nav.dynamic-island .menu-toggle-icon {
@@ -612,7 +600,7 @@ html.dark .global-nav.dynamic-island #menu-btn[aria-expanded='true'] {
     border-radius: 999px !important;
     background: #fff !important;
     border-color: rgba(0, 0, 0, 0.1) !important;
-    box-shadow: none !important;
+    box-shadow: var(--ui-shadow-floating) !important;
   }
 
   html.dark .global-nav.dynamic-island .theme-toggle-nav,
@@ -736,13 +724,13 @@ section.nav-target-focus {
 
 @keyframes nav-section-arrive {
   0% {
-    box-shadow: inset 0 0 0 0 transparent;
+    box-shadow: none;
   }
   20% {
-    box-shadow: inset 0 3px 0 0 rgb(0 113 227 / 55%);
+    box-shadow: none;
   }
   100% {
-    box-shadow: inset 0 0 0 0 transparent;
+    box-shadow: none;
   }
 }
 
@@ -752,13 +740,13 @@ html.dark section.nav-target-focus {
 
 @keyframes nav-section-arrive-dark {
   0% {
-    box-shadow: inset 0 0 0 0 transparent;
+    box-shadow: none;
   }
   20% {
-    box-shadow: inset 0 3px 0 0 rgb(78 161 255 / 65%);
+    box-shadow: none;
   }
   100% {
-    box-shadow: inset 0 0 0 0 transparent;
+    box-shadow: none;
   }
 }
 
@@ -767,9 +755,9 @@ html.dark section.nav-target-focus {
   margin: 1rem 0 0.5rem;
   padding: 0 0.25rem;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: none;
   color: #6e6e73;
 }
 
@@ -815,7 +803,7 @@ html.dark #theme-icon-moon {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 4px 12px rgb(255 59 48 / 45%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   z-index: 100000 !important;
 }
 
@@ -833,13 +821,13 @@ html.dark #close-menu-btn.premium-close-btn {
   background-color: #ff453a !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 4px 14px rgb(255 69 58 / 55%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 #close-menu-btn.premium-close-btn:hover {
   background: #ff453a !important;
   transform: scale(1.08) !important;
-  box-shadow: 0 6px 16px rgb(255 69 58 / 60%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════

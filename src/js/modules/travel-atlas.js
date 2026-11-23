@@ -1,5 +1,5 @@
 /**
- * Travel Atlas — Apple Maps-inspired visited-place atlas.
+ * Travel atlas — Apple Maps-inspired visited-place atlas.
  * The map shows red visited pins only; the sidebar carries place intelligence.
  */
 

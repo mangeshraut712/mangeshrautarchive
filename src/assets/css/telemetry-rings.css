@@ -7,7 +7,7 @@
   border-radius: 20px;
   background: var(--glass-bg, rgba(255, 255, 255, 0.75));
   border: 1px solid var(--card-border-rest, rgba(0, 0, 0, 0.08));
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   margin: 2rem 0;
@@ -16,7 +16,7 @@
 html.dark .telemetry-rings-wrapper {
   background: var(--glass-bg-dark, rgba(22, 22, 24, 0.75));
   border-color: var(--card-border-rest-dark, rgba(255, 255, 255, 0.1));
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .telemetry-rings-header {
@@ -32,9 +32,9 @@ html.dark .telemetry-rings-wrapper {
   display: inline-block;
   padding: 0.3rem 0.75rem;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--apple-blue, #0071e3);
   background: rgba(0, 113, 227, 0.08);
   border: 1px solid rgba(0, 113, 227, 0.2);
@@ -51,7 +51,7 @@ html.dark .telemetry-rings-pill {
 .telemetry-rings-heading {
   margin: 0;
   font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.02em;
   color: var(--text-primary, #1d1d1f);
   font-family: var(--font-display);
@@ -66,7 +66,7 @@ html.dark .telemetry-rings-heading {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: #34c759;
   background: rgba(52, 199, 89, 0.1);
   padding: 0.35rem 0.75rem;
@@ -79,8 +79,8 @@ html.dark .telemetry-rings-heading {
   height: 7px;
   border-radius: 50%;
   background: #34c759;
-  box-shadow: 0 0 8px rgba(52, 199, 89, 0.8);
-  animation: telemetryPulse 2s ease-in-out infinite;
+  box-shadow: none;
+  animation: none;
 }
 
 @keyframes telemetryPulse {
@@ -153,12 +153,12 @@ html.dark .telemetry-rings-heading {
 .telemetry-legend-title {
   font-size: 0.76rem;
   color: var(--text-secondary, #86868b);
-  font-weight: 550;
+  font-weight: var(--ui-weight-medium);
 }
 
 .telemetry-legend-val {
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary, #1d1d1f);
 }
 
@@ -209,12 +209,12 @@ html.dark .telemetry-sparkline-card:hover {
 .telemetry-spark-label {
   font-size: 0.75rem;
   color: var(--text-secondary, #86868b);
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
 }
 
 .telemetry-spark-current {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary, #1d1d1f);
   font-family: var(--font-display);
 }
@@ -225,7 +225,7 @@ html.dark .telemetry-spark-current {
 
 .telemetry-spark-badge {
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   padding: 0.15rem 0.45rem;
   border-radius: 999px;
   width: fit-content;

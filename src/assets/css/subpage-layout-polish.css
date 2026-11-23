@@ -223,7 +223,7 @@ body.systems-page .systems-section-rail {
   box-sizing: border-box !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
-  box-shadow: 0 2px 12px rgb(0 0 0 / 5%) !important;
+  box-shadow: none !important;
 }
 
 @media (min-width: 900px) {
@@ -233,7 +233,7 @@ body.systems-page .systems-section-rail {
 }
 
 html.dark body.systems-page .systems-section-rail {
-  box-shadow: 0 2px 14px rgb(0 0 0 / 35%) !important;
+  box-shadow: none !important;
 }
 
 /* Evidence + metrics spacious */
@@ -561,7 +561,7 @@ html.dark body.travel-body .travel-sidebar__header {
 
 body.travel-body .travel-sidebar__header h1 {
   font-size: 1.35rem !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.025em !important;
   margin: 0 0 2px !important;
   color: var(--travel-text) !important;
@@ -628,7 +628,7 @@ html.dark body.travel-body .travel-stat:not(:last-child)::after {
 body.travel-body .travel-stat__value {
   display: block !important;
   font-size: 15px !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: var(--apple-blue, #0071e3) !important;
   -webkit-text-fill-color: var(--apple-blue, #0071e3) !important;
   letter-spacing: -0.02em !important;
@@ -638,9 +638,9 @@ body.travel-body .travel-stat__value {
 body.travel-body .travel-stat__label {
   display: block !important;
   font-size: 9.5px !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.04em !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   color: var(--travel-text-secondary, #6e6e73) !important;
   -webkit-text-fill-color: var(--travel-text-secondary, #6e6e73) !important;
   margin-top: 1px !important;
@@ -696,7 +696,7 @@ html body.travel-body #travel-sidebar input#place-search {
   color: var(--travel-text, #1d1d1f) !important;
   -webkit-text-fill-color: var(--travel-text, #1d1d1f) !important;
   font-size: 13.5px !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   padding: 0 !important;
   margin: 0 !important;
 }
@@ -751,7 +751,7 @@ body.travel-body .country-pill {
   padding: 0 10px !important;
   border-radius: 9999px !important;
   font-size: 12px !important;
-  font-weight: 550 !important;
+  font-weight: var(--ui-weight-medium) !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   background: var(--bg-primary) !important;
@@ -781,12 +781,12 @@ html.dark body.travel-body .country-pill:hover {
 
 body.travel-body .country-pill.active,
 body.travel-body .country-pill[aria-pressed='true'] {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   background-color: #0071e3 !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;
+  box-shadow: none !important;
 }
 
 /* ─── Compact 1-Row Segmented Action Controls ─── */
@@ -807,7 +807,7 @@ body.travel-body .travel-action {
   padding: 0 3px !important;
   border-radius: 7px !important;
   font-size: 12px !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   background: var(--bg-primary) !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;
   color: var(--travel-text-secondary, #6e6e73) !important;
@@ -838,21 +838,21 @@ html.dark body.travel-body .travel-action:hover {
 
 body.travel-body .travel-action.active,
 body.travel-body .travel-action[aria-pressed='true'] {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   background-color: #0071e3 !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;
+  box-shadow: none !important;
 }
 
 body.travel-body #featured-toggle.active {
-  background-image: linear-gradient(135deg, #ff9500 0%, #ff8000 100%) !important;
+  background-image: none !important;
   background-color: #ff9500 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.35) !important;
+  box-shadow: none !important;
 }
 
 /* ─── Refined Results Caption (No Ugly Box) ─── */
@@ -865,7 +865,7 @@ body.travel-body .travel-results-summary {
   color: var(--travel-text-secondary, #6e6e73) !important;
   -webkit-text-fill-color: var(--travel-text-secondary, #6e6e73) !important;
   font-size: 12px !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   line-height: 1.35 !important;
 }
@@ -887,7 +887,7 @@ html.dark body.travel-body .travel-advanced-search {
 body.travel-body .travel-advanced-toggle {
   padding: 4px 8px !important;
   font-size: 12px !important;
-  font-weight: 550 !important;
+  font-weight: var(--ui-weight-medium) !important;
   min-height: 26px !important;
   background: transparent !important;
   border: none !important;
@@ -915,7 +915,7 @@ html.dark body.travel-body .travel-timeline__country-header {
 
 body.travel-body .travel-timeline__country-header h2 {
   font-size: 1.05rem !important;
-  font-weight: 750 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: var(--text-primary) !important;
   letter-spacing: -0.01em !important;
 }
@@ -977,13 +977,13 @@ html[data-lg-mode] body.travel-body .travel-stop.active {
   background: color-mix(in srgb, var(--apple-blue, #0071e3) 9%, transparent) !important;
   background-color: color-mix(in srgb, var(--apple-blue, #0071e3) 9%, transparent) !important;
   border-radius: 8px !important;
-  box-shadow: inset 3px 0 0 var(--apple-blue, #0071e3) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.travel-body .travel-stop.active {
   background: rgba(10, 132, 255, 0.14) !important;
   background-color: rgba(10, 132, 255, 0.14) !important;
-  box-shadow: inset 3px 0 0 #2997ff !important;
+  box-shadow: none !important;
 }
 
 body.travel-body .travel-stop__dot {
@@ -994,7 +994,7 @@ body.travel-body .travel-stop__dot {
   height: 8px !important;
   border-radius: 50% !important;
   background: var(--apple-red, #ff3b30) !important;
-  box-shadow: 0 0 0 2px color-mix(in srgb, #ff3b30 25%, transparent) !important;
+  box-shadow: none !important;
   transition:
     transform 0.2s ease,
     background-color 0.2s ease !important;
@@ -1003,21 +1003,21 @@ body.travel-body .travel-stop__dot {
 body.travel-body .travel-stop.active .travel-stop__dot {
   transform: scale(1.25) !important;
   background: var(--apple-blue, #0071e3) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, #0071e3 30%, transparent) !important;
+  box-shadow: none !important;
 }
 
 body.travel-body .travel-stop__order {
   font-size: 0.72rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.03em !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   color: var(--text-tertiary, #86868b) !important;
   margin-bottom: 0.15rem !important;
 }
 
 body.travel-body .travel-stop__name {
   font-size: 1.05rem !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.012em !important;
   color: var(--text-primary) !important;
   margin: 0 0 0.2rem !important;
@@ -1067,7 +1067,7 @@ body.travel-body .a11y-toolbar__main {
   background-color: #0071e3 !important;
   border: none !important;
   color: #ffffff !important;
-  box-shadow: 0 8px 24px rgb(0 113 227 / 28%) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.travel-body .a11y-toolbar__main,
@@ -1101,7 +1101,7 @@ body.travel-body .a11y-toolbar.is-open .a11y-toolbar__panel {
   background-color: #ffffff !important;
   border: 1px solid #e5e5ea !important;
   border-radius: 999px !important;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 12%) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.travel-body .a11y-toolbar.is-open .a11y-toolbar__panel,
@@ -1411,9 +1411,7 @@ body.offline-page .offline-card {
   background: #ffffff !important;
   background-color: #ffffff !important;
   background-image: none !important;
-  box-shadow:
-    0 2px 8px rgb(0 0 0 / 4%),
-    0 8px 24px rgb(0 0 0 / 6%);
+  box-shadow: none;
   text-align: center;
 }
 
@@ -1422,9 +1420,7 @@ html[data-theme='dark'] body.offline-page .offline-card {
   background: #000000 !important;
   background-color: #000000 !important;
   border-color: #2c2c2e;
-  box-shadow:
-    0 2px 8px rgb(0 0 0 / 40%),
-    0 12px 32px rgb(0 0 0 / 45%);
+  box-shadow: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1438,9 +1434,9 @@ html[data-theme='dark'] body.offline-page .offline-card {
 body.offline-page .offline-kicker {
   margin: 0 0 0.35rem;
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: none;
   color: #0071e3;
 }
 
@@ -1487,7 +1483,7 @@ body.offline-page .offline-link {
   padding: 0.85rem 1.25rem;
   min-height: 44px;
   font: inherit;
-  font-weight: 650;
+  font-weight: var(--ui-weight-medium);
   font-size: 0.9rem;
   cursor: pointer;
   text-decoration: none;
@@ -1539,7 +1535,7 @@ body.offline-page .offline-destinations a {
   padding: 0.45rem 0.6rem;
   border-radius: 999px;
   font-size: 0.8rem;
-  font-weight: 650;
+  font-weight: var(--ui-weight-medium);
   text-decoration: none;
   color: #1d1d1f;
   background: #ffffff !important;
@@ -1810,9 +1806,9 @@ body.uses-page .systems-eyebrow,
 body.monitor-page .monitor-edge-banner__title,
 body.travel-body .travel-nav__kicker {
   font-size: 0.72rem !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   color: #6e6e73 !important;
   -webkit-text-fill-color: #6e6e73 !important;
   margin: 0 !important;
@@ -1831,7 +1827,7 @@ body.uses-page .uses-hero h1,
 body.changelog-page .changelog-hero h1,
 body.travel-body .travel-sidebar__header h1 {
   font-size: clamp(1.75rem, 3.5vw, 2.25rem) !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.03em !important;
   line-height: 1.12 !important;
   margin: 0 !important;
@@ -1870,7 +1866,7 @@ body.travel-body .travel-filter-chips {
   background-color: var(--bg-primary) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
   overscroll-behavior-x: contain !important;
@@ -1891,7 +1887,7 @@ html.dark body.travel-body .travel-filter-chips {
   background: var(--bg-primary) !important;
   background-color: var(--bg-primary) !important;
   border-color: rgba(255, 255, 255, 0.14) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 body.monitor-page .monitor-section-rail__list {
@@ -1931,7 +1927,7 @@ body.travel-body .travel-filter-chip {
   border-radius: 9999px !important;
   padding: 0.42rem 0.85rem !important;
   font-size: 0.8125rem !important;
-  font-weight: 550 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   line-height: 1.2 !important;
   white-space: nowrap !important;
@@ -1998,13 +1994,13 @@ body.changelog-page .changelog-chip.is-active,
 body.changelog-page .changelog-chip.active,
 body.travel-body .travel-filter-chip.active,
 body.travel-body .travel-filter-chip[aria-pressed='true'] {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
   border-radius: 9999px !important;
-  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.35) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.systems-page .systems-section-rail a.is-active,
@@ -2019,13 +2015,13 @@ html.dark body.changelog-page .changelog-chip.is-active,
 html.dark body.changelog-page .changelog-chip.active,
 html.dark body.travel-body .travel-filter-chip.active,
 html.dark body.travel-body .travel-filter-chip[aria-pressed='true'] {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   background-color: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
   border-radius: 9999px !important;
-  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.45) !important;
+  box-shadow: none !important;
 }
 
 /* ─── 3. Unified Solid Cards & Fine Hairlines ─── */
@@ -2049,7 +2045,7 @@ body.error-page .error-dest-item {
   border: 1px solid #e5e5ea !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 3%) !important;
+  box-shadow: none !important;
   transition:
     transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.2s ease,
@@ -2075,7 +2071,7 @@ html.dark body.error-page .error-dest-item {
   background: #000000 !important;
   background-color: #000000 !important;
   border-color: #2c2c2e !important;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 45%) !important;
+  box-shadow: none !important;
 }
 
 body.systems-page .systems-evidence-card:hover,
@@ -2088,7 +2084,7 @@ body.monitor-page .probe-card:hover,
 body.error-page .error-dest-item:hover {
   border-color: #0071e3 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 14px rgb(0 0 0 / 6%) !important;
+  box-shadow: none !important;
 }
 
 html.dark body.systems-page .systems-evidence-card:hover,
@@ -2100,7 +2096,7 @@ html.dark body.monitor-page .metric-card:hover,
 html.dark body.monitor-page .probe-card:hover,
 html.dark body.error-page .error-dest-item:hover {
   border-color: #2997ff !important;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 45%) !important;
+  box-shadow: none !important;
 }
 
 /* ─── 4. Subpage Clean Search Inputs ─── */

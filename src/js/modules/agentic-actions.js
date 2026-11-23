@@ -254,12 +254,12 @@ export class AgenticActionHandler {
         { signal }
       );
 
-      // 12. Get Travel Atlas statistics
+      // 12. Get Travel atlas statistics
       registerTool(
         {
           name: 'get_travel_stats',
           description:
-            "Retrieve travel statistics, visited cities, and US states explored from Mangesh's Travel Atlas.",
+            "Retrieve travel statistics, visited cities, and US states explored from Mangesh's Travel atlas.",
           inputSchema: { type: 'object', properties: {} },
           execute: async () => {
             return this.getTravelStats();
@@ -269,7 +269,7 @@ export class AgenticActionHandler {
         { signal }
       );
 
-      // 13. Get System Monitor operational status
+      // 13. Get System monitor operational status
       registerTool(
         {
           name: 'get_system_status',
@@ -674,17 +674,17 @@ export class AgenticActionHandler {
         'Check what music Mangesh is currently listening to on Spotify via Last.fm and inspect the Hero Music Card',
     });
 
-    // Travel Atlas stats
+    // Travel atlas stats
     this.registerAction('travel_stats', {
       patterns: [
         /(?:where\s+(?:has\s+)?(?:mangesh\s+)?traveled|travel\s+atlas|visited\s+cities|visited\s+states|travel\s+destinations)/i,
         /(?:how\s+many|which)\s+(?:cities|states|countries)\s+(?:has\s+)?(?:mangesh\s+)?(?:visited|traveled\s+to)/i,
       ],
       handler: this.getTravelStats.bind(this),
-      description: "Get travel statistics and visited destinations from Mangesh's Travel Atlas",
+      description: "Get travel statistics and visited destinations from Mangesh's Travel atlas",
     });
 
-    // System Monitor status
+    // System monitor status
     this.registerAction('system_status', {
       patterns: [
         /(?:system\s+status|system\s+monitor|operational\s+status|api\s+health|server\s+health|uptime)/i,
@@ -1135,7 +1135,7 @@ export class AgenticActionHandler {
     return {
       success: false,
       message:
-        '📄 Resume PDF not found. Please:\n\n1. Click the "Download Resume" button on the homepage\n2. Email mbr63@drexel.edu to request a copy\n3. View the online portfolio at https://mangeshraut712.github.io/mangeshrautarchive',
+        '📄 Resume PDF not found. Please:\n\n1. Click the "Download resume" button on the homepage\n2. Email mbr63@drexel.edu to request a copy\n3. View the online portfolio at https://mangeshraut712.github.io/mangeshrautarchive',
       action: 'download_resume',
       alternative: {
         email: 'mbr63@drexel.edu',
@@ -1636,7 +1636,7 @@ export class AgenticActionHandler {
 
       const statusBadge = isNowPlaying
         ? '🟢 **Now Playing on Spotify**'
-        : '🎵 **Recently Played on Spotify**';
+        : '🎵 **Recently played on Spotify**';
       const lines = [
         `${statusBadge}\n`,
         `**[${trackName}](${spotifySearchUrl})**`,
@@ -1673,10 +1673,10 @@ export class AgenticActionHandler {
         typeof window !== 'undefined' ? `${window.location.origin}/travel` : '/travel';
       return {
         success: true,
-        message: `✈️ **Mangesh's Travel Atlas**\n\n- **Destinations Logged:** 32+ cities across the United States and India\n- **US States Explored:** 15+ states (Pennsylvania, New York, New Jersey, California, Washington, Massachusetts, and more)\n- **Interactive Features:** 3D WebGL Globe, city telemetry, curated photography.\n\nExplore the interactive map: [Open Travel Atlas](${atlasLink})`,
+        message: `✈️ **Mangesh's Travel atlas**\n\n- **Destinations Logged:** 32+ cities across the United States and India\n- **US States Explored:** 15+ states (Pennsylvania, New York, New Jersey, California, Washington, Massachusetts, and more)\n- **Interactive Features:** 3D WebGL Globe, city telemetry, curated photography.\n\nExplore the interactive map: [Open Travel atlas](${atlasLink})`,
       };
     } catch {
-      return { success: false, message: 'Could not load Travel Atlas data.' };
+      return { success: false, message: 'Could not load Travel atlas data.' };
     }
   }
 
@@ -1686,10 +1686,10 @@ export class AgenticActionHandler {
         typeof window !== 'undefined' ? `${window.location.origin}/monitor` : '/monitor';
       return {
         success: true,
-        message: `🟢 **System Monitor & Health**\n\n- **Status:** All Systems Operational (100% Core Web Vitals)\n- **Dual Hosts:** GitHub Pages + Vercel Edge Serverless\n- **Integrations:** OpenRouter AI, Cloudflare Edge Worker, Whoop 4.0, Last.fm\n\nInspect live telemetry: [Open System Monitor](${monitorLink})`,
+        message: `🟢 **System monitor & Health**\n\n- **Status:** All Systems Operational (100% Core Web Vitals)\n- **Dual Hosts:** GitHub Pages + Vercel Edge Serverless\n- **Integrations:** OpenRouter AI, Cloudflare Edge Worker, Whoop 4.0, Last.fm\n\nInspect live telemetry: [Open System monitor](${monitorLink})`,
       };
     } catch {
-      return { success: false, message: 'Could not load System Monitor.' };
+      return { success: false, message: 'Could not load System monitor.' };
     }
   }
 
@@ -1701,7 +1701,7 @@ export class AgenticActionHandler {
       }
       return {
         success: true,
-        message: `💖 **Support & Sponsorship Options**\n\nThank you for supporting Mangesh's work! Here are the active channels:\n\n- **[Stripe Checkout](https://buy.stripe.com/bJe8wOeCQ0dXePp6Y414402):** Apple Pay, Google Pay, Cards\n- **[PayPal & Venmo](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82):** PayPal balance, Venmo, Cards\n- **[Buy Me a Coffee](https://buymeacoffee.com/mangeshraut):** Micro-tips, notes & monthly memberships\n- **[GitHub Sponsors](https://github.com/sponsors/mangeshraut712):** Monthly open-source sponsorship\n- **Crypto Wallets:** Solana (\`3LaZpBbm...mkcc\`), Bitcoin (\`bc1qe55r...0j44j\`), USDC, Ethereum, Dogecoin\n\nI have scrolled you directly to the **Support My Work** card on the page!`,
+        message: `💖 **Support & Sponsorship Options**\n\nThank you for supporting Mangesh's work! Here are the active channels:\n\n- **[Stripe Checkout](https://buy.stripe.com/bJe8wOeCQ0dXePp6Y414402):** Apple Pay, Google Pay, Cards\n- **[PayPal & Venmo](https://www.paypal.com/ncp/payment/LXNHJ5SUGNP82):** PayPal balance, Venmo, Cards\n- **[Buy Me a Coffee](https://buymeacoffee.com/mangeshraut):** Micro-tips, notes & monthly memberships\n- **[GitHub Sponsors](https://github.com/sponsors/mangeshraut712):** Monthly open-source sponsorship\n- **Crypto Wallets:** Solana (\`3LaZpBbm...mkcc\`), Bitcoin (\`bc1qe55r...0j44j\`), USDC, Ethereum, Dogecoin\n\nI have scrolled you directly to the **Support my work** card on the page!`,
       };
     } catch {
       return {

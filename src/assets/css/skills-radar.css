@@ -7,7 +7,7 @@
   border-radius: 20px;
   background: var(--glass-bg, rgba(255, 255, 255, 0.75));
   border: 1px solid var(--card-border-rest, rgba(0, 0, 0, 0.08));
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  box-shadow: none;
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   margin: 2rem 0;
@@ -16,7 +16,7 @@
 html.dark .skills-radar-wrapper {
   background: var(--glass-bg-dark, rgba(22, 22, 24, 0.75));
   border-color: var(--card-border-rest-dark, rgba(255, 255, 255, 0.1));
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 .skills-radar-header {
@@ -32,9 +32,9 @@ html.dark .skills-radar-wrapper {
   display: inline-block;
   padding: 0.3rem 0.75rem;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.06em;
-  text-transform: uppercase;
+  text-transform: none;
   color: var(--apple-blue, #0071e3);
   background: rgba(0, 113, 227, 0.08);
   border: 1px solid rgba(0, 113, 227, 0.2);
@@ -51,7 +51,7 @@ html.dark .skills-radar-pill {
 .skills-radar-heading {
   margin: 0;
   font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.02em;
   color: var(--text-primary, #1d1d1f);
   font-family: var(--font-display);
@@ -68,7 +68,7 @@ html.dark .skills-radar-heading {
 .skills-radar-score-badge strong {
   display: block;
   font-size: 1.4rem;
-  font-weight: 800;
+  font-weight: var(--ui-weight-medium);
   color: var(--apple-blue, #0071e3);
   letter-spacing: -0.03em;
   font-family: var(--font-display);
@@ -81,8 +81,8 @@ html.dark .skills-radar-score-badge strong {
 .skills-radar-score-badge span {
   font-size: 0.75rem;
   color: var(--text-secondary, #86868b);
-  font-weight: 550;
-  text-transform: uppercase;
+  font-weight: var(--ui-weight-medium);
+  text-transform: none;
   letter-spacing: 0.04em;
 }
 
@@ -137,13 +137,13 @@ html.dark .radar-axis-line {
   fill: url('#radar-gradient');
   stroke: #0071e3;
   stroke-width: 2.5px;
-  filter: drop-shadow(0 4px 16px rgba(0, 113, 227, 0.3));
+  filter: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html.dark .radar-data-polygon {
   stroke: #2997ff;
-  filter: drop-shadow(0 6px 20px rgba(41, 151, 255, 0.4));
+  filter: none;
 }
 
 .radar-vertex-dot {
@@ -173,7 +173,7 @@ html.dark .radar-vertex-dot.is-hovered {
 
 .radar-axis-label {
   font-size: 12px;
-  font-weight: 650;
+  font-weight: var(--ui-weight-medium);
   fill: var(--text-secondary, #6e6e73);
   font-family: var(--font-text);
 }
@@ -208,13 +208,13 @@ html.dark .skills-radar-item {
 .skills-radar-item.is-hovered {
   transform: translateX(4px);
   border-color: #0071e3;
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.12);
+  box-shadow: none;
 }
 
 html.dark .skills-radar-item:hover,
 html.dark .skills-radar-item.is-hovered {
   border-color: #2997ff;
-  box-shadow: 0 6px 20px rgba(41, 151, 255, 0.2);
+  box-shadow: none;
 }
 
 .skills-radar-item-top {
@@ -226,7 +226,7 @@ html.dark .skills-radar-item.is-hovered {
 
 .skills-radar-item-label {
   font-size: 0.92rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary, #1d1d1f);
 }
 
@@ -236,7 +236,7 @@ html.dark .skills-radar-item-label {
 
 .skills-radar-item-score {
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: var(--ui-weight-medium);
   color: var(--apple-blue, #0071e3);
 }
 
@@ -271,7 +271,7 @@ html.dark .skills-radar-bar-fill {
 .skills-radar-item-tools {
   font-size: 0.78rem;
   color: var(--text-secondary, #86868b);
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
 }
 
 @media (width <= 600px) {
@@ -303,7 +303,7 @@ html.dark .skills-radar-bar-fill {
 
   .radar-axis-label {
     font-size: 10.5px;
-    font-weight: 650;
+    font-weight: var(--ui-weight-medium);
   }
 
   .skills-radar-item {

@@ -37,17 +37,13 @@
   backdrop-filter: saturate(180%) blur(28px);
   -webkit-backdrop-filter: saturate(180%) blur(28px);
   border: 1px solid rgba(255, 255, 255, 0.42);
-  box-shadow:
-    0 22px 44px rgba(15, 23, 42, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  box-shadow: none;
 }
 
 html.dark .birthday-notification {
   background: rgba(0, 0, 0, 0.82) !important;
   border: 1px solid rgb(255 255 255 / 10%);
-  box-shadow:
-    0 24px 52px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 /* Mobile Animation */
@@ -97,7 +93,7 @@ html.dark .birthday-notification {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+  box-shadow: none;
 }
 
 .ios-calendar-icon {
@@ -117,7 +113,7 @@ html.dark .birthday-notification {
 
 .ios-calendar-date {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: #1d1d1f;
   position: absolute;
   top: 7px;
@@ -128,8 +124,8 @@ html.dark .birthday-notification {
 
 .ios-app-name {
   font-size: 13px;
-  font-weight: 400;
-  text-transform: uppercase;
+  font-weight: var(--ui-weight-regular);
+  text-transform: none;
   color: #000;
   flex: 1;
   letter-spacing: 0.08em;
@@ -152,7 +148,7 @@ html.dark .ios-time {
 
 .ios-title {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: #000;
   margin-bottom: 2px;
 }
@@ -184,10 +180,7 @@ html.dark .ios-body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 18%, rgba(90, 200, 250, 0.16), transparent 28%),
-    radial-gradient(circle at 20% 80%, rgba(0, 113, 227, 0.08), transparent 24%),
-    linear-gradient(180deg, #05070b 0%, #0b1220 48%, #040507 100%) !important;
+  background: var(--ui-surface) !important;
   background-size: auto !important;
   animation: fadeIn 0.7s ease-out !important;
 }
@@ -200,19 +193,17 @@ html.dark .ios-body {
   width: 100%;
   height: 100%;
   z-index: 0;
-  background: radial-gradient(circle at 50% 120%, #1a0b2e, #000 80%);
+  background: var(--ui-surface);
 }
 
 .aurora-gradient {
   position: absolute;
-  animation: auroraMove 15s infinite alternate ease-in-out;
+  animation: none;
   animation-fill-mode: forwards;
-  animation-name: auroraIn, auroraMove;
+  animation-name: none;
   animation-delay: 0s, 2s;
   inset: -18%;
-  background:
-    radial-gradient(circle at 18% 50%, rgba(78, 161, 255, 0.18), transparent 44%),
-    radial-gradient(circle at 82% 28%, rgba(0, 113, 227, 0.14), transparent 36%);
+  background: none;
   filter: blur(82px);
   opacity: 0.62;
   animation-duration: 1.8s, 24s;
@@ -270,7 +261,7 @@ html.dark .ios-body {
 
 .birthday-celebration .hero-title {
   font-size: clamp(4rem, 15vw, 9rem);
-  font-weight: 800;
+  font-weight: var(--ui-weight-medium);
   line-height: 0.95;
   letter-spacing: -0.04em;
   opacity: 0;
@@ -279,12 +270,12 @@ html.dark .ios-body {
 
   /* High contrast drop shadow */
   color: #fff;
-  text-shadow: 0 18px 48px rgba(0, 0, 0, 0.36);
+  text-shadow: none;
 }
 
 .birthday-celebration .hero-subtitle {
   font-size: clamp(1.5rem, 5vw, 2.5rem);
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   opacity: 0;
   transform: translateY(20px);
   animation: heroReveal 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.8s;
@@ -297,9 +288,9 @@ html.dark .ios-body {
   padding: 8px 20px;
   border: 1px solid rgb(255 255 255 / 20%);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: rgb(255 255 255 / 90%);
-  text-transform: uppercase;
+  text-transform: none;
   backdrop-filter: blur(20px);
   opacity: 0;
   transform: scale(0.9);
@@ -348,7 +339,7 @@ html.dark .ios-body {
 .glass-btn-icon {
   font-size: 1.1em;
   display: inline-block;
-  animation: rocketWiggle 1.5s ease-in-out infinite;
+  animation: none;
 }
 
 @keyframes rocketWiggle {
@@ -372,7 +363,7 @@ html.dark .ios-body {
   padding: 16px 40px;
   color: white;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   cursor: pointer;
   backdrop-filter: blur(20px);
   transition:
@@ -390,16 +381,14 @@ html.dark .ios-body {
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: none;
 }
 
 .glass-btn::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 40%), transparent);
+  background: none;
   transform: translateX(-100%);
   transition: transform 0.6s;
 }
@@ -408,9 +397,7 @@ html.dark .ios-body {
 .glass-btn:active {
   transform: translateY(-2px) scale(1.02);
   background: rgba(255, 255, 255, 0.18) !important;
-  box-shadow:
-    0 18px 38px rgba(0, 0, 0, 0.28),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
 .glass-btn:hover::before {
@@ -436,7 +423,7 @@ html.dark .ios-body {
   height: 60px;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -459,16 +446,16 @@ html.dark .ios-body {
 
 .calendar-month {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: #ff3b30;
-  text-transform: uppercase;
+  text-transform: none;
   margin-top: 20px;
   letter-spacing: 0.5px;
 }
 
 .calendar-day {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: #1d1d1f;
   line-height: 1;
   margin-top: -2px;
@@ -482,7 +469,7 @@ html.dark .ios-body {
 
 .birthday-notification-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: #1d1d1f;
   margin: 0 0 4px;
 }
@@ -547,28 +534,14 @@ html.dark .birthday-notification-close:hover {
 /* Light Mode - Bright Celebration */
 
 html:not(.dark) .birthday-celebration {
-  background: linear-gradient(
-    135deg,
-    #f5f7fa 0%,
-    #c3cfe2 25%,
-    #667eea 50%,
-    #764ba2 75%,
-    #f093fb 100%
-  );
+  background: var(--ui-surface);
   background-size: 400% 400%;
 }
 
 /* Dark Mode - Elegant Deep Gradient */
 
 html.dark .birthday-celebration {
-  background: linear-gradient(
-    135deg,
-    #0a0a0f 0%,
-    #1a1a2e 25%,
-    #16213e 50%,
-    #0f3460 75%,
-    #1a1a2e 100%
-  );
+  background: var(--ui-surface);
   background-size: 400% 400%;
 }
 
@@ -591,9 +564,7 @@ html.dark .birthday-celebration {
   text-align: center;
   color: white;
   z-index: 10;
-  animation:
-    scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s backwards,
-    float 3s ease-in-out 1.5s infinite;
+  animation: none;
 }
 
 @keyframes float {
@@ -609,11 +580,11 @@ html.dark .birthday-celebration {
 
 .birthday-title {
   font-size: clamp(2.5rem, 8vw, 5rem);
-  font-weight: 800;
+  font-weight: var(--ui-weight-medium);
   margin: 0 0 20px;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 3s ease-in-out infinite;
-  background: linear-gradient(180deg, #ffffff 0%, #dce8ff 100%);
+  -webkit-text-fill-color: var(--ui-accent);
+  animation: none;
+  background: var(--ui-surface);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -625,27 +596,24 @@ html.dark .birthday-celebration {
   font-size: clamp(1.2rem, 4vw, 2rem);
   margin: 0 0 30px;
   opacity: 0.95;
-  font-weight: 500;
-  text-shadow: 0 2px 10px rgb(0 0 0 / 30%);
+  font-weight: var(--ui-weight-medium);
+  text-shadow: none;
 }
 
 .birthday-age {
   font-size: clamp(1rem, 3vw, 1.5rem);
   opacity: 0.9;
   margin: 0 0 40px;
-  font-weight: 600;
-  text-shadow: 0 2px 10px rgb(0 0 0 / 30%);
+  font-weight: var(--ui-weight-medium);
+  text-shadow: none;
 }
 
 /* Cake Animation - iMessage Style */
 
 .birthday-cake {
   font-size: clamp(4rem, 15vw, 8rem);
-  animation:
-    cakeBounce 1s ease-in-out 1.2s backwards,
-    rotate 3s ease-in-out 2s infinite,
-    shadowPulse 2s ease-in-out 2s infinite;
-  filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.28));
+  animation: none;
+  filter: none;
 }
 
 @keyframes cakeBounce {
@@ -682,11 +650,11 @@ html.dark .birthday-celebration {
 @keyframes shadowPulse {
   0%,
   100% {
-    filter: drop-shadow(0 10px 30px rgb(0 0 0 / 30%));
+    filter: none;
   }
 
   50% {
-    filter: drop-shadow(0 15px 40px rgb(255 215 0 / 50%));
+    filter: none;
   }
 }
 
@@ -696,7 +664,7 @@ html.dark .birthday-celebration {
   margin-top: 40px;
   padding: 16px 40px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   border: none;
   cursor: pointer;
   transition:
@@ -706,20 +674,16 @@ html.dark .birthday-celebration {
     box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
     transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
     opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
+  background: var(--ui-accent);
   color: #fff;
   border-radius: 999px;
-  box-shadow:
-    0 16px 34px rgba(0, 113, 227, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  animation:
-    fadeInUp 0.6s ease-out 2s backwards,
-    btnPulse 2.8s ease-in-out 3s infinite;
+  box-shadow: none;
+  animation: none;
 }
 
 html.dark .birthday-continue-btn {
-  box-shadow: 0 10px 30px rgb(0 0 0 / 50%);
-  background: linear-gradient(135deg, #0071e3 0%, #2997ff 100%);
+  box-shadow: none;
+  background: var(--ui-accent);
   color: #fff;
 }
 
@@ -727,18 +691,18 @@ html.dark .birthday-continue-btn {
   0%,
   100% {
     transform: scale(1);
-    box-shadow: 0 10px 30px rgb(0 0 0 / 20%);
+    box-shadow: none;
   }
 
   50% {
     transform: scale(1.05);
-    box-shadow: 0 15px 40px rgb(255 215 0 / 40%);
+    box-shadow: none;
   }
 }
 
 .birthday-continue-btn:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 18px 40px rgba(0, 113, 227, 0.34);
+  box-shadow: none;
 }
 
 .birthday-continue-btn:active {
@@ -746,7 +710,7 @@ html.dark .birthday-continue-btn {
 }
 
 html.dark .birthday-continue-btn:hover {
-  box-shadow: 0 15px 40px rgb(255 255 255 / 20%);
+  box-shadow: none;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -847,7 +811,7 @@ html.dark .birthday-continue-btn:hover {
   position: absolute;
   bottom: -100px;
   font-size: 3rem;
-  animation: balloonFloat 4s ease-in-out infinite;
+  animation: none;
   opacity: 0.92;
 }
 
@@ -917,7 +881,7 @@ html.dark .birthday-continue-btn:hover {
 .sparkle {
   position: absolute;
   font-size: 1.5rem;
-  animation: sparkleFloat 2s ease-in-out infinite;
+  animation: none;
   opacity: 0;
 }
 
@@ -1003,7 +967,7 @@ html.dark .birthday-continue-btn:hover {
 .birthday-subtitle,
 .birthday-age {
   color: rgba(255, 255, 255, 0.82);
-  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+  text-shadow: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

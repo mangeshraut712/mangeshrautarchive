@@ -6,9 +6,8 @@
 
 class SkillsVisualization {
   constructor() {
-    this.marqueeObserver = null;
     this.skills = {
-      'Programming Languages': [
+      'Programming languages': [
         { name: 'Python', level: 95, icon: 'fab fa-python', color: '#3776AB' },
         { name: 'JavaScript', level: 90, icon: 'fab fa-js', color: '#F7DF1E' },
         {
@@ -22,7 +21,7 @@ class SkillsVisualization {
         { name: 'Swift', level: 75, icon: 'fab fa-swift', color: '#FA7343' },
         { name: 'SQL', level: 85, icon: 'fas fa-database', color: '#4479A1' },
       ],
-      'Frontend Development': [
+      'Frontend development': [
         { name: 'React', level: 88, icon: 'fab fa-react', color: '#61DAFB' },
         {
           name: 'Next.js',
@@ -50,7 +49,7 @@ class SkillsVisualization {
         },
         { name: 'Redux', level: 82, icon: 'fas fa-store', color: '#764ABC' },
       ],
-      'Backend & Databases': [
+      'Backend & databases': [
         {
           name: 'Node.js',
           level: 88,
@@ -172,13 +171,10 @@ class SkillsVisualization {
   }
 
   /**
-   * Create category section — infinite horizontal marquee (skills tripled for seamless loop).
+   * Create a readable category with each skill shown once.
    */
   createCategorySection(category, skills, _categoryIndex) {
-    const skillsList = [...skills, ...skills, ...skills];
-    const skillsHTML = skillsList
-      .map((skill, index) => this.createSkillBadge(skill, index % skills.length))
-      .join('');
+    const skillsHTML = skills.map((skill, index) => this.createSkillBadge(skill, index)).join('');
 
     return `
       <div class="skill-category" role="region" aria-label="${category} skills">
@@ -187,7 +183,7 @@ class SkillsVisualization {
           <span class="skill-category-count" aria-hidden="true">${skills.length} skills</span>
         </div>
         <div class="skill-scroll-container">
-          <div class="skill-scroll-wrapper" aria-hidden="true">
+          <div class="skill-scroll-wrapper">
             ${skillsHTML}
           </div>
         </div>
@@ -213,46 +209,12 @@ class SkillsVisualization {
 
     // Add CSS styles
     this.injectStyles();
-    this.syncMarqueeMotion(container);
 
     import('./scroll-animations.js')
       .then(module => {
         module.observeScrollAnimations?.(['.skill-category']);
       })
       .catch(() => {});
-  }
-
-  /**
-   * Keep marquee speed consistent across desktop, tablet, and mobile.
-   */
-  syncMarqueeMotion(container) {
-    const wrappers = Array.from(container.querySelectorAll('.skill-scroll-wrapper'));
-    const pixelsPerSecond = 30;
-
-    const updateWrapper = wrapper => {
-      const distance = Math.round(wrapper.scrollWidth / 3);
-      const duration = Math.max(22, distance / pixelsPerSecond);
-
-      wrapper.style.setProperty('--skill-marquee-distance', `-${distance}px`);
-      wrapper.style.setProperty('--skill-marquee-duration', `${duration.toFixed(2)}s`);
-    };
-
-    const updateAll = () => {
-      wrappers.forEach(updateWrapper);
-    };
-
-    requestAnimationFrame(updateAll);
-
-    if ('ResizeObserver' in window) {
-      this.marqueeObserver?.disconnect();
-      const observer = new ResizeObserver(updateAll);
-      observer.observe(container);
-      wrappers.forEach(wrapper => observer.observe(wrapper));
-      this.marqueeObserver = observer;
-      return;
-    }
-
-    window.addEventListener('resize', updateAll, { passive: true });
   }
 
   /**

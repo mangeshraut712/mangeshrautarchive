@@ -45,16 +45,12 @@ html[data-lg-mode='tinted']
 /* Birthday notification — WebGL replaces CSS backdrop */
 .birthday-notification.lg-webgl-host {
   border: 1px solid rgb(255 255 255 / 22%);
-  box-shadow:
-    0 22px 44px rgb(15 23 42 / 16%),
-    inset 0 1px 0 rgb(255 255 255 / 35%);
+  box-shadow: none;
 }
 
 html.dark .birthday-notification.lg-webgl-host {
   border-color: rgb(255 255 255 / 12%);
-  box-shadow:
-    0 24px 52px rgb(0 0 0 / 50%),
-    inset 0 1px 0 rgb(255 255 255 / 8%);
+  box-shadow: none;
 }
 
 .birthday-celebration .glass-btn.lg-webgl-host,

@@ -8,12 +8,7 @@
  */
 
 :root {
-  --music-glow-color: radial-gradient(
-    circle at 40% 50%,
-    rgba(0, 113, 227, 0.3),
-    rgba(175, 82, 222, 0.15),
-    transparent 70%
-  );
+  --music-glow-color: var(--ui-surface);
   --music-accent-blue: #0071e3;
   --music-accent-blue-dark: #0a84ff;
 }
@@ -69,7 +64,7 @@
   border-radius: 16px !important;
   padding: 10px 14px !important;
   gap: 6px 10px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   transition:
     transform 0.24s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.24s ease,
@@ -87,20 +82,20 @@ html[data-theme='dark'] #home .music-card-inner {
   background-clip: padding-box !important;
   border: 1px solid #2c2c2e !important;
   border-color: #2c2c2e !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: none !important;
 }
 
 .music-card:hover .music-card-inner,
 #home .music-card:hover .music-card-inner {
   transform: translateY(-2px) !important;
   border-color: #0071e3 !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.12) !important;
+  box-shadow: none !important;
 }
 
 html.dark .music-card:hover .music-card-inner,
 html.dark #home .music-card:hover .music-card-inner {
   border-color: #0a84ff !important;
-  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.2) !important;
+  box-shadow: none !important;
 }
 
 /* ── Rotating Circle Vinyl Artwork (Pure Unobstructed Disc) ──────── */
@@ -128,9 +123,7 @@ html.dark #home .music-card:hover .music-card-inner {
   overflow: hidden !important;
   flex-shrink: 0 !important;
   background: #000000 !important;
-  box-shadow:
-    0 3px 10px rgba(0, 0, 0, 0.22),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2) !important;
+  box-shadow: none !important;
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
@@ -238,9 +231,9 @@ html.dark #home .music-card:hover .music-card-inner {
   align-items: center !important;
   gap: 5px !important;
   font-size: 10.5px !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.05em !important;
-  text-transform: uppercase !important;
+  text-transform: none !important;
   color: #6e6e73 !important;
   -webkit-text-fill-color: #6e6e73 !important;
   white-space: nowrap !important;
@@ -274,7 +267,7 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
   height: 6px;
   border-radius: 50%;
   background-color: #34c759;
-  box-shadow: 0 0 6px rgba(52, 199, 89, 0.7);
+  box-shadow: none;
   flex-shrink: 0;
 }
 
@@ -302,15 +295,15 @@ html[data-theme='dark'] #home .music-card-inner .status-badge {
 }
 
 .playing-indicator.active span:nth-child(1) {
-  animation: eqBounce1 0.8s ease-in-out infinite alternate;
+  animation: none;
 }
 
 .playing-indicator.active span:nth-child(2) {
-  animation: eqBounce2 0.6s ease-in-out infinite alternate;
+  animation: none;
 }
 
 .playing-indicator.active span:nth-child(3) {
-  animation: eqBounce3 0.7s ease-in-out infinite alternate;
+  animation: none;
 }
 
 @keyframes eqBounce1 {
@@ -420,7 +413,7 @@ html[data-theme='dark'] #home #music-card .music-card-preview-link .music-contro
   border-color: var(--apple-blue, #0071e3) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.28) !important;
+  box-shadow: none !important;
 }
 
 #home #music-card .music-card-preview-link .music-control-face i,
@@ -451,13 +444,13 @@ html[data-theme='dark']
   border-color: #34c759 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.45) !important;
+  box-shadow: none !important;
 }
 
 #home #music-card .music-card-preview-link:hover .music-control-face,
 html.dark #home #music-card .music-card-preview-link:hover .music-control-face {
   transform: scale(1.08);
-  box-shadow: 0 3px 12px rgba(0, 113, 227, 0.45) !important;
+  box-shadow: none !important;
 }
 
 /* 2. Apple Music Button — Modern iOS 27.2 Monochrome Design (Black in Light, Pure White in Dark) */
@@ -502,7 +495,7 @@ html[data-theme='dark'] .music-card .music-card-apple-link i {
   transform: scale(1.08);
   background: #000000 !important;
   border-color: #000000 !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35) !important;
+  box-shadow: none !important;
 }
 
 #home #music-card .music-card-apple-link:hover .music-control-face i,
@@ -516,7 +509,7 @@ html[data-theme='dark'] #home #music-card .music-card-apple-link:hover .music-co
   transform: scale(1.08);
   background: #ffffff !important;
   border-color: #ffffff !important;
-  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.35) !important;
+  box-shadow: none !important;
 }
 
 html.dark #home #music-card .music-card-apple-link:hover .music-control-face i,
@@ -558,7 +551,7 @@ html.dark #home #music-card .music-card-spotify-link:hover .music-control-face {
   transform: scale(1.08);
   background: #1db954 !important;
   border-color: #1db954 !important;
-  box-shadow: 0 2px 10px rgba(29, 185, 84, 0.45) !important;
+  box-shadow: none !important;
 }
 
 #home #music-card .music-card-spotify-link:hover .music-control-face i,
@@ -581,7 +574,7 @@ html.dark #home #music-card .music-card-spotify-link:hover i {
   margin: 0 !important;
   padding: 0 !important;
   font-size: 14.5px !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.015em !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
@@ -605,7 +598,7 @@ html.dark #home .music-card-inner .track-name {
   margin: 0 !important;
   padding: 0 !important;
   font-size: 12.5px !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: #515154 !important;
   -webkit-text-fill-color: #515154 !important;
   line-height: 1.25 !important;
@@ -661,14 +654,14 @@ html.dark .music-scrubber-track {
   width: 0%;
   border-radius: 4px;
   background: var(--music-accent-blue, #0071e3);
-  box-shadow: 0 0 6px rgba(0, 113, 227, 0.4);
+  box-shadow: none;
   pointer-events: none;
   transition: width 0.1s linear;
 }
 
 html.dark .music-scrubber-fill {
   background: var(--music-accent-blue-dark, #0a84ff);
-  box-shadow: 0 0 6px rgba(10, 132, 255, 0.5);
+  box-shadow: none;
 }
 
 .music-scrubber-thumb {
@@ -679,7 +672,7 @@ html.dark .music-scrubber-fill {
   height: 9px;
   border-radius: 50%;
   background: #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+  box-shadow: none;
   transform: translate(-50%, -50%) scale(0);
   pointer-events: none;
   transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
@@ -696,7 +689,7 @@ html.dark .music-scrubber-fill {
   align-items: center !important;
   justify-content: space-between !important;
   font-size: 10.5px !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace) !important;
   letter-spacing: 0.02em !important;
   user-select: none !important;
@@ -723,8 +716,8 @@ html[data-theme='dark'] #home #music-card .music-time-duration {
 .music-preview-tag,
 #home #music-card .music-preview-tag {
   font-size: 9.5px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
+  font-weight: var(--ui-weight-medium) !important;
+  text-transform: none !important;
   letter-spacing: 0.06em !important;
   color: #005bb5 !important;
   -webkit-text-fill-color: #005bb5 !important;

@@ -203,21 +203,11 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
     #skills-container .skill-category,
     #skills-container .skill-scroll-wrapper .skill-badge
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-light)) 0%,
-      rgb(255 255 255 / 0%) 42%
-    ),
-    rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background: var(--ui-surface) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   /* Dark hairline (not white-on-white) — matches tinted #e5e5ea readability */
   border: 1px solid var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
-    0 1px 2px rgb(0 0 0 / 4%),
-    0 10px 28px rgb(0 0 0 / var(--lg-card-shadow-light)),
-    0 20px 48px rgb(15 23 42 / 5%) !important;
+  box-shadow: none !important;
   isolation: isolate;
 }
 
@@ -314,20 +304,11 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     #skills-container .skill-category,
     #skills-container .skill-scroll-wrapper .skill-badge
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-dark)) 0%,
-      rgb(255 255 255 / 0%) 40%
-    ),
-    rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background: var(--ui-surface) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   /* Subtle white hairline — matches tinted #2c2c2e contrast on black */
   border: 1px solid var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
-    0 1px 0 rgb(0 0 0 / 40%),
-    0 14px 40px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
+  box-shadow: none !important;
   isolation: isolate;
 }
 
@@ -368,7 +349,7 @@ html:not(.dark)[data-lg-mode='tinted'] .a11y-glass-popover {
   background: #ffffff !important;
   background-color: #ffffff !important;
   border: 1px solid #e5e5ea !important;
-  box-shadow: 0 16px 40px rgb(0 0 0 / 16%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   color: #1d1d1f !important;
 }
 
@@ -380,7 +361,7 @@ html.dark[data-lg-mode='tinted'] .a11y-glass-popover {
   background: #000000 !important;
   background-color: #000000 !important;
   border: 1px solid #2c2c2e !important;
-  box-shadow: 0 16px 40px rgb(0 0 0 / 45%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   color: #f5f5f7 !important;
 }
 
@@ -837,19 +818,10 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
     .currently-tab:not(.active),
     .ios-widget-wrapper
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-light)) 0%,
-      rgb(255 255 255 / 0%) 42%
-    ),
-    rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background: var(--ui-accent) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   border: 1px solid var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
-    0 1px 2px rgb(0 0 0 / 4%),
-    0 10px 28px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
+  box-shadow: none !important;
 }
 
 html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
@@ -869,18 +841,10 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .currently-tab:not(.active),
     .ios-widget-wrapper
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-dark)) 0%,
-      rgb(255 255 255 / 0%) 40%
-    ),
-    rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background: var(--ui-accent) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   border: 1px solid var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
-    0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
+  box-shadow: none !important;
 }
 
 /* Secondary control buttons — glass in clear/balanced (primary CTAs stay solid blue) */
@@ -938,21 +902,12 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark)
     .reminder-card,
     .health-widget-container
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-light)) 0%,
-      rgb(255 255 255 / 0%) 42%
-    ),
-    rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
+  background: var(--ui-surface) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha)) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   border-color: var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-light)),
-    0 1px 2px rgb(0 0 0 / 4%),
-    0 10px 28px rgb(0 0 0 / var(--lg-card-shadow-light)) !important;
+  box-shadow: none !important;
 }
 
 html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
@@ -970,20 +925,12 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .reminder-card,
     .health-widget-container
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-dark)) 0%,
-      rgb(255 255 255 / 0%) 40%
-    ),
-    rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
+  background: var(--ui-surface) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha)) !important;
   backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   -webkit-backdrop-filter: saturate(var(--lg-saturate)) blur(var(--lg-blur-card)) !important;
   border-color: rgb(255 255 255 / var(--lg-border-dark)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / var(--lg-specular-dark)),
-    0 12px 40px rgb(0 0 0 / var(--lg-card-shadow-dark)) !important;
+  box-shadow: none !important;
 }
 
 /* Card type — SF Pro contrast on glass (matches tinted readability) */
@@ -1103,13 +1050,7 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
     .reminder-card,
     .health-widget-container
   ) {
-  background:
-    linear-gradient(
-      165deg,
-      rgb(255 255 255 / var(--lg-card-highlight-dark, 14%)) 0%,
-      rgb(255 255 255 / 0%) 40%
-    ),
-    rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
+  background: var(--ui-surface) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 64%)) !important;
 }
 
@@ -1391,10 +1332,7 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
       #projects #github-projects-container article.showcase-project-card
     ):hover {
     border-color: #0071e3 !important;
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 80%),
-      0 2px 8px rgb(0 113 227 / 10%),
-      0 14px 36px rgb(0 0 0 / 8%) !important;
+    box-shadow: none !important;
   }
 
   html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
@@ -1413,10 +1351,7 @@ html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced'])
       #projects #github-projects-container article.showcase-project-card
     ):hover {
     border-color: #0a84ff !important;
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 12%),
-      0 0 0 1px rgb(10 132 255 / 16%),
-      0 16px 44px rgb(0 0 0 / 55%) !important;
+    box-shadow: none !important;
   }
 }
 
@@ -1425,18 +1360,14 @@ html:is([data-lg-mode='clear'], [data-lg-mode='balanced']):not(.dark) #chatbot-w
   background: rgb(255 255 255 / var(--lg-card-light-alpha, 72%)) !important;
   background-color: rgb(255 255 255 / var(--lg-card-light-alpha, 72%)) !important;
   border: 1px solid var(--lg-hairline-light, rgb(0 0 0 / 10%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 70%),
-    0 12px 40px rgb(0 0 0 / 10%) !important;
+  box-shadow: none !important;
 }
 
 html.dark:is([data-lg-mode='clear'], [data-lg-mode='balanced']) #chatbot-widget {
   background: rgb(0 0 0 / var(--lg-card-dark-alpha, 70%)) !important;
   background-color: rgb(0 0 0 / var(--lg-card-dark-alpha, 70%)) !important;
   border: 1px solid var(--lg-hairline-dark, rgb(255 255 255 / 14%)) !important;
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 10%),
-    0 14px 44px rgb(0 0 0 / 50%) !important;
+  box-shadow: none !important;
 }
 
 /* Contact dual-ID shells: same hairlines */

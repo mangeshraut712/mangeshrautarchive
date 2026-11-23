@@ -249,7 +249,7 @@ html[data-lg-mode='tinted']:not(.dark)
   background-color: #ffffff !important;
   background-image: none !important;
   border-color: var(--lux-border) !important;
-  box-shadow: var(--lux-shadow) !important;
+  box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
@@ -318,7 +318,7 @@ html.dark[data-lg-mode='tinted']
   background-color: #000000 !important;
   background-image: none !important;
   border-color: var(--lux-border) !important;
-  box-shadow: var(--lux-shadow) !important;
+  box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   color: var(--lux-fg) !important;
@@ -329,7 +329,7 @@ html:not([data-lg-mode]):not(.dark)
   :is(.experience-content, .blog-card, .showcase-project-card, .about-text-card, .contact-card),
 html:not([data-lg-mode]).dark
   :is(.experience-content, .blog-card, .showcase-project-card, .about-text-card, .contact-card) {
-  box-shadow: var(--lux-shadow) !important;
+  box-shadow: none !important;
 }
 
 /* ─── Hover / focus — Apple product interaction ─── */
@@ -437,7 +437,7 @@ html:not([data-lg-mode]).dark
   )
   :is(h2, h3, h4, .card-title, .blog-title, .project-title, .publication-title) {
   font-family: var(--font-display) !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.022em !important;
   line-height: 1.2 !important;
   color: var(--lux-fg) !important;
@@ -466,7 +466,7 @@ html:not([data-lg-mode]).dark
   :is(.meta, .date, .tag, .badge, .label, time, .experience-date, .blog-date, .x-post-card__date) {
   color: var(--lux-fg-secondary) !important;
   font-size: 0.8125rem !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
 }
 
@@ -505,7 +505,7 @@ main > section > h2,
 #main-content > section > .container > h2,
 section.section-standard > .container > h2 {
   font-family: var(--font-display) !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.03em !important;
   line-height: 1.05 !important;
 }
@@ -522,7 +522,7 @@ section .section-subtitle {
 :is(.experience-content, .showcase-project-card, .blog-card, .skill-category)
   :is(.tag, .chip, .experience-tag, .project-tag, .skill-tag, .tech-tag) {
   border-radius: 999px !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   border: 1px solid var(--lux-border) !important;
   background: rgb(120 120 128 / 8%) !important;
@@ -550,7 +550,7 @@ html.dark
 :is(.blog-card, .showcase-project-card, .newsletter-card, .support-donation-card, .about-text-card)
   :is(a.btn, .btn-primary, .read-more-btn, .blog-read-btn, .project-action-btn, .project-link) {
   border-radius: var(--lux-radius-pill) !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   min-height: 44px;
   transition:
@@ -644,13 +644,13 @@ html[data-lg-mode='balanced']
 html[data-lg-mode='tinted']:not(.dark)
   #contact
   :is(.calendar-wrapper-clean, .currently-card, .support-donation-card, .contact-card) {
-  box-shadow: var(--lux-shadow) !important;
+  box-shadow: none !important;
 }
 
 html.dark[data-lg-mode='tinted']
   #contact
   :is(.calendar-wrapper-clean, .currently-card, .support-donation-card, .contact-card) {
-  box-shadow: var(--lux-shadow) !important;
+  box-shadow: none !important;
 }
 
 /* ─── Systems / monitor / travel subpage cards ─── */
@@ -683,7 +683,7 @@ html[data-lg-mode='tinted']:not(.dark)
   ) {
   background: #ffffff !important;
   border-color: var(--lux-border) !important;
-  box-shadow: var(--lux-shadow) !important;
+  box-shadow: none !important;
 }
 
 html.dark[data-lg-mode='tinted']
@@ -698,7 +698,7 @@ html.dark[data-lg-mode='tinted']
   ) {
   background: #000000 !important;
   border-color: var(--lux-border) !important;
-  box-shadow: var(--lux-shadow) !important;
+  box-shadow: none !important;
 }
 
 /* ════════════════════════════════════════════════════════════════

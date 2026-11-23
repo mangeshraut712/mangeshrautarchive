@@ -18,15 +18,15 @@ button[type='submit'],
 input[type='submit'] {
   padding: 1rem 2rem;
   background-color: #0071e3;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%);
+  background-image: none;
   color: #fff !important;
   border: 2px solid var(--card-border-rest);
   border-radius: 16px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 30%);
+  box-shadow: none;
   transition:
     color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
     background-color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -53,7 +53,7 @@ input[type='submit'] {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 20%), transparent);
+  background: none;
   transition: left 0.5s;
 }
 
@@ -74,7 +74,7 @@ input[type='submit'] {
 .download-btn:hover {
   background: #0077ed;
   background-image: none;
-  box-shadow: 0 6px 24px rgb(41 151 255 / 40%);
+  box-shadow: none;
   transform: translateY(-2px);
 }
 
@@ -95,7 +95,7 @@ html.dark .hero-cta:not(.hero-cta-secondary):not(.hero-cta-primary):not(.btn-pri
 html.dark .cta-button:hover {
   background: #2997ff;
   background-image: none;
-  box-shadow: 0 8px 32px rgb(41 151 255 / 50%);
+  box-shadow: none;
 }
 
 /* Projects layout fallback so the showcase keeps a stable grid before deferred styles load */
@@ -126,7 +126,7 @@ html.dark .cta-button:hover {
   border-radius: 20px;
   border: 1px solid var(--card-border-rest);
   background: #fff;
-  box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
+  box-shadow: none;
   transition:
     color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
     background-color 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -148,7 +148,7 @@ html.dark .cta-button:hover {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #0071e3, #2997ff, #5ac8fa);
+  background: none;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -181,7 +181,7 @@ html.dark .recommendation-card,
 html.dark .blog-card {
   background: #000;
   border-color: var(--card-border-rest);
-  box-shadow: 0 12px 40px rgb(0 0 0 / 50%);
+  box-shadow: none;
 }
 
 html.dark .card:hover,
@@ -212,7 +212,7 @@ select {
   background: var(--bg-secondary);
   color: var(--text-primary);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   transition:
     color 0.3s ease,
     background-color 0.3s ease,
@@ -496,7 +496,7 @@ html.dark #contact .dream-car-item[title='Toyota'] .car-logo {
 /* Media cards critical contrast & typography (eager — contact.css is lazy) */
 .media-info h4 {
   color: #1d1d1f !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .media-info h4 {
@@ -547,7 +547,7 @@ html.dark .book-btn * {
   text-decoration: none !important;
   border-radius: 9999px !important;
   font-size: 0.95rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   line-height: 1.2 !important;
 }
 
@@ -566,12 +566,12 @@ html.dark .book-btn * {
 }
 
 #contact .support-stripe-btn.premium {
-  background: linear-gradient(135deg, #635bff 0%, #4f46e5 100%) !important;
+  background: var(--ui-accent) !important;
   color: #fff !important;
 }
 
 #contact .support-paypal-btn.premium {
-  background: linear-gradient(135deg, #003087 0%, #0070ba 100%) !important;
+  background: var(--ui-accent) !important;
   color: #fff !important;
 }
 
@@ -727,7 +727,7 @@ main#main-content > section[id] {
   -webkit-text-fill-color: #0071e3 !important;
   font-family: var(--font-text);
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.015em;
   line-height: 1.25;
   -webkit-font-smoothing: antialiased;
@@ -855,7 +855,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 800;
+  font-weight: var(--ui-weight-medium);
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -1110,7 +1110,7 @@ p,
   text-align: center;
   font-size: clamp(1rem, 2.1vw, 1.125rem);
   line-height: 1.55;
-  font-weight: 450;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.01em;
   color: var(--text-secondary, #6e6e73);
 }
@@ -1214,9 +1214,7 @@ section[id] {
   .blog-card:hover {
     transform: translateY(-4px);
     border-color: rgb(0 113 227 / 22%);
-    box-shadow:
-      0 12px 36px rgb(0 0 0 / 10%),
-      0 0 0 1px rgb(0 113 227 / 8%);
+    box-shadow: none;
   }
 
   html.dark .card:hover,
@@ -1228,9 +1226,7 @@ section[id] {
   html.dark .recommendation-card:hover,
   html.dark .blog-card:hover {
     border-color: rgb(41 151 255 / 28%);
-    box-shadow:
-      0 16px 44px rgb(0 0 0 / 55%),
-      0 0 0 1px rgb(41 151 255 / 12%);
+    box-shadow: none;
   }
 }
 
@@ -1449,7 +1445,7 @@ body:not(.systems-page):not(.monitor-page):not(.uses-page):not(.error-page) main
 #projects #github-projects-container .showcase-project-card {
   background: #ffffff !important;
   border: 1px solid var(--card-border-rest, #e5e5ea) !important;
-  box-shadow: 0 1px 0 rgb(0 0 0 / 3%) !important;
+  box-shadow: none !important;
 }
 
 html.dark #projects #github-projects-container .showcase-project-card {
@@ -1520,9 +1516,9 @@ html.dark #projects #github-projects-container .showcase-project-card:hover {
   background: #ffffff !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 6%) !important;
+  box-shadow: none !important;
   font-size: 0.75rem !important;
-  font-weight: 650 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   line-height: 1 !important;
   white-space: nowrap !important;
@@ -1643,14 +1639,14 @@ html.dark .card-read-toolbar .card-speak-btn[aria-pressed='true'] {
   border-color: #0071e3 !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  box-shadow: 0 0 0 3px rgb(0 113 227 / 14%) !important;
+  box-shadow: none !important;
 }
 
 html.dark .card-read-toolbar .card-translate-btn[aria-expanded='true'] {
   border-color: #0a84ff !important;
   color: #0a84ff !important;
   -webkit-text-fill-color: #0a84ff !important;
-  box-shadow: 0 0 0 3px rgb(10 132 255 / 18%) !important;
+  box-shadow: none !important;
 }
 
 .card-read-toolbar svg,
@@ -1664,7 +1660,7 @@ html.dark .card-read-toolbar .card-translate-btn[aria-expanded='true'] {
   border-radius: 16px !important;
   border: 1px solid #e5e5ea !important;
   background: #ffffff !important;
-  box-shadow: 0 16px 40px rgb(0 0 0 / 14%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
@@ -1672,7 +1668,7 @@ html.dark .card-read-toolbar .card-translate-btn[aria-expanded='true'] {
 html.dark .card-translate-popover {
   background: #000000 !important;
   border-color: #2c2c2e !important;
-  box-shadow: 0 18px 48px rgb(0 0 0 / 55%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 /* Launch / first paint — reduce long blank load feeling */

@@ -1,5 +1,5 @@
 /**
- * Vibe stack flyout — opens on Vibe Coder badge click.
+ * Vibe stack flyout — opens on Vibe coder badge click.
  * Music-card style marquee; does not shift hero layout (fixed overlay).
  */
 (function () {

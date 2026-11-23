@@ -29,9 +29,9 @@
   border: 2px solid #ffffff;
   border-radius: 0 0 12px 12px;
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   text-decoration: none;
-  box-shadow: 0 8px 24px rgb(0 113 227 / 40%);
+  box-shadow: none;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: auto;
   white-space: nowrap;
@@ -53,7 +53,7 @@ html.dark .skip-link {
   color: #000000;
   background: #7dc8ff;
   border-color: #000000;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 45%);
+  box-shadow: none;
 }
 
 /* ========================================
@@ -65,7 +65,7 @@ html.dark .skip-link {
 .experience-card .company-name,
 .experience-item .company-name {
   color: #004494 !important; /* Darker blue for 7:1 contrast on white */
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .experience-content .text-accent,
@@ -80,7 +80,7 @@ html.dark .experience-item .company-name {
   color: #1d1d1f !important;
   background: #ffffff !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .experience-date-badge,
@@ -95,7 +95,7 @@ html.dark .experience-period {
   color: #1d1d1f !important;
   background: #ffffff !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .experience-tag {
@@ -110,7 +110,7 @@ html.dark .experience-tag {
 #experience h3.text-xl,
 .experience-role {
   color: #1d1d1f !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .experience-content h3,
@@ -140,7 +140,7 @@ html.dark .experience-item p {
 /* Publication category - was #0071e3 */
 .publication-category {
   color: #003d7a !important; /* Dark blue for 7:1 contrast */
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .publication-category {
@@ -150,7 +150,7 @@ html.dark .publication-category {
 /* Publication venue */
 .publication-venue {
   color: #1d1d1f !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .publication-venue {
@@ -161,7 +161,7 @@ html.dark .publication-venue {
 .publication-title,
 .publication-card h3 {
   color: #1d1d1f !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .publication-title,
@@ -172,7 +172,7 @@ html.dark .publication-card h3 {
 /* Publication authors */
 .publication-authors {
   color: #3a3a3c !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .publication-authors {
@@ -205,7 +205,7 @@ html.dark .publication-details {
 .award-title,
 .award-card h3 {
   color: #1d1d1f !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .award-title,
@@ -216,7 +216,7 @@ html.dark .award-card h3 {
 /* Award institution - was #0071e3 */
 .award-institution {
   color: #004494 !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .award-institution {
@@ -239,7 +239,7 @@ html.dark .award-description {
 /* Recommendation text */
 .recommendation-text {
   color: #2c2c2e !important;
-  font-weight: 400 !important;
+  font-weight: var(--ui-weight-regular) !important;
 }
 
 html.dark .recommendation-text {
@@ -249,7 +249,7 @@ html.dark .recommendation-text {
 /* Author name */
 .author-name {
   color: #1d1d1f !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .author-name {
@@ -267,7 +267,7 @@ html.dark .author-name {
 /* Author title */
 #recommendations .author-title {
   color: #48484a !important; /* Darker for better contrast */
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark #recommendations .author-title {
@@ -278,7 +278,7 @@ html.dark #recommendations .author-title {
 #recommendations .author-company,
 #recommendations .author-company-link {
   color: #0051a8 !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark #recommendations .author-company,
@@ -304,7 +304,7 @@ html.dark #recommendations .author-company-link:hover {
 .education-title,
 .education-degree {
   color: #1d1d1f !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .education-title,
@@ -315,7 +315,7 @@ html.dark .education-degree {
 #education .education-school,
 #education .education-institution {
   color: #0051a8 !important; /* Darker blue for contrast AA — beats education.css !important by higher specificity */
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark #education .education-school,
@@ -341,7 +341,7 @@ html.dark #education .education-period {
 .activity-stat-label,
 #projects .activity-stat-label {
   color: #3a3a3c !important; /* Darker than #86868b */
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .activity-stat-label,
@@ -457,7 +457,7 @@ html.dark body .text-xs.text-gray-500 {
 .hint-main-title,
 .chat-hint-title {
   color: #1d1d1f !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .hint-main-title,
@@ -479,7 +479,7 @@ html.dark .chat-hint-text {
 /* Checklist items */
 .check-list-title {
   color: #1d1d1f !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .check-list-title {
@@ -488,7 +488,7 @@ html.dark .check-list-title {
 
 .check-list-item-title {
   color: #2c2c2e !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .check-list-item-title {
@@ -502,7 +502,7 @@ html.dark .check-list-item-title {
 /* Certification title */
 .certification-title {
   color: #1d1d1f !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .certification-title {
@@ -512,7 +512,7 @@ html.dark .certification-title {
 /* Certification issuer */
 .certification-issuer {
   color: #004494 !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .certification-issuer {
@@ -526,7 +526,7 @@ html.dark .certification-issuer {
 /* Skill badge percentage */
 .skill-badge-percentage {
   color: #48484a !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
 }
 
 html.dark .skill-badge-percentage {

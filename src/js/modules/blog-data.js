@@ -470,7 +470,7 @@ Reviewed November 9, 2026 against the caching and Auto Router documentation. Cor
     ],
     date: '2026-07-15',
     updatedAt: '2026-11-09',
-    tags: ['Grok 4.5', 'Grok Build', 'xAI', 'Coding Agents', 'Open Source'],
+    tags: ['Grok 4.5', 'Grok Build', 'xAI', 'Coding Agents', 'Open source'],
     readTime: '11 min read',
     content: `July 2026 compressed two related builder decisions into one stack question: a stronger coding-first model (**Grok 4.5**) and an inspectable agent harness (**Grok Build**) that is now open source. I care less about keynote adjectives and more about what changes in an agent loop I would actually ship.
 
@@ -478,7 +478,7 @@ Reviewed November 9, 2026 against the caching and Auto Router documentation. Cor
 
 :::figure
 src: assets/images/blog/original-sources/grok-build-source.webp
-alt: Open Source title on xAI’s black announcement artwork
+alt: Open source title on xAI’s black announcement artwork
 caption: Official artwork for xAI’s Grok Build open-source announcement.
 credit: xAI
 source: https://x.ai/news/grok-build-open-source
@@ -1150,7 +1150,7 @@ Reviewed November 9, 2026 against Google's I/O collection and Workspace AI priva
     highlights: ['Effective permission tests', 'Messaging scope', 'Session isolation'],
     date: '2026-01-25',
     updatedAt: '2026-11-09',
-    tags: ['OpenClaw', 'Open Source', 'AI Agents', 'Decentralization'],
+    tags: ['OpenClaw', 'Open source', 'AI Agents', 'Decentralization'],
     readTime: '11 min read',
     content: `OpenClaw connects messaging channels to a tool-using assistant through a self-hosted gateway. I focus here on that product pattern and its documented permission boundaries, rather than an uncertain naming history or popularity metric.
 

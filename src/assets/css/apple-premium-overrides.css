@@ -220,7 +220,7 @@ samp,
 #debug-runner-section h2,
 #currently-section h2 {
   font-size: clamp(1.85rem, 3.8vw, 2.6rem) !important;
-  font-weight: 800 !important;
+  font-weight: var(--ui-weight-medium) !important;
   text-align: center !important;
   margin-bottom: 0.75rem !important;
   /* Match home "Mangesh Raut" Apple blue */
@@ -323,7 +323,7 @@ button,
 .project-action-btn,
 .projects-view-all-btn {
   border-radius: 12px !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   transition:
     color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
@@ -336,37 +336,37 @@ button,
 
 .projects-view-all-btn {
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.38) !important;
-  font-weight: 600 !important;
+  box-shadow: none !important;
+  font-weight: var(--ui-weight-medium) !important;
   border-radius: 12px !important;
 }
 
 .projects-view-all-btn:hover {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.48) !important;
+  box-shadow: none !important;
 }
 
 html.dark .projects-view-all-btn {
   background-color: #0071e3 !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.45) !important;
+  box-shadow: none !important;
 }
 
 html.dark .projects-view-all-btn:hover {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
@@ -378,7 +378,7 @@ html.dark .projects-view-all-btn:hover {
   -webkit-text-fill-color: #1d1d1f !important;
   border: 1px solid rgb(0 0 0 / 14%) !important;
   box-shadow: none !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   border-radius: 10px !important;
 }
 
@@ -388,7 +388,7 @@ html.dark .projects-view-all-btn:hover {
   -webkit-text-fill-color: #0071e3 !important;
   border-color: rgb(0 113 227 / 45%) !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 14px rgb(0 113 227 / 12%) !important;
+  box-shadow: none !important;
 }
 
 html.dark .project-action-btn.btn-demo {
@@ -404,7 +404,7 @@ html.dark .project-action-btn.btn-demo:hover:not(:disabled):not(.is-disabled) {
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
   border-color: rgb(10 132 255 / 55%) !important;
-  box-shadow: 0 4px 14px rgb(10 132 255 / 16%) !important;
+  box-shadow: none !important;
 }
 
 /* 5. Premium Search & Mobile Menu */
@@ -505,11 +505,11 @@ html.dark .premium-close-btn:hover {
 
 .menu-section-title {
   font-size: 0.85rem;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.05em;
   color: #4a4a4f;
   margin-bottom: 1rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   padding-left: 0.5rem;
 }
 
@@ -526,7 +526,7 @@ html.dark .menu-section-title {
 
   /* No Card Background */
   border-radius: 0 !important;
-  box-shadow: none !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   width: 85% !important;
 
   /* Slightly wider for readability */
@@ -568,12 +568,12 @@ html.dark .menu-item {
   background: #0071e3;
   color: #fff;
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgb(0 113 227 / 25%);
+  box-shadow: var(--ui-shadow-floating);
 }
 
 html.dark .menu-item:hover {
   background: #0a84ff;
-  box-shadow: 0 8px 20px rgb(10 132 255 / 40%);
+  box-shadow: var(--ui-shadow-floating);
 }
 
 .menu-icon {
@@ -608,7 +608,7 @@ html.dark .menu-item:hover {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 4px 12px rgb(255 59 48 / 45%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 #close-menu-btn i {
@@ -650,7 +650,7 @@ html.dark .menu-item:hover {
     background: rgb(0 113 227 / 10%);
     color: #0071e3;
     transform: none;
-    box-shadow: none;
+    box-shadow: var(--ui-shadow-floating);
   }
 
   html.dark .menu-item:hover {
@@ -671,7 +671,7 @@ html.dark .menu-item:hover {
     font-size: 15px !important;
 
     /* Larger font as requested */
-    font-weight: 400 !important;
+    font-weight: var(--ui-weight-regular) !important;
 
     /* Regular weight (Apple style) */
     width: auto !important;
@@ -733,7 +733,7 @@ html.dark .overlay-menu {
 
 html.dark .menu-grid {
   background: transparent !important;
-  box-shadow: none !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 /* Enhanced Menu Items (Absolute Compact) */
@@ -786,7 +786,7 @@ html.dark .premium-menu-icon i {
   font-size: 0.9rem !important;
 
   /* Readable Micro Text */
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   color: #1d1d1f;
   text-decoration: none !important;
   flex-grow: 1;
@@ -801,7 +801,7 @@ html.dark .menu-item span {
 .calendar-card {
   background: #fff !important;
   border: 1px solid rgb(0 0 0 / 10%) !important;
-  box-shadow: 0 8px 32px rgb(0 0 0 / 5%) !important;
+  box-shadow: none !important;
   border-radius: 20px !important;
   overflow: hidden !important;
   transition:
@@ -812,16 +812,16 @@ html.dark .menu-item span {
 html.dark .calendar-card {
   background: #000 !important;
   border: 1px solid rgb(255 255 255 / 15%) !important;
-  box-shadow: 0 8px 32px rgb(0 0 0 / 30%) !important;
+  box-shadow: none !important;
 }
 
 .calendar-card:hover {
   transform: translateY(-4px) scale(1.005) !important;
-  box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
+  box-shadow: none !important;
 }
 
 html.dark .calendar-card:hover {
-  box-shadow: 0 20px 60px rgb(0 0 0 / 50%) !important;
+  box-shadow: none !important;
 }
 
 /* 8. Fix Rogue Vertical Line */
@@ -876,7 +876,7 @@ html.dark .schedule-icon {
 
 .schedule-title {
   font-size: 1.75rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   margin-bottom: 0.75rem;
 }
 
@@ -924,7 +924,7 @@ html.dark .schedule-text {
   border: 1px solid rgb(0 0 0 / 10%) !important;
 
   /* Match Contact Card Border */
-  box-shadow: 0 8px 32px rgb(0 0 0 / 5%) !important;
+  box-shadow: none !important;
 
   /* Match Contact Card Shadow */
   transition: transform 0.3s ease;
@@ -935,14 +935,14 @@ html.dark .ios-widget-wrapper {
 
   /* Solid Black */
   border: 1px solid rgb(255 255 255 / 15%) !important;
-  box-shadow: 0 8px 32px rgb(0 0 0 / 30%) !important;
+  box-shadow: none !important;
 }
 
 .ios-widget-wrapper:hover {
   transform: translateY(-5px);
 
   /* Match Global Card Hover */
-  box-shadow: 0 20px 40px rgb(0 0 0 / 12%) !important;
+  box-shadow: none !important;
 }
 
 .contact-or-divider {
@@ -952,7 +952,7 @@ html.dark .ios-widget-wrapper {
   margin: 16px 0 12px !important;
   color: #555558 !important;
   font-size: 0.72rem !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.08em !important;
 }
 
@@ -1004,9 +1004,9 @@ html.dark .calendly-panel {
   width: 48px;
   height: 48px;
   color: #fff;
-  background: linear-gradient(135deg, #007aff, #34c759);
+  background: var(--ui-surface);
   border-radius: 16px;
-  box-shadow: 0 10px 24px rgb(0 122 255 / 24%);
+  box-shadow: none;
 }
 
 .calendly-panel-copy {
@@ -1019,9 +1019,9 @@ html.dark .calendly-panel {
   margin-bottom: 0.15rem;
   color: var(--text-secondary);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 
 .calendly-panel h4 {
@@ -1054,28 +1054,26 @@ html.dark .calendly-panel h4 {
   padding: 0.75rem 1.6rem !important;
   border-radius: 980px !important;
   font-size: 0.94rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
   border: 1.5px solid rgba(0, 113, 227, 0.35) !important;
-  box-shadow:
-    0 2px 8px rgba(0, 113, 227, 0.08),
-    0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   cursor: pointer !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .calendly-panel-button:hover {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   transform: translateY(-2px) scale(1.01) !important;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.45) !important;
+  box-shadow: none !important;
 }
 
 .calendly-panel-button:active {
@@ -1088,16 +1086,16 @@ html.dark .calendly-panel-button {
   border: 1.5px solid rgba(41, 151, 255, 0.45) !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: none !important;
 }
 
 html.dark .calendly-panel-button:hover {
   background-color: #0077ed !important;
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.55) !important;
+  box-shadow: none !important;
 }
 
 /* Calendar Section */
@@ -1130,7 +1128,7 @@ html.dark .ios-calendar-section {
   font-size: 1.5rem !important;
 
   /* Big, Bold Title */
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.02em;
   color: #1d1d1f;
   background: none;
@@ -1185,7 +1183,7 @@ html.dark .ios-btn:hover {
   background: #fff !important;
   width: auto !important;
   padding: 0 12px !important;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   border-radius: 16px !important;
 }
 
@@ -1199,10 +1197,10 @@ html.dark .ios-btn:hover {
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: #4a4a4f;
   margin-bottom: 12px;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.05em;
 }
 
@@ -1228,7 +1226,7 @@ html.dark .ios-weekdays {
   align-items: center;
   justify-content: center;
   font-size: 1rem !important;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
   border-radius: 50%;
   cursor: pointer;
   position: relative;
@@ -1254,12 +1252,12 @@ html.dark .ios-weekdays {
 
   /* Zoom effect */
   z-index: 2;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  box-shadow: none;
 }
 
 html.dark .day-cell:hover:not(.empty, .selected, .today) {
   background: rgb(255 255 255 / 15%);
-  box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
+  box-shadow: none;
 }
 
 .day-cell:active:not(.empty) {
@@ -1270,43 +1268,39 @@ html.dark .day-cell:hover:not(.empty, .selected, .today) {
   background: #ff3b30 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  font-weight: 700 !important;
-  box-shadow: 0 3px 12px rgba(255, 59, 48, 0.45) !important;
+  font-weight: var(--ui-weight-medium) !important;
+  box-shadow: none !important;
 }
 
 html.dark .day-cell.today {
   background: #ff453a !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 3px 14px rgba(255, 69, 58, 0.55) !important;
+  box-shadow: none !important;
 }
 
 .day-cell.selected:not(.today) {
   background: #0071e3 !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   transform: scale(1.08) !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.4) !important;
+  box-shadow: none !important;
 }
 
 html.dark .day-cell.selected:not(.today) {
   background: #0a84ff !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.45) !important;
+  box-shadow: none !important;
 }
 
 .day-cell.today.selected {
-  box-shadow:
-    0 0 0 2px #ffffff,
-    0 4px 16px rgba(255, 59, 48, 0.6) !important;
+  box-shadow: none !important;
 }
 
 html.dark .day-cell.today.selected {
-  box-shadow:
-    0 0 0 2px #ffffff,
-    0 4px 16px rgba(255, 69, 58, 0.7) !important;
+  box-shadow: none !important;
 }
 
 /* Reminder Checkmark Animation */
@@ -1315,7 +1309,7 @@ html.dark .day-cell.today.selected {
   content: '✓';
   color: white !important;
   font-size: 12px !important;
-  font-weight: bold !important;
+  font-weight: var(--ui-weight-medium) !important;
   transform: scale(0);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -1355,20 +1349,20 @@ html.dark .day-cell.today.selected {
   padding: 0 14px !important;
   border-radius: 9999px !important;
   font-size: 0.8rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35) !important;
+  box-shadow: none !important;
   cursor: pointer !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .ios-btn-small:hover {
-  background-image: linear-gradient(135deg, #0080ff 0%, #0071e3 50%, #0066cc 100%) !important;
+  background-image: none !important;
   transform: translateY(-1px) scale(1.04) !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.45) !important;
+  box-shadow: none !important;
 }
 
 .ios-btn-small:active {
@@ -1430,7 +1424,7 @@ html.dark .ios-reminders-section {
 
 .reminders-title {
   font-size: 1rem !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
   margin: 0 !important;
   display: inline-flex !important;
@@ -1511,7 +1505,7 @@ html.dark .edit-btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   border: 1px solid rgba(0, 0, 0, 0.08) !important;
   overflow: hidden;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1522,7 +1516,7 @@ html.dark .edit-btn {
 html.dark .reminder-card {
   background: #000000 !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
 }
 
 /* Hover Effect */
@@ -1531,13 +1525,13 @@ html.dark .reminder-card {
   transform: translateY(-1px);
   z-index: 2;
   border-color: rgba(0, 113, 227, 0.3) !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.12) !important;
+  box-shadow: none !important;
 }
 
 html.dark .reminder-card:hover {
   background: #000000 !important;
   border-color: rgba(10, 132, 255, 0.35) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: none !important;
 }
 
 /* Accent Strip (Left Color Bar) */
@@ -1632,7 +1626,7 @@ html.dark .reminder-card.accent-indigo .card-tag {
   min-height: 28px !important;
   border-radius: 9999px !important;
   font-size: 0.74rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   padding: 4px 11px !important;
   cursor: pointer !important;
   white-space: nowrap !important;
@@ -1644,7 +1638,7 @@ html.dark .reminder-card.accent-indigo .card-tag {
   background-image: none !important;
   border: 1px solid rgba(0, 0, 0, 0.14) !important;
   color: #1d1d1f !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
@@ -1659,7 +1653,7 @@ html.dark .filter-tab {
   background-image: none !important;
   border: 1px solid #2c2c2e !important;
   color: #f5f5f7 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: none !important;
 }
 
 .filter-tab:hover {
@@ -1680,11 +1674,11 @@ html.dark .filter-tab:hover {
 }
 
 .filter-tab.active {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.38) !important;
+  box-shadow: none !important;
 }
 
 .filter-tab.active i {
@@ -1693,9 +1687,9 @@ html.dark .filter-tab:hover {
 }
 
 html.dark .filter-tab.active {
-  background-image: linear-gradient(135deg, #0077ed 0%, #0071e3 50%, #005bb5 100%) !important;
+  background-image: none !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 2px 10px rgba(10, 132, 255, 0.45) !important;
+  box-shadow: none !important;
 }
 
 /* Day Inspector Banner */
@@ -1706,7 +1700,7 @@ html.dark .filter-tab.active {
   padding: 6px 12px !important;
   border-radius: 10px !important;
   font-size: 0.76rem !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   background: rgba(0, 113, 227, 0.05) !important;
   border: 1px solid rgba(0, 113, 227, 0.15) !important;
   color: #0071e3 !important;
@@ -1726,7 +1720,7 @@ html.dark .day-inspector-banner {
   cursor: pointer !important;
   color: inherit !important;
   font-size: 0.7rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   padding: 2px 8px !important;
   border-radius: 9999px !important;
   transition: all 0.15s ease !important;
@@ -1755,7 +1749,7 @@ html.dark .day-inspector-clear:hover {
   align-items: center !important;
   gap: 6px !important;
   font-size: 0.75rem !important;
-  font-weight: 580 !important;
+  font-weight: var(--ui-weight-medium) !important;
   padding: 4px 12px !important;
   border-radius: 9999px !important;
   background: rgba(52, 199, 89, 0.08) !important;
@@ -1826,7 +1820,7 @@ html.dark .reminders-list::-webkit-scrollbar-thumb {
   background: #0071e3 !important;
   border-color: #0071e3 !important;
   transform: scale(1.1) !important;
-  box-shadow: 0 2px 10px rgba(0, 113, 227, 0.35) !important;
+  box-shadow: none !important;
 }
 
 html.dark .card-action-btn {
@@ -1839,13 +1833,13 @@ html.dark .card-action-btn:hover {
   background: #0a84ff !important;
   border-color: #0a84ff !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 10px rgba(10, 132, 255, 0.45) !important;
+  box-shadow: none !important;
 }
 
 .sync-book-btn:hover {
   background: #34c759 !important;
   border-color: #34c759 !important;
-  box-shadow: 0 2px 10px rgba(52, 199, 89, 0.45) !important;
+  box-shadow: none !important;
 }
 
 /* Multi-colored Calendar Dots */
@@ -1913,7 +1907,7 @@ html.dark .empty-state-icon {
 
 .empty-state-title {
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: #1d1d1f;
   margin-bottom: 4px;
 }
@@ -1945,7 +1939,7 @@ html.dark .empty-state-title {
   padding: 6px 14px;
   border-radius: 9999px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -1958,7 +1952,7 @@ html.dark .empty-state-title {
   color: #ffffff;
   border-color: #0071e3;
   transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(0, 113, 227, 0.25);
+  box-shadow: none;
 }
 
 html.dark .empty-action-btn {
@@ -1971,7 +1965,7 @@ html.dark .empty-action-btn:hover {
   background: #0a84ff;
   color: #ffffff;
   border-color: #0a84ff;
-  box-shadow: 0 3px 12px rgba(10, 132, 255, 0.35);
+  box-shadow: none;
 }
 
 .card-desc {
@@ -2040,9 +2034,9 @@ html.dark .reminder-card.completed .card-title {
   font-size: 0.7rem !important;
 
   /* Smaller meta */
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: #4a4a4f;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.03em;
 }
 
@@ -2071,7 +2065,7 @@ html.dark .card-tag {
   font-size: 0.9rem !important;
 
   /* Compact Title */
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: #1d1d1f;
   line-height: 1.2;
   overflow: hidden;
@@ -2137,7 +2131,7 @@ html.dark .status-circle {
 
 .ai-suggestion {
   margin-top: 1.5rem;
-  background: linear-gradient(135deg, rgb(0 122 255 / 10%), rgb(88 86 214 / 10%)) !important;
+  background: var(--ui-surface) !important;
   border: 1px solid rgb(0 122 255 / 20%) !important;
   border-radius: 16px;
   padding: 12px 16px;
@@ -2152,7 +2146,7 @@ html.dark .status-circle {
 
 .ai-suggestion:hover {
   transform: scale(1.02);
-  box-shadow: 0 4px 12px rgb(0 122 255 / 20%);
+  box-shadow: none;
 }
 
 html.dark .ai-suggestion {
@@ -2169,7 +2163,7 @@ html.dark .ai-suggestion {
   border-radius: 980px !important;
   padding: 6px 14px !important;
   font-size: 13px !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   border: 1px solid transparent !important;
 }
 
@@ -2231,16 +2225,12 @@ html.dark .experience-timeline::before {
 }
 
 .experience-icon {
-  box-shadow:
-    0 0 0 4px rgb(255 255 255 / 100%),
-    0 4px 12px rgb(0 113 227 / 30%) !important;
+  box-shadow: none !important;
   background: #0071e3 !important;
 }
 
 html.dark .experience-icon {
-  box-shadow:
-    0 0 0 4px rgb(0 0 0 / 100%),
-    0 4px 12px rgb(41 151 255 / 30%) !important;
+  box-shadow: none !important;
   background: #2997ff !important;
 }
 
@@ -2283,7 +2273,7 @@ html.dark .skill-badge:hover {
 /* Badge Text */
 .skill-name {
   font-size: 0.95rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: 0.01em !important;
   color: #1d1d1f !important;
 }
@@ -2297,7 +2287,7 @@ html.dark .skill-name {
   width: 28px !important;
   height: 28px !important;
   object-fit: contain !important;
-  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 10%));
+  filter: none;
 }
 
 /* Contact Form */
@@ -2356,10 +2346,10 @@ html.dark textarea:focus {
 
 /* Special Day Cell */
 .day-cell.mangesh-birthday {
-  background: linear-gradient(135deg, #ffd700, #fdb931) !important;
+  background: var(--ui-surface) !important;
   color: #000 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 4px 12px rgb(255 215 0 / 40%) !important;
+  font-weight: var(--ui-weight-medium) !important;
+  box-shadow: none !important;
   border-radius: 50% !important;
 
   /* Circle like iOS selected state */
@@ -2371,7 +2361,7 @@ html.dark textarea:focus {
 
 html.dark .day-cell.mangesh-birthday {
   border: 2px solid #000 !important;
-  box-shadow: 0 4px 15px rgb(255 215 0 / 60%) !important;
+  box-shadow: none !important;
 }
 
 /* Apple Logo Dot */
@@ -2386,7 +2376,7 @@ html.dark .day-cell.mangesh-birthday {
 /* Gold Accent for Reminder Card */
 .reminder-card.accent-gold {
   border-left: 4px solid #ffd700 !important;
-  background: linear-gradient(to right, rgb(255 215 0 / 5%), transparent) !important;
+  background: var(--ui-accent) !important;
 }
 
 .reminder-card.accent-gold .card-tag {
@@ -2400,7 +2390,7 @@ html.dark .day-cell.mangesh-birthday {
 
 .reminder-card.accent-gold:hover {
   border-color: #fdb931 !important;
-  background: linear-gradient(to right, rgb(255 215 0 / 15%), transparent) !important;
+  background: var(--ui-accent) !important;
 }
 
 html.dark .reminder-card.accent-gold .card-tag {
@@ -2444,19 +2434,19 @@ html.dark .apple-tldr {
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(to bottom, #0071e3, #5ac8fa);
+  background: none;
   border-radius: 4px;
 }
 
 .apple-tldr:hover {
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 8px 24px rgba(0, 113, 227, 0.08);
+  box-shadow: none;
 }
 
 html.dark .apple-tldr:hover {
   background: rgba(41, 151, 255, 0.08);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
 }
 
 /* Vibe Coder & Hero Enhancements - Premium Spacing & Airy Layout */
@@ -2550,7 +2540,7 @@ html.dark .apple-tldr:hover {
   border: 1px solid rgba(0, 0, 0, 0.15) !important;
   border-radius: 980px;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: -0.01em;
   color: #1d1d1f;
   box-shadow: none !important;
@@ -2601,7 +2591,7 @@ html.dark .vibe-coder-badge:hover {
 
 .hero-name {
   font-size: clamp(1.2rem, 5vw, 1.8rem) !important;
-  font-weight: 800 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.04em !important;
   margin-bottom: 0.4rem !important;
   line-height: 1.1 !important;
@@ -2612,7 +2602,7 @@ html.dark .vibe-coder-badge:hover {
 
 .hero-title {
   font-size: clamp(1rem, 2.5vw, 1.4rem) !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.02em !important;
   color: #4a4a4f !important;
   margin-bottom: 0 !important;
@@ -2637,7 +2627,7 @@ html.dark .hero-name {
 .hero-description {
   font-size: clamp(1rem, 1.8vw, 1.25rem) !important;
   line-height: 1.5 !important;
-  font-weight: 400 !important;
+  font-weight: var(--ui-weight-regular) !important;
   color: #434346 !important;
   opacity: 0.9;
   letter-spacing: -0.01em !important;
@@ -2655,13 +2645,13 @@ html.dark .hero-description {
     box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
-  font-weight: 600;
+  box-shadow: none;
+  font-weight: var(--ui-weight-medium);
 }
 
 .hero-cta:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
 }
 
 @media (max-width: 900px) {
@@ -2678,14 +2668,8 @@ html.dark .hero-description {
   height: 120px !important;
   border-radius: 50% !important;
   padding: 2px !important;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.4),
-    rgba(255, 255, 255, 0.1)
-  ) !important;
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.05),
-    0 0 0 1px rgba(0, 0, 0, 0.03) !important;
+  background: var(--ui-surface) !important;
+  box-shadow: none !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 10;
@@ -2693,10 +2677,8 @@ html.dark .hero-description {
 }
 
 html.dark .profile-image-wrapper {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: var(--ui-surface);
+  box-shadow: none;
 }
 
 .profile-image {
@@ -2718,10 +2700,10 @@ html.dark .profile-image {
   position: absolute;
   inset: -15px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 113, 227, 0.08) 0%, transparent 70%);
+  background: var(--ui-surface);
   filter: blur(20px);
   z-index: -1;
-  animation: spatialPulse 4s ease-in-out infinite;
+  animation: none;
 }
 
 /* Spatial Storytelling - About Section Parallax */
@@ -2770,15 +2752,11 @@ html.dark .profile-image {
 }
 
 .apple-3d-project:hover {
-  box-shadow:
-    0 30px 60px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(0, 113, 227, 0.1);
+  box-shadow: none;
 }
 
 html.dark .apple-3d-project:hover {
-  box-shadow:
-    0 40px 80px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(41, 151, 255, 0.2);
+  box-shadow: none;
 }
 
 @keyframes xrPulse {
@@ -2825,7 +2803,7 @@ html.dark .apple-3d-project:hover {
 
 /* AR Hover Animation */
 .btn-ar i {
-  animation: arPulse 2s infinite ease-in-out;
+  animation: none;
 }
 
 @keyframes arPulse {
@@ -2860,7 +2838,7 @@ html.dark .apple-3d-project:hover {
 }
 
 #debug-runner-section .debug-game-btn.debug-game-btn--jump {
-  background: linear-gradient(180deg, #0077ed 0%, #0062c4 100%) !important;
+  background: var(--ui-accent) !important;
   border: 1px solid #0071e3 !important;
   border-bottom: 3px solid #005bb5 !important;
   color: #ffffff !important;
@@ -2873,7 +2851,7 @@ html.dark #debug-runner-section .debug-game-btn:not(.debug-game-btn--jump) {
 }
 
 html.dark #debug-runner-section .debug-game-btn.debug-game-btn--jump {
-  background: linear-gradient(180deg, #0a84ff 0%, #0071e3 100%) !important;
+  background: var(--ui-accent) !important;
   border: 1px solid #0a84ff !important;
   border-bottom: 3px solid #005bb5 !important;
   color: #ffffff !important;
@@ -2890,7 +2868,7 @@ main > section:not(#home) {
 
 section h2 {
   font-size: clamp(2rem, 4.4vw, 3.12rem) !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.034em !important;
   margin-bottom: 0.75rem !important;
   text-align: center;
@@ -2966,7 +2944,7 @@ html.dark section h2 {
   margin: 0 !important;
   padding: 9px 0 !important;
   font-size: 0.92rem !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   letter-spacing: -0.01em !important;
 }
 
@@ -3207,7 +3185,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-display) !important;
-  font-weight: 700 !important;
+  font-weight: var(--ui-weight-medium) !important;
   line-height: 1.14 !important;
   letter-spacing: -0.025em !important;
   text-wrap: balance;
@@ -3287,7 +3265,7 @@ html.dark .section-subtitle {
 /* --- Experience & Education Icons --- */
 .experience-icon,
 .education-icon {
-  background: linear-gradient(135deg, #0071e3, #2997ff) !important;
+  background: var(--ui-surface) !important;
   border: 4px solid #fff !important;
   box-shadow: none !important;
 }
@@ -3300,7 +3278,7 @@ html.dark .section-subtitle {
 
 html.dark .experience-icon,
 html.dark .education-icon {
-  background: linear-gradient(135deg, #0a84ff, #5e5ce6) !important;
+  background: var(--ui-surface) !important;
   border-color: transparent !important;
   box-shadow: none !important;
 }
@@ -3374,59 +3352,59 @@ html.dark .icon-box.location {
 .contact-link-item:hover .icon-box.blue {
   background: #0071e3 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 16px rgb(0 113 227 / 45%) !important;
+  box-shadow: none !important;
 }
 
 .contact-link-item:hover .icon-box.green {
   background: #25d366 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 16px rgb(37 211 102 / 45%) !important;
+  box-shadow: none !important;
 }
 
 .contact-link-item:hover .icon-box.purple,
 .contact-link-item:hover .icon-box.location {
   background: #ff3b30 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 16px rgb(255 59 48 / 45%) !important;
+  box-shadow: none !important;
 }
 
 html.dark .contact-link-item:hover .icon-box.blue {
   background: #0a84ff !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 18px rgb(10 132 255 / 55%) !important;
+  box-shadow: none !important;
 }
 
 html.dark .contact-link-item:hover .icon-box.green {
   background: #25d366 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 18px rgb(37 211 102 / 55%) !important;
+  box-shadow: none !important;
 }
 
 html.dark .contact-link-item:hover .icon-box.purple,
 html.dark .contact-link-item:hover .icon-box.location {
   background: #ff453a !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 18px rgb(255 69 58 / 55%) !important;
+  box-shadow: none !important;
 }
 
 /* --- Donation/Donate Icons --- */
 .donation-icon {
-  background: linear-gradient(135deg, #ff6b6b, #ff8e53) !important;
+  background: var(--ui-surface) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgb(255 107 107 / 30%) !important;
+  box-shadow: none !important;
 }
 
 .donate-badge {
-  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  background: var(--ui-surface) !important;
   color: white !important;
-  box-shadow: 0 4px 12px rgb(102 126 234 / 30%) !important;
+  box-shadow: none !important;
 }
 
 /* --- Stat/Game Icons --- */
 .game-stat-emoji {
   font-size: 32px !important;
   line-height: 1 !important;
-  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 10%)) !important;
+  filter: none !important;
 }
 
 .stat-item i {
@@ -3435,7 +3413,7 @@ html.dark .contact-link-item:hover .icon-box.location {
 }
 
 html.dark .game-stat-emoji {
-  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 30%)) !important;
+  filter: none !important;
 }
 
 /* --- General Icon Visibility Fix --- */
@@ -3642,9 +3620,7 @@ html.dark .theme-toggle:hover {
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  box-shadow:
-    0 2px 8px rgb(0 0 0 / 15%),
-    inset 0 0 0 1px rgb(255 255 255 / 20%);
+  box-shadow: none;
   animation: albumSpin 8s linear infinite;
   animation-play-state: paused;
   transition: transform 0.3s ease;
@@ -3730,9 +3706,9 @@ html.dark .theme-toggle:hover {
 
 .status-text {
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: #555558;
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.04em;
 }
 
@@ -3742,7 +3718,7 @@ html.dark .status-text {
 
 .track-name {
   font-size: 0.875rem !important;
-  font-weight: 600 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: #1d1d1f !important;
   margin: 0 !important;
   line-height: 1.25;
@@ -3759,7 +3735,7 @@ html.dark .track-name {
 
 .artist-name {
   font-size: 0.75rem !important;
-  font-weight: 500 !important;
+  font-weight: var(--ui-weight-medium) !important;
   color: #6e6e73 !important;
   margin: 0 !important;
   line-height: 1.3;
@@ -3886,7 +3862,7 @@ html.dark .media-card.loading .media-poster {
 }
 
 .music-card .media-badge.playing {
-  background: linear-gradient(135deg, #1db954 0%, #1ed760 100%);
+  background: var(--ui-surface);
   color: white;
 }
 
@@ -4076,17 +4052,13 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 #home .hero-actions .hero-cta:nth-child(2),
 #home .hero-actions .hero-cta-secondary {
   background-color: rgba(0, 0, 0, 0.04) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(245, 245, 247, 0.7) 100%
-  ) !important;
+  background-image: none !important;
   color: #1d1d1f !important;
   -webkit-text-fill-color: #1d1d1f !important;
   border: 1px solid rgba(0, 0, 0, 0.12) !important;
   border-radius: 9999px !important;
   padding: 0.8rem 1.8rem !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
@@ -4094,30 +4066,22 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 #home .hero-actions .hero-cta:nth-child(2):hover,
 #home .hero-actions .hero-cta-secondary:hover {
   background-color: rgba(0, 113, 227, 0.08) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(0, 113, 227, 0.08) 0%,
-    rgba(0, 113, 227, 0.04) 100%
-  ) !important;
+  background-image: none !important;
   border-color: rgba(0, 113, 227, 0.4) !important;
   color: #0071e3 !important;
   -webkit-text-fill-color: #0071e3 !important;
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.18) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
 html.dark #home .hero-actions .hero-cta:nth-child(2),
 html.dark #home .hero-actions .hero-cta-secondary {
   background-color: rgba(255, 255, 255, 0.08) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.04) 100%
-  ) !important;
+  background-image: none !important;
   color: #f5f5f7 !important;
   -webkit-text-fill-color: #f5f5f7 !important;
   border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: none !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
 }
@@ -4125,15 +4089,11 @@ html.dark #home .hero-actions .hero-cta-secondary {
 html.dark #home .hero-actions .hero-cta:nth-child(2):hover,
 html.dark #home .hero-actions .hero-cta-secondary:hover {
   background-color: rgba(41, 151, 255, 0.16) !important;
-  background-image: linear-gradient(
-    180deg,
-    rgba(41, 151, 255, 0.2) 0%,
-    rgba(41, 151, 255, 0.08) 100%
-  ) !important;
+  background-image: none !important;
   border-color: rgba(41, 151, 255, 0.4) !important;
   color: #2997ff !important;
   -webkit-text-fill-color: #2997ff !important;
-  box-shadow: 0 4px 18px rgba(41, 151, 255, 0.25) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
@@ -4145,7 +4105,7 @@ html.dark #home .hero-actions .hero-cta-secondary:hover {
   -webkit-backdrop-filter: blur(14px) !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
   color: #1d1d1f !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
   transition:
     transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1),
     border-color 0.28s ease,
@@ -4157,7 +4117,7 @@ html.dark #home .hero-actions .hero-cta-secondary:hover {
   background: #ffffff !important;
   border-color: #0071e3 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.16) !important;
+  box-shadow: none !important;
 }
 
 /* Dark Mode Badges */
@@ -4169,14 +4129,14 @@ html.dark #home .portfolio-reach-badge {
   border: 1px solid rgba(255, 255, 255, 0.16) !important;
   border-radius: 980px !important;
   color: #f5f5f7 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: none !important;
 }
 
 html.dark #home .vibe-coder-badge:hover,
 html.dark #home .portfolio-reach-badge:hover {
   background: rgba(255, 255, 255, 0.14) !important;
   border-color: #0a84ff !important;
-  box-shadow: 0 4px 16px rgba(10, 132, 255, 0.25) !important;
+  box-shadow: none !important;
   transform: translateY(-2px) !important;
 }
 
@@ -4296,7 +4256,7 @@ main > section .sr-only {
   border-radius: 50% !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.38) !important;
+  box-shadow: none !important;
 }
 
 html.dark #chatbot-toggle {
@@ -4340,7 +4300,7 @@ button.blog-modal-close {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: none !important;
-  box-shadow: 0 2px 8px rgb(255 59 48 / 40%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   cursor: pointer !important;
   transition:
     transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
@@ -4372,7 +4332,7 @@ button.blog-modal-close {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   border: none !important;
-  box-shadow: 0 2px 8px rgb(255 59 48 / 40%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
   cursor: pointer !important;
   padding: 0 !important;
   outline: none !important;
@@ -4423,7 +4383,7 @@ button.blog-modal-close {
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   transform: scale(1.08) !important;
-  box-shadow: 0 4px 14px rgb(255 69 58 / 55%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 .apple-close-btn:active,
@@ -4459,7 +4419,7 @@ html.dark .blog-modal-close {
   background-color: #ff453a !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  box-shadow: 0 2px 10px rgb(255 69 58 / 50%) !important;
+  box-shadow: var(--ui-shadow-floating) !important;
 }
 
 html.dark .contact-card-title,

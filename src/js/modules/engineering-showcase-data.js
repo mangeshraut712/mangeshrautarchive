@@ -40,8 +40,8 @@ export const heroStats = [
 ];
 
 export const builderProfile = {
-  title: 'Builder Profile',
-  lead: 'Software Development Engineer',
+  title: 'Builder profile',
+  lead: 'Software development engineer',
   bullets: [
     'MS Computer Science — Drexel University',
     'Building production AI products, agentic workflows, developer infrastructure, and modern web systems.',
@@ -50,14 +50,14 @@ export const builderProfile = {
 };
 
 export const buildCapabilities = {
-  title: 'What I Actually Build',
+  title: 'What I build',
   items: [
     'AI Products',
     'Agentic Systems',
     'Full Stack Applications',
     'RAG Pipelines',
     'Developer Tools',
-    'System Monitors',
+    'System monitors',
     'Production APIs',
     'Design Systems',
   ],
@@ -269,7 +269,7 @@ export const engineeringTimeline = [
     items: [
       'FastAPI serverless backend on Vercel with streaming NDJSON proxy',
       'OpenRouter API model routing (Grok 4.3, Claude, Gemma, Nemotron)',
-      'Live Operations System Monitor with real-time health probes & vitals telemetry',
+      'Live Operations System monitor with real-time health probes & vitals telemetry',
       'GitHub Project Intelligence Showcase with activity lenses & WebXR modal',
     ],
   },
@@ -293,9 +293,9 @@ export const engineeringTimeline = [
 
 export const evidenceFooterLinks = [
   { label: 'Currently Building', href: '#experiments' },
-  { label: 'Open Source', href: '#open-source' },
+  { label: 'Open source', href: '#open-source' },
   { label: 'Engineering Notebook', href: '/systems' },
-  { label: 'System Monitor', href: '/monitor' },
+  { label: 'System monitor', href: '/monitor' },
   { label: 'Resume', href: 'assets/files/Mangesh_Raut_Resume.pdf' },
   { label: 'GitHub', href: 'https://github.com/mangeshraut712', external: true },
   { label: 'Now', href: '/uses' },
@@ -312,7 +312,7 @@ export const engineeringPrinciples = lessonsLearned;
 export const buildingItems = [
   {
     id: 'monitor',
-    title: 'Public System Monitor',
+    title: 'Public System monitor',
     status: 'Live',
     summary: 'Open ops dashboard — API health, AI metrics, deployment surfaces, client probes.',
     stack: ['FastAPI', 'Vercel', 'SVG'],

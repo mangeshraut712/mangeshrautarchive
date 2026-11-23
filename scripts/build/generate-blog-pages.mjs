@@ -34,6 +34,7 @@ const SITE_URL =
 const ASSET_PREFIX = '..';
 const BLOG_STYLE_GROUPS = {
   'blog-core.bundle.css': [
+    'foundation.css',
     'apple-design-system.css',
     'typography-system.css',
     'sitewide-design-system.css',
@@ -246,7 +247,6 @@ function renderBlogIndex(posts, tags) {
       <section class="blog-featured" aria-labelledby="blog-featured-title">
         <a class="blog-featured-media blog-media--${getBlogPostImageFit(featured)}" href="${blogPostHref(featured.id)}" aria-label="Read ${escapeHTML(featured.title)}">
           <img src="../${escapeHTML(postImagePath(featured))}" alt="" width="1600" height="900" decoding="async" fetchpriority="high" />
-          <span class="blog-featured-badge">Latest field note</span>
         </a>
         <div class="blog-featured-copy">
           <p class="blog-index-kicker">${escapeHTML(featured.kicker || 'Field notes')}</p>

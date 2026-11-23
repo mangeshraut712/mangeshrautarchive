@@ -335,14 +335,14 @@ async function fetchPlatformHealth() {
       },
       {
         id: 'travel',
-        label: 'Travel Atlas',
+        label: 'Travel atlas',
         path: '/travel',
         status: 'healthy',
         detail: 'Static travel experience is bundled and available.',
       },
       {
         id: 'monitor',
-        label: 'System Monitor',
+        label: 'System monitor',
         path: '/monitor',
         status: 'healthy',
         detail: 'Monitor UI loaded and rendered its static fallback matrix.',
@@ -858,7 +858,7 @@ async function refreshPlatformHealth() {
 }
 
 const FALLBACK_MONITOR_DOCS = {
-  title: 'System Monitor API',
+  title: 'System monitor API',
   description:
     'Reference metadata for monitor endpoints, status meanings, and documentation links.',
   docs_links: {
@@ -2574,7 +2574,7 @@ const PROBE_TARGETS = [
     type: 'page',
   },
   {
-    name: 'Travel Atlas',
+    name: 'Travel atlas',
     url: 'https://mangeshraut712.github.io/mangeshrautarchive/travel.html',
     type: 'page',
   },
@@ -2584,7 +2584,7 @@ const PROBE_TARGETS = [
     type: 'page',
   },
   {
-    name: 'System Monitor page',
+    name: 'System monitor page',
     url: 'https://mangeshraut712.github.io/mangeshrautarchive/monitor.html',
     type: 'page',
   },

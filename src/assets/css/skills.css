@@ -146,7 +146,7 @@ html.dark .skill-category-header {
   padding: 0;
   border: none;
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: #1d1d1f;
 }
 
@@ -174,9 +174,9 @@ html.dark .skill-category-icon {
 
 .skill-category-count {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   letter-spacing: 0.03em;
-  text-transform: uppercase;
+  text-transform: none;
   color: #86868b;
   padding: 0.25rem 0.65rem;
   border-radius: 999px;
@@ -193,7 +193,7 @@ html.dark .skill-category-count {
 /* Legacy h3 fallback when header wrapper is absent */
 .skill-category > h3:not(.skill-category-title) {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary);
   margin-bottom: 1.25rem;
   border-bottom: 1px solid var(--border-color);
@@ -406,7 +406,7 @@ html.dark .skill-badge:hover {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(45deg, transparent, rgb(255 255 255 / 10%), transparent);
+  background: none;
   transform: translateX(-100%) rotate(45deg);
   transition: transform 0.6s ease;
 }
@@ -460,7 +460,7 @@ html.dark .skill-badge:hover {
 }
 
 .skill-badge-name {
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   font-size: 0.9rem;
   color: #1d1d1f;
   margin-bottom: 0.25rem;
@@ -500,7 +500,7 @@ html.dark .skill-badge-bar {
   transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   overflow: hidden;
-  background: linear-gradient(90deg, currentcolor, currentcolor 70%, transparent 100%);
+  background: var(--ui-accent);
 }
 
 .skill-badge-progress::before {
@@ -524,7 +524,7 @@ html.dark .skill-badge-bar {
 
 .skill-badge-percentage {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-secondary, #6e6e73);
   min-width: 32px;
   text-align: right;
@@ -605,14 +605,8 @@ html.dark .skill-badge-percentage {
   }
 
   .skill-scroll-container {
-    mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0%,
-      black 2%,
-      black 98%,
-      transparent 100%
-    );
+    mask-image: none;
+    -webkit-mask-image: none;
     overflow: hidden !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -689,7 +683,7 @@ html.dark .skill-badge-percentage {
   color: var(--apple-blue, #0071e3);
   margin-inline: auto;
   margin-bottom: 1rem;
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: none;
 }
 
 html.dark .skills-loading-spinner {

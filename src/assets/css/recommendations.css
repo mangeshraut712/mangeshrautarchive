@@ -120,12 +120,12 @@ html:not(.dark) .recommendation-author {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0071e3, #2997ff);
+  background: var(--ui-surface);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgb(0 113 227 / 30%);
+  box-shadow: none;
 }
 
 .author-avatar i {
@@ -140,7 +140,7 @@ html:not(.dark) .recommendation-author {
 
 .author-name {
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: var(--ui-weight-medium);
   color: var(--text-primary);
   margin: 0 0 0.125rem;
 }
@@ -157,7 +157,7 @@ html:not(.dark) .author-name {
   font-size: 0.8125rem;
   color: var(--text-secondary);
   margin: 0;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
 }
 
 html.dark .author-title {
@@ -172,7 +172,7 @@ html:not(.dark) .author-title {
   font-size: 0.75rem;
   color: #0071e3;
   margin: 0.125rem 0 0;
-  font-weight: 500;
+  font-weight: var(--ui-weight-medium);
 }
 
 html.dark .author-company {
@@ -253,7 +253,7 @@ html.dark .author-company {
   font-size: 1.05em !important;
   line-height: 1 !important;
   display: inline-block !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--ui-shadow-floating);
   transition:
     color 0.2s ease,
     background-color 0.2s ease;

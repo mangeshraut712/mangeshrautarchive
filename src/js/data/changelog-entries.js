@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: 'clean-portfolio-design-20261124',
+    date: '2026-11-24',
+    type: 'improvement',
+    title: 'A calmer portfolio design',
+    summary:
+      'Applies flat colors, regular and medium typography, sentence-case controls, simpler nested surfaces, and restrained motion across the portfolio and generated reading pages. Preserves discovery, forms, media, QR payments, and keyboard interactions.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose:
+      'Apply the user-approved clean design contract across every portfolio surface and verify responsive interactions.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'automatic-work-sync-20261123',
     date: '2026-11-23',
     type: 'improvement',
