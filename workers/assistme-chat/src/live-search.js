@@ -53,6 +53,10 @@ export function shouldFetchLiveGrounding(message) {
  */
 export function extractSearchTopic(query) {
   const cleaned = query
+    .replace(
+      /\b(?:cite|include|provide|show|link)\s+(?:(?:the|your|available|relevant)\s+)*(?:sources?|links?|references?)\b.*$/i,
+      ''
+    )
     .replace(/[^\w\s-]/g, ' ')
     .replace(
       /\b(who is the|who is|what is the|what is|tell me about|can you tell me|please|latest|news|updates?|today|recent|recently|current|about)\b/gi,
@@ -88,8 +92,8 @@ const HTML_ENTITIES = {
 function cleanText(text) {
   if (!text) return '';
   return text
-    .replace(/<[^>]+>/g, ' ')
     .replace(/&(?:quot|#39|apos|lt|gt|amp);/g, entity => HTML_ENTITIES[entity] || entity)
+    .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }

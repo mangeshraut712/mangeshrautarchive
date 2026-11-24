@@ -125,7 +125,7 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
-Chat reliability and sources (2026-11-24): GPT-6 / Codex improves source links, stream completion and retry recovery, bounded provider fallback, and authenticated health checks across the frontend, Worker, and FastAPI. Exact model variant, reasoning mode, and token usage: unavailable.
+Chat reliability and sources (2026-11-24): GPT-6 / Codex improves source links and search-query cleanup, stream completion and retry recovery, bounded provider fallback, and authenticated health checks across the frontend, Worker, and FastAPI. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Sync diagnostics and chatbot recovery (2026-11-24): GPT-6 / Codex identifies expired Google grants safely, explains stale Apple selections, checks OpenRouter authentication instead of its public catalog, and makes local fallback limitations explicit. Exact model variant, reasoning mode, and token usage: unavailable.
 

@@ -59,7 +59,7 @@ export const changelogEntries = [
     type: 'fix',
     title: 'Linked sources and reliable chat recovery',
     summary:
-      'Open retrieved source links, retry interrupted replies without losing your draft, and keep failed model attempts separate. Provider health reflects authentication, with bounded fallback attempts.',
+      'Open retrieved source links with cleaner search queries, retry interrupted replies without losing your draft, and keep failed model attempts separate. Provider health reflects authentication, with bounded fallback attempts.',
     tags: ['assistme', 'api'],
     sha: null,
     commitVerified: false,
