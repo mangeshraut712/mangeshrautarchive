@@ -18,11 +18,15 @@ function initBlogFilters() {
 
   const apply = () => {
     const terms = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+    // In the default view the featured story sits above the archive, so its card
+    // is left out of the list rather than repeated directly below it.
+    const isDefaultView = selectedTag === 'all' && terms.length === 0 && sort.value === 'newest';
     let visible = 0;
     cards.forEach(card => {
       const tags = (card.dataset.tags || '').split(',').map(tag => tag.toLocaleLowerCase());
       const text = (card.dataset.search || '').toLocaleLowerCase();
       const show =
+        !(isDefaultView && card.dataset.featured === 'true') &&
         (selectedTag === 'all' || tags.includes(selectedTag)) &&
         terms.every(term => text.includes(term));
       card.hidden = !show;
@@ -34,7 +38,9 @@ function initBlogFilters() {
       chip.classList.toggle('active', active);
       chip.setAttribute('aria-pressed', String(active));
     });
-    status.textContent = `${visible} of ${cards.length} articles`;
+    status.textContent = isDefaultView
+      ? `${cards.length} articles`
+      : `${visible} of ${cards.length} articles`;
     status.hidden = false;
     empty.hidden = visible !== 0;
   };
@@ -59,6 +65,7 @@ function initBlogFilters() {
       return sort.value === 'oldest' ? order : -order;
     });
     container.append(...sorted);
+    apply();
   });
   document.getElementById('blog-reset').addEventListener('click', () => {
     search.value = '';

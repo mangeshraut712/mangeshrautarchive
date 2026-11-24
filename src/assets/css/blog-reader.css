@@ -86,7 +86,7 @@ body.blog-standalone-page .blog-article-sidebar {
   border-radius: 0;
   background: var(--bg-primary);
   box-shadow: none;
-  padding: 0 16px;
+  padding: 16px 16px 12px;
   backdrop-filter: none;
 }
 
@@ -364,6 +364,25 @@ body.blog-standalone-page .blog-article-sidebar a::before {
   flex-shrink: 0;
   min-width: 20px;
   margin-right: 8px;
+}
+
+/* Archive cards: the title is the main link, so the per-card action is a quiet
+   secondary link. Only the featured story keeps the filled primary button. */
+body.blog-standalone-page .blog-card-readlink {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.35em;
+  min-height: 44px;
+  color: var(--ui-accent, #0066cc);
+  font-size: 0.9375rem;
+  font-weight: var(--ui-weight-medium, 500);
+  text-decoration: none;
+}
+
+body.blog-standalone-page .blog-card-readlink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 body.blog-standalone-page .blog-filter-bar {

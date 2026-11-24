@@ -122,8 +122,25 @@ function pageShell({
   jsonLd,
   body,
   extraHead = '',
+  robots = 'index, follow, max-image-preview:large',
+  article,
   image = `${SITE_URL}/assets/images/profile-icon.png`,
 }) {
+  const articleMeta = article
+    ? [
+        `<meta property="article:published_time" content="${escapeHTML(article.publishedTime)}" />`,
+        `<meta property="article:modified_time" content="${escapeHTML(article.modifiedTime)}" />`,
+        '<meta property="article:author" content="Mangesh Raut" />',
+        article.section
+          ? `<meta property="article:section" content="${escapeHTML(article.section)}" />`
+          : '',
+        ...(article.tags || []).map(
+          tag => `<meta property="article:tag" content="${escapeHTML(tag)}" />`
+        ),
+      ]
+        .filter(Boolean)
+        .join('\n    ')
+    : '';
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -132,9 +149,11 @@ function pageShell({
     <meta name="view-transition" content="same-origin" />
     <meta name="description" content="${escapeHTML(description)}" />
     <meta name="author" content="Mangesh Raut" />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content="${robots}" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="${ogType}" />
+    <meta property="og:site_name" content="Mangesh Raut" />
+    ${articleMeta}
     <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${escapeHTML(title)}" />
     <meta property="og:description" content="${escapeHTML(description)}" />
@@ -190,11 +209,14 @@ function pageShell({
 function renderBlogIndex(posts, tags) {
   const [featured] = posts;
   const archivePosts = posts;
+  // The newest post already leads the page as the featured story. Its archive card
+  // stays in the list for search, topic filters, and other sort orders, but starts
+  // hidden so the default view does not show the same article twice in a row.
   const cards = archivePosts
     .map(
       post => `
-    <article class="blog-card blog-card--editorial" data-id="${post.id}" data-date="${escapeHTML(post.publishedAt || post.date)}" data-search="${escapeHTML([post.title, post.summary, ...(post.tags || [])].join(' '))}" data-tags="${escapeHTML((post.tags || []).join(','))}">
-      <a class="blog-card-media blog-media--${getBlogPostImageFit(post)}" href="${blogPostHref(post.id)}" aria-label="Read ${escapeHTML(post.title)}">
+    <article class="blog-card blog-card--editorial"${post.id === featured.id ? ' data-featured="true" hidden' : ''} data-id="${post.id}" data-date="${escapeHTML(post.publishedAt || post.date)}" data-search="${escapeHTML([post.title, post.summary, ...(post.tags || [])].join(' '))}" data-tags="${escapeHTML((post.tags || []).join(','))}">
+      <a class="blog-card-media blog-media--${getBlogPostImageFit(post)}" href="${blogPostHref(post.id)}" tabindex="-1" aria-hidden="true">
         <img src="../${escapeHTML(postImagePath(post))}" alt="" width="1600" height="900" loading="lazy" decoding="async" />
         <span class="blog-card-media-shine" aria-hidden="true"></span>
       </a>
@@ -211,9 +233,7 @@ function renderBlogIndex(posts, tags) {
         <h2 class="blog-title"><a href="${blogPostHref(post.id)}" class="blog-title-link">${escapeHTML(post.title)}</a></h2>
         <p class="blog-summary">${escapeHTML(post.readerPromise || post.summary)}</p>
         <div class="blog-tags blog-tags--pills">${topicPills(post.tags, 2)}</div>
-        <div class="blog-card-cta-row">
-          <a class="blog-read-btn" href="${blogPostHref(post.id)}">Read article <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-        </div>
+        <a class="blog-card-readlink" href="${blogPostHref(post.id)}" aria-label="Read ${escapeHTML(post.title)}">Read article<span aria-hidden="true">→</span></a>
       </div>
     </article>`
     )
@@ -416,6 +436,12 @@ function renderBlogPost(post, posts) {
     description: post.summary,
     canonical: `${SITE_URL}/blog/${post.id}.html`,
     ogType: 'article',
+    article: {
+      publishedTime: post.publishedAt || post.date,
+      modifiedTime: post.updatedAt || post.date,
+      section: post.kicker,
+      tags: post.tags,
+    },
     jsonLd,
     body,
     image: postImageUrl(post),
@@ -466,7 +492,7 @@ export async function generateBlogPages(distDir) {
         title: 'Retired article | Mangesh Raut',
         description: 'This article has been retired from the monthly archive.',
         canonical: `${SITE_URL}/blog/`,
-        extraHead: '<meta name="robots" content="noindex,follow" />',
+        robots: 'noindex, follow',
         body,
       }),
       'utf8'

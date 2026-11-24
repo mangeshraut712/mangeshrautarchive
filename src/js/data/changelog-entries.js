@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-25-journal-index-polish',
+    date: '2026-11-25',
+    type: 'fix',
+    title: 'A cleaner journal archive',
+    summary:
+      'Stop repeating the featured article as the first archive card, drop the stray separator left by hidden kickers, and make each archive card read with one quiet link instead of a filled button. Keep source-card arrows inside their cards, give the contents box room at the top, fix the filter count contrast, and add article dates and tags to the page metadata.',
+    tags: ['blog', 'design'],
+    sha: null,
+    commitVerified: false,
+    model: 'unavailable',
+    ide: 'Grok Bot',
+    purpose: 'Fix journal layout bugs found in a live-site audit and tighten article metadata.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-24-motion-repair',
     date: '2026-11-24',
     type: 'fix',

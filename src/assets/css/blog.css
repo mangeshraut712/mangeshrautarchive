@@ -2237,30 +2237,28 @@ html.dark .article-callout__text {
 }
 
 .article-embed-card {
+  /* Anchors the absolutely positioned arrow; without it the arrow escaped to the page corner. */
+  position: relative;
   display: grid;
   gap: 0.25rem;
   margin: 1.5rem 0;
-  padding: 1rem 1.1rem;
+  padding: 1rem 3rem 1rem 1.1rem;
   border-radius: 16px;
-  border: 1px solid rgb(0 0 0 / 10%);
-  background: rgb(255 255 255 / 78%);
+  border: 1px solid var(--ui-border, rgb(0 0 0 / 10%));
+  background: var(--bg-primary, #fff);
   text-decoration: none !important;
   color: inherit !important;
-  transition:
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: border-color var(--ui-motion-fast, 180ms) ease-out;
 }
 
 .article-embed-card:hover {
   border-color: rgb(0 113 227 / 40%);
   box-shadow: none;
-  transform: translateY(-1px);
 }
 
 html.dark .article-embed-card {
   border-color: rgb(255 255 255 / 12%);
-  background: rgb(0 0 0 / 45%);
+  background: var(--bg-primary, #000);
 }
 
 .article-embed-card__kicker {
@@ -2599,7 +2597,8 @@ body.blog-standalone-page #go-to-top .go-to-top-label {
   margin: 0 0 1.25rem;
   min-height: 0;
   font-size: 0.875rem;
-  color: var(--text-tertiary, #86868b);
+  /* Tertiary grey failed 4.5:1 on white; body-size status text uses secondary. */
+  color: var(--ui-text-secondary, #6e6e73);
 }
 
 .blog-filter-status:not([hidden]):not(:empty) {

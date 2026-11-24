@@ -19,10 +19,16 @@ test('blog archive opens a full article with its lead image', async ({ page }) =
   await expect(page.locator('.blog-featured')).toHaveCount(1);
   await expect(page.locator('#blog-posts-container .blog-card')).toHaveCount(22);
   const featuredHref = await page.locator('.blog-featured-media').getAttribute('href');
-  await expect(
-    page.locator(`#blog-posts-container .blog-card-media[href="${featuredHref}"]`)
-  ).toHaveCount(1);
-  await page.locator('#blog-posts-container .blog-title-link').first().click();
+  const featuredArchiveCard = page.locator(
+    `#blog-posts-container .blog-card-media[href="${featuredHref}"]`
+  );
+  await expect(featuredArchiveCard).toHaveCount(1);
+  // The featured story is not repeated directly below itself in the default view.
+  await expect(featuredArchiveCard).toBeHidden();
+  await page
+    .locator('#blog-posts-container .blog-card:not([hidden]) .blog-title-link')
+    .first()
+    .click();
   await expect(page.locator('main h1')).toBeVisible();
   const leadImage = page.locator('.article-figure img').first();
   await expect(leadImage).toBeAttached();
