@@ -9,7 +9,8 @@ test('journal search includes the lead article and combines with topic filters',
 }) => {
   await page.goto(`${base.replace(/\/$/, '')}/blog/`);
   const cards = page.locator('#blog-posts-container .blog-card:visible');
-  await expect(cards).toHaveCount(blogPosts.length);
+  // The default view leaves the lead article to the featured slot above the archive.
+  await expect(cards).toHaveCount(blogPosts.length - 1);
   const featuredTitle = await page.locator('#blog-featured-title').innerText();
   await page.getByLabel('Search the journal').fill(featuredTitle);
   await expect(cards).toHaveCount(1);
@@ -20,9 +21,10 @@ test('journal search includes the lead article and combines with topic filters',
   await expect(cards).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'No articles found' })).toBeVisible();
   await page.getByRole('button', { name: 'Reset filters' }).click();
-  await expect(cards).toHaveCount(blogPosts.length);
+  await expect(cards).toHaveCount(blogPosts.length - 1);
   await expect(page.getByLabel('Search the journal')).toBeFocused();
   await page.getByLabel('Sort by').selectOption('oldest');
+  await expect(cards).toHaveCount(blogPosts.length);
   const dates = await cards.evaluateAll(nodes => nodes.map(node => node.dataset.date));
   expect(dates).toEqual([...dates].sort());
   await page.getByLabel('Sort by').selectOption('title');
