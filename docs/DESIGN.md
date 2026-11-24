@@ -42,7 +42,7 @@ circular, with an accessible label and visible keyboard focus.
 `--ui-*` tokens: surface, muted surface, text, secondary text, accent, on-accent,
 border, weights, motion, and floating shadow. Literal colors belong in token
 definitions; components consume semantic variables. Existing system/status and
-brand tokens retain their meaning. Light surfaces are white and dark surfaces black.
+brand tokens retain their meaning. Page and card headings use the theme accent (Apple blue), while body copy keeps neutral text colors. Social glyphs preserve their brand color on hover/focus; monochrome marks adapt to the theme. Light surfaces, including formerly muted surfaces, are solid white and dark surfaces solid black. Borders and spacing distinguish groups.
 
 Keep the existing SF Pro/system font stack and fluid sizes. Establish hierarchy
 through size, spacing, and medium weight, not bold text. Body text must retain

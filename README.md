@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Theme and awards repair (2026-11-24): GPT-6 / Codex fixes Safari award-card height growth, applies theme-aware Apple blue headings and solid surfaces, and preserves social brand colors through hover/focus. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Portfolio polish (2026-11-24): GPT-6 / Codex restores discovery marquees that respect both system and in-site reduced-motion settings, repairs social hover theme parity, replaces both supplied November resumes, hides unavailable Panchang/internal calendar text, and simplifies chat responses and source details. The IoasiZ end date now matches the supplied November resume across the page and all chat fallbacks. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Free-only chat (2026-11-24): GPT-6 / Codex enforces zero-price model routing, aligns cited retrieval across Worker/FastAPI, removes paid search/speech recovery, and rejects incomplete stream endings. See [the free chat contract](docs/FREE_CHAT.md). Exact model variant, reasoning mode, and token usage: unavailable.

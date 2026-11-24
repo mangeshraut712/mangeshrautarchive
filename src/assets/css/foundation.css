@@ -4,7 +4,7 @@
 
 :root {
   --ui-surface: #ffffff;
-  --ui-surface-muted: #f5f5f7;
+  --ui-surface-muted: var(--ui-surface);
   --ui-text: #1d1d1f;
   --ui-text-secondary: #626268;
   --ui-accent: #0071e3;
@@ -20,7 +20,7 @@
 html.dark,
 html[data-theme='dark'] {
   --ui-surface: #000000;
-  --ui-surface-muted: #161617;
+  --ui-surface-muted: var(--ui-surface);
   --ui-text: #f5f5f7;
   --ui-text-secondary: #a1a1a6;
   --ui-accent: #2997ff;
@@ -321,15 +321,20 @@ html[data-theme='dark'] {
   }
 
   :where(
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
     .hero-name-text,
     .hero-title,
     #home h1,
     section h2,
     .section-title,
-    .section-header h2,
-    .work-impact-number strong
+    .section-header h2
   ) {
-    color: var(--ui-text) !important;
+    color: var(--ui-accent) !important;
     -webkit-text-fill-color: currentcolor !important;
   }
 
@@ -338,10 +343,47 @@ html[data-theme='dark'] {
     border: 0 !important;
     background: transparent !important;
     transform: none !important;
+    /* Brand glyphs remain unchanged; keyboard focus uses the accent outline. */
+    color: var(--social-icon-color, var(--ui-text)) !important;
   }
-
-  :where(.wrapper .icon, .contact-social-wrapper .icon):is(:hover, :focus-within) {
-    color: var(--ui-accent) !important;
+  :where(.wrapper .facebook, .contact-social-wrapper .facebook) {
+    --social-icon-color: var(--facebook-color);
+  }
+  :where(.wrapper .instagram, .contact-social-wrapper .instagram) {
+    --social-icon-color: var(--instagram-color);
+  }
+  :where(.wrapper .linkedin, .contact-social-wrapper .linkedin) {
+    --social-icon-color: var(--linkedin-color);
+  }
+  :where(.wrapper .youtube, .contact-social-wrapper .youtube) {
+    --social-icon-color: var(--youtube-color);
+  }
+  :where(.wrapper .github, .contact-social-wrapper .github) {
+    --social-icon-color: var(--github-color);
+  }
+  :where(.wrapper .x, .contact-social-wrapper .x) {
+    --social-icon-color: var(--x-color);
+  }
+  :where(.wrapper .leetcode, .contact-social-wrapper .leetcode) {
+    --social-icon-color: var(--leetcode-color);
+  }
+  :where(.wrapper .telegram, .contact-social-wrapper .telegram) {
+    --social-icon-color: var(--telegram-color);
+  }
+  :where(.wrapper .spotify, .contact-social-wrapper .spotify) {
+    --social-icon-color: var(--spotify-color);
+  }
+  :where(.wrapper .strava, .contact-social-wrapper .strava) {
+    --social-icon-color: var(--strava-color);
+  }
+  :where(.wrapper .whoop, .contact-social-wrapper .whoop) {
+    --social-icon-color: var(--whoop-color);
+  }
+  :where(.wrapper .snapchat, .contact-social-wrapper .snapchat) {
+    --social-icon-color: var(--ui-text);
+  }
+  :where(html.dark, html[data-theme='dark']) :where(.wrapper .snapchat) {
+    --social-icon-color: var(--snapchat-color);
   }
 
   :where(

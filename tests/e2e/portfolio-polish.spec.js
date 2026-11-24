@@ -9,6 +9,14 @@ for (const width of [375, 768, 1440]) {
       await page.emulateMedia({ colorScheme: theme, reducedMotion: 'no-preference' });
       await page.addInitScript(value => localStorage.setItem('theme', value), theme);
       await gotoSite(page, '/');
+      await page.locator('#awards').scrollIntoViewIfNeeded();
+      for (const card of await page.locator('.award-card').all()) {
+        await expect.poll(async () => (await card.boundingBox()).height).toBeLessThan(750);
+      }
+      await expect(page.locator('#awards h2').first()).toHaveCSS(
+        'color',
+        theme === 'dark' ? 'rgb(41, 151, 255)' : 'rgb(0, 113, 227)'
+      );
       await page.locator('#skills').scrollIntoViewIfNeeded();
       const skills = page.locator('.skill-scroll-wrapper').first();
       await skills.evaluate(el => el.parentElement.scrollIntoView({ block: 'center' }));
@@ -35,7 +43,10 @@ for (const width of [375, 768, 1440]) {
       for (const selector of ['#contact .wrapper .linkedin', 'footer .wrapper .linkedin']) {
         const icon = page.locator(selector).first();
         await icon.scrollIntoViewIfNeeded();
+        await page.mouse.move(0, 0);
+        const brandColor = await icon.evaluate(el => getComputedStyle(el).color);
         await icon.hover();
+        await expect(icon).toHaveCSS('color', brandColor);
         await expect
           .poll(() =>
             icon.evaluate(el => {

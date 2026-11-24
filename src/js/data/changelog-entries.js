@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-24-theme-awards',
+    date: '2026-11-24',
+    type: 'fix',
+    title: 'Consistent colors and compact awards',
+    summary:
+      'Fix Safari award-card height growth, use theme-aware Apple blue headings and solid white or black surfaces, and preserve social brand colors on hover and focus.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Repair Safari layout and shared theme color ownership.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-24-portfolio-polish',
     date: '2026-11-24',
     type: 'fix',
