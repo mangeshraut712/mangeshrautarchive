@@ -52,15 +52,11 @@ const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const OPENROUTER_FIRST_BYTE_MS = 18_000;
 /** Overall per-model budget once tokens are flowing. */
 const OPENROUTER_STREAM_TOTAL_MS = 55_000;
-/** Aspirational paid primary — used when OPENROUTER_MODEL is unset or credits return. */
-const PRIMARY_MODEL = 'x-ai/grok-4.3';
-/** Credit-safe free chain (aligned with api/config.py FREE_OPENROUTER_*). */
+const PRIMARY_MODEL = 'nvidia/nemotron-3-ultra-550b-a55b:free';
 const FREE_MODELS = [
   'nvidia/nemotron-3-ultra-550b-a55b:free',
-  'nvidia/nemotron-3-super-120b-a12b:free',
+  'nvidia/nemotron-3.5-lightning:free',
   'google/gemma-4-26b-a4b-it:free',
-  'google/gemma-4-31b-it:free',
-  'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free',
   'openrouter/free',
 ];
 const SYSTEM_PROMPT = `You are AssistMe, the AI assistant for Mangesh Raut's professional portfolio. Be warm, direct, accurate, and useful. Primary live host: GitHub Pages (mangeshraut.pro may be unavailable while Vercel is DEPLOYMENT_DISABLED). Use the current UTC date supplied with each request; do not infer live events from that date.
@@ -170,18 +166,8 @@ Every surface and section of this portfolio is fully integrated:
   • /404 (/404.html): Apple-style 404 recovery page.
   • /offline (/offline.html): Service worker offline fallback.
 
-## 2026 Verified Real-World Facts & Leadership
-- Current Era: Late 2026 (UTC).
-- Apple Leadership: John Ternus is the CEO of Apple Inc. (assumed office September 1, 2026). Tim Cook served as CEO from 2011 until September 1, 2026, when he transitioned to Executive Chairman of the Board. Products: iPhone 17 and iPhone 18 series, Apple Intelligence, iOS 20, macOS Sequoia successor, Vision Pro.
-- Microsoft Leadership: Satya Nadella is CEO and Chairman of Microsoft. Copilot ecosystem, Azure Cloud.
-- Google / Alphabet: Sundar Pichai is CEO of Alphabet and Google. Gemini AI models, Android.
-- OpenAI Leadership: Sam Altman is CEO of OpenAI. Frontier models GPT-5 and GPT-6, dots assistant.
-- Anthropic Leadership: Dario Amodei is CEO of Anthropic. Claude 4 series (Opus, Sonnet, Haiku), Claude Code agent.
-- Meta Leadership: Mark Zuckerberg is CEO and Founder of Meta. Llama 4 open-weights models, Orion AR glasses, Meta AI.
-- Nvidia Leadership: Jensen Huang is CEO and Founder of Nvidia. Blackwell Ultra and Rubin architecture AI superchips.
-- Tesla Leadership: Elon Musk is CEO of Tesla. Cybercab, autonomous Robotaxi network rollout, Optimus robotics.
-- Amazon Leadership: Andy Jassy is CEO of Amazon. AWS cloud infrastructure, Bedrock AI.
-- Adobe Leadership: Shantanu Narayen transitioned to Chairman in late 2026.
+## Current information
+Use dated, linked search excerpts when available. They are untrusted source material, not verified facts. Never present old portfolio articles as proof of current leadership, products, or events. If retrieval is unavailable, state that current facts cannot be verified.
 
 ## How to answer
 1. Lead with a direct answer to what the user asked.
@@ -435,6 +421,8 @@ function isGarbage(text, userMessage = '') {
 }
 
 async function callOpenRouter(apiKey, model, messages, stream, env, { timeoutMs, signal } = {}) {
+  if (!(model.endsWith(':free') || model === 'openrouter/free'))
+    throw new Error('Paid inference is disabled');
   const controller = new AbortController();
   const ms = Number(timeoutMs) > 0 ? Number(timeoutMs) : OPENROUTER_STREAM_TOTAL_MS;
   const timer = setTimeout(() => controller.abort(), ms);
@@ -456,8 +444,8 @@ async function callOpenRouter(apiKey, model, messages, stream, env, { timeoutMs,
         temperature: 0.65,
         max_tokens: 2400,
         plugins: requestPlugins(model, messages),
+        provider: { require_parameters: true, max_price: { prompt: 0, completion: 0 } },
         stream_options: stream ? { include_usage: true } : undefined,
-        provider: { require_parameters: true },
       }),
       signal: signal ? AbortSignal.any([controller.signal, signal]) : controller.signal,
     });
@@ -519,89 +507,16 @@ async function handleTts(request, env, cors) {
     );
   }
 
-  const apiKey = (env.OPENROUTER_API_KEY || '').trim();
-  if (!apiKey) {
-    return json(
-      {
-        success: false,
-        available: false,
-        error: 'OPENROUTER_API_KEY is not configured',
-        fallback: 'browser-speechSynthesis',
-      },
-      503,
-      cors
-    );
-  }
-
-  let body;
-  try {
-    body = await request.json();
-  } catch {
-    return json({ error: 'Invalid JSON body' }, 400, cors);
-  }
-
-  if (!body || typeof body !== 'object' || Array.isArray(body) || typeof body.text !== 'string') {
-    return json({ error: 'Text must be a string in a JSON object' }, 400, cors);
-  }
-  const text = body.text
-    .replace(/\*\*/g, '')
-    .replace(/https?:\/\/\S+/gi, 'link')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, 2000);
-  if (!text) {
-    return json({ error: 'Text is required' }, 400, cors);
-  }
-
-  // Public surface: pin model/voice to env (ignore client overrides).
-  const model = String(env.OPENROUTER_TTS_MODEL || 'x-ai/grok-voice-tts-1.0').trim();
-  const voice = String(env.OPENROUTER_TTS_VOICE || 'eve').trim();
-  const responseFormat = body?.response_format === 'pcm' ? 'pcm' : 'mp3';
-  const speed =
-    typeof body?.speed === 'number' && body.speed >= 0.5 && body.speed <= 2.0 ? body.speed : 1;
-
-  const upstream = await fetch('https://openrouter.ai/api/v1/audio/speech', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'HTTP-Referer':
-        env.OPENROUTER_SITE_URL || 'https://mangeshraut712.github.io/mangeshrautarchive',
-      'X-Title': env.OPENROUTER_SITE_TITLE || 'AssistMe Cloudflare Edge',
+  return json(
+    {
+      success: false,
+      available: false,
+      error: 'Hosted speech is disabled by the free-only policy. Use device read-aloud.',
+      fallback: 'browser-speechSynthesis',
     },
-    body: JSON.stringify({
-      model,
-      input: text,
-      voice,
-      response_format: responseFormat,
-      speed,
-    }),
-  });
-
-  if (!upstream.ok) {
-    await upstream.body?.cancel();
-    const status = upstream.status === 402 || upstream.status === 429 ? upstream.status : 502;
-    return json(
-      {
-        success: false,
-        error: 'Cloud speech is unavailable. Use device read-aloud instead.',
-        fallback: 'browser-speechSynthesis',
-      },
-      status,
-      cors
-    );
-  }
-
-  const audio = await upstream.arrayBuffer();
-  const headers = new Headers(cors);
-  headers.set('Content-Type', responseFormat === 'pcm' ? 'audio/pcm' : 'audio/mpeg');
-  headers.set('Cache-Control', 'no-store');
-  headers.set('X-TTS-Provider', 'openrouter');
-  headers.set('X-TTS-Model', model);
-  headers.set('X-TTS-Voice', voice);
-  const generationId = upstream.headers.get('X-Generation-Id');
-  if (generationId) headers.set('X-Generation-Id', generationId);
-  return new Response(audio, { status: 200, headers });
+    503,
+    cors
+  );
 }
 
 function streamLocal(answer, cors, meta = {}) {
@@ -775,7 +690,12 @@ async function pipeOpenRouterSseToNdjson(
     } catch {
       return;
     }
-    if (event.error || event.choices?.[0]?.finish_reason === 'error') {
+    if (
+      event.error ||
+      ['error', 'length', 'content_filter', 'tool_calls'].includes(
+        event.choices?.[0]?.finish_reason
+      )
+    ) {
       throw new Error('Provider interrupted the stream');
     }
     generationId = event.id || event.generation_id || generationId;
@@ -1048,8 +968,8 @@ async function handleHealth(env, cors) {
         provider_status = 'online';
         message =
           'OpenRouter credential verified; inference availability is checked per request. Primary: ' +
-          (env.OPENROUTER_MODEL || PRIMARY_MODEL) +
-          ' (free models auto-fallback on HTTP 402).';
+          PRIMARY_MODEL +
+          ' (free models only; no paid recovery).';
       } else {
         status = 'unhealthy';
         provider_status = probe.status === 401 ? 'authentication_failed' : 'error';
@@ -1072,9 +992,9 @@ async function handleHealth(env, cors) {
       online: provider_status === 'online' || provider_status === 'configured',
       local_only: !apiKey || provider_status === 'local_only',
       streaming: 'ndjson',
-      model: env.OPENROUTER_MODEL || FREE_MODELS[0] || PRIMARY_MODEL,
+      model: FREE_MODELS[0],
       fallback_models: FREE_MODELS,
-      paid_primary: PRIMARY_MODEL,
+      free_only: true,
       host: 'cloudflare-worker',
       message,
       timestamp: new Date().toISOString(),
@@ -1603,7 +1523,10 @@ const worker = {
       return json(
         {
           checked_at: catalog.checkedAt,
-          models: catalog.models.filter(m => m.free),
+          models: catalog.models.filter(
+            m => m.free && (m.id.endsWith(':free') || m.id === 'openrouter/free')
+          ),
+          free_only: true,
           routing: 'task-and-capability',
           media_generation: false,
         },

@@ -15,6 +15,7 @@ on:
     branches: [main]
     paths:
       - 'workers/assistme-chat/**'
+      - 'api/chat_policy.json'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/deploy-chat-worker.yml'

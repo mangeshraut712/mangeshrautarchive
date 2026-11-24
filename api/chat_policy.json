@@ -1,0 +1,69 @@
+{
+  "verifiedAt": "2026-11-24",
+  "primary": "nvidia/nemotron-3-ultra-550b-a55b:free",
+  "vision": "google/gemma-4-26b-a4b-it:free",
+  "models": [
+    {
+      "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "inputs": ["text"]
+    },
+    {
+      "id": "nvidia/nemotron-3.5-lightning:free",
+      "inputs": ["text"]
+    },
+    {
+      "id": "google/gemma-4-26b-a4b-it:free",
+      "inputs": ["text", "image", "video"]
+    },
+    {
+      "id": "google/gemma-4-31b-it:free",
+      "inputs": ["text", "image", "video"]
+    },
+    {
+      "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "inputs": ["text", "image", "video", "audio"]
+    },
+    {
+      "id": "nvidia/nemotron-3.5-super-vl:free",
+      "inputs": ["text", "image", "video"]
+    },
+    {
+      "id": "inclusionai/ling-3.2-flash:free",
+      "inputs": ["text", "image"]
+    },
+    {
+      "id": "baidu/ernie-5.5-flash-preview:free",
+      "inputs": ["text"]
+    }
+  ],
+  "preferred": {
+    "reasoning": [
+      "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "nvidia/nemotron-3.5-lightning:free",
+      "google/gemma-4-26b-a4b-it:free"
+    ],
+    "code": ["nvidia/nemotron-3-ultra-550b-a55b:free", "nvidia/nemotron-3.5-lightning:free"],
+    "quick": [
+      "nvidia/nemotron-3.5-lightning:free",
+      "google/gemma-4-26b-a4b-it:free",
+      "nvidia/nemotron-3-ultra-550b-a55b:free"
+    ],
+    "image": [
+      "google/gemma-4-26b-a4b-it:free",
+      "nvidia/nemotron-3.5-super-vl:free",
+      "inclusionai/ling-3.2-flash:free"
+    ],
+    "video": [
+      "google/gemma-4-26b-a4b-it:free",
+      "nvidia/nemotron-3.5-super-vl:free",
+      "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
+    ],
+    "audio": ["nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"]
+  },
+  "searchPatterns": {
+    "TEMPORAL_NEWS_RE": "\\b(latest|news|update|updates|today|recent|recently|current|breaking|trending|announced|announcements|released?|what happened|who is|who won|election|stock|price|ceo|founder|winner)\\b",
+    "CONTEMPORARY_ENTITIES_RE": "\\b(apple|google|alphabet|microsoft|openai|anthropic|meta|tesla|nvidia|amazon|spacex|twitter|x\\.ai|claude|chatgpt|gemini|iphone|macbook)\\b",
+    "PORTFOLIO_QUERY_RE": "\\b(mangesh|raut|drexel|ioasiz|aramark|resume|portfolio|systems\\.html|travel atlas|uses\\.html|panchang|hindai|agent-console|stanford-cs336|gravity-saas|contact|email|phone|github\\.com\\/mangeshraut|debug-runner|debug runner|dino|mini-game|game)\\b",
+    "PORTFOLIO_BLOG_OR_INTERNAL_RE": "\\b(my\\s+blog|your\\s+blog|check\\s+(?:my\\s+|the\\s+)?blog|blog\\s+(?:posts?|catalog|articles?)|sept(?:ember)?(?:\\s+2026)?\\s+event|apple\\s+september\\s+event|openai\\s+devday|devday\\s+2026|razorpay\\s+vulcan|openrouter\\s+field\\s+notes|grok\\s+4\\.5)\\b"
+  }
+}

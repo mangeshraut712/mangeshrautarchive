@@ -1,27 +1,27 @@
+import policy from '../../../api/chat_policy.json' with { type: 'json' };
 /**
  * Real-time web and news grounding for AssistMe.
  * Fetches fresh headlines and factual context via Google News RSS and Wikipedia REST API
  * to provide dated, linked source material without treating retrieval as verification.
  */
 
-const NEWS_TIMEOUT_MS = 2000;
+const NEWS_TIMEOUT_MS = 4000;
 const WIKI_TIMEOUT_MS = 1400;
 
 // Keywords indicating temporal, contemporary, or breaking news intent
-const TEMPORAL_NEWS_RE =
-  /\b(latest|news|update|updates|today|recent|recently|current|breaking|trending|announced|announcements|released?|what happened|who is|who won|election|stock|price|ceo|founder|winner)\b/i;
+const TEMPORAL_NEWS_RE = new RegExp(policy.searchPatterns.TEMPORAL_NEWS_RE, 'i');
 
 // Prominent entities often queried for contemporary status
-const CONTEMPORARY_ENTITIES_RE =
-  /\b(apple|google|alphabet|microsoft|openai|anthropic|meta|tesla|nvidia|amazon|spacex|twitter|x\.ai|claude|chatgpt|gemini|iphone|macbook)\b/i;
+const CONTEMPORARY_ENTITIES_RE = new RegExp(policy.searchPatterns.CONTEMPORARY_ENTITIES_RE, 'i');
 
 // Purely portfolio-specific topics that should bypass live search to avoid latency
-const PORTFOLIO_QUERY_RE =
-  /\b(mangesh|raut|drexel|ioasiz|aramark|resume|portfolio|systems\.html|travel atlas|uses\.html|panchang|hindai|agent-console|stanford-cs336|gravity-saas|contact|email|phone|github\.com\/mangeshraut|debug-runner|debug runner|dino|mini-game|game)\b/i;
+const PORTFOLIO_QUERY_RE = new RegExp(policy.searchPatterns.PORTFOLIO_QUERY_RE, 'i');
 
 // Queries specifically targeting Mangesh's published blog articles or portfolio sections
-const PORTFOLIO_BLOG_OR_INTERNAL_RE =
-  /\b(my\s+blog|your\s+blog|check\s+(?:my\s+|the\s+)?blog|blog\s+(?:posts?|catalog|articles?)|sept(?:ember)?(?:\s+2026)?\s+event|apple\s+september\s+event|openai\s+devday|devday\s+2026|razorpay\s+vulcan|openrouter\s+field\s+notes|grok\s+4\.5)\b/i;
+const PORTFOLIO_BLOG_OR_INTERNAL_RE = new RegExp(
+  policy.searchPatterns.PORTFOLIO_BLOG_OR_INTERNAL_RE,
+  'i'
+);
 
 /**
  * Determines whether a message benefits from real-time live grounding.

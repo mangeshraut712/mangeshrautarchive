@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-24-free-only-chat',
+    date: '2026-11-24',
+    type: 'fix',
+    title: 'Free-only chat with consistent source handling',
+    summary:
+      'Use current free models with no paid recovery, align cited retrieval across both backends, and recover interrupted replies. Device read-aloud remains available.',
+    tags: ['assistme', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Enforce free inference, consistent retrieval, and reliable streaming.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-24-chat-reliability-sources',
     date: '2026-11-24',
     type: 'fix',

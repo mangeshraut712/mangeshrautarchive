@@ -1,20 +1,7 @@
 /** Capability-aware routing. Catalog facts are refreshed hourly; no client model is trusted. */
-const ULTRA = 'nvidia/nemotron-3-ultra-550b-a55b:free';
-const OMNI = 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free';
-const GEMMA = 'google/gemma-4-26b-a4b-it:free';
-const SEEDS = [
-  [ULTRA, ['text']],
-  ['nvidia/nemotron-3-super-120b-a12b:free', ['text']],
-  ['nvidia/nemotron-3.5-lightning:free', ['text']],
-  ['cohere/north-mini-code:free', ['text']],
-  [GEMMA, ['text', 'image', 'video']],
-  [OMNI, ['text', 'image', 'audio', 'video']],
-  ['thinkingmachines/inkling:free', ['text', 'image', 'audio']],
-  ['qwen/qwen3.8-27b:free', ['text', 'image', 'video']],
-  ['apodex/apodex-1.1-mini:free', ['text']],
-];
+import policy from '../../../api/chat_policy.json' with { type: 'json' };
 let catalog = {
-  models: SEEDS.map(([id, inputs]) => ({ id, inputs, free: true })),
+  models: policy.models.map(m => ({ ...m, free: true })),
   checkedAt: null,
 };
 let refreshAfter = 0;
@@ -42,7 +29,10 @@ export async function getModelCatalog() {
           inputs: m.architecture.input_modalities,
           outputs: m.architecture.output_modalities,
           context: m.context_length,
-          free: Number(m.pricing?.prompt) === 0 && Number(m.pricing?.completion) === 0,
+          free:
+            m.pricing?.prompt != null &&
+            m.pricing?.completion != null &&
+            Object.values(m.pricing).every(price => Number(price) === 0),
           pricing: { prompt: m.pricing?.prompt, completion: m.pricing?.completion },
           created: m.created,
         }));
@@ -62,7 +52,7 @@ export async function getModelCatalog() {
 export async function selectModelRoute(env, message, modalities) {
   const current = await getModelCatalog();
   const compatible = current.models.filter(m => modalities.every(type => m.inputs.includes(type)));
-  const free = compatible.filter(m => m.free && m.id !== 'openrouter/free');
+  const free = compatible.filter(m => m.free && m.id.endsWith(':free'));
   const task = modalities.includes('audio')
     ? 'audio'
     : modalities.includes('video')
@@ -77,50 +67,13 @@ export async function selectModelRoute(env, message, modalities) {
               !/\b(explain|compare|analy[sz]e|reason|why|research)\b/i.test(message)
             ? 'quick'
             : 'reasoning';
-  const preferred =
-    task === 'audio'
-      ? [OMNI, 'thinkingmachines/inkling:free']
-      : task === 'video'
-        ? [GEMMA, 'qwen/qwen3.8-27b:free', OMNI]
-        : task === 'image'
-          ? [GEMMA, OMNI]
-          : task === 'code'
-            ? ['cohere/north-mini-code:free', ULTRA]
-            : task === 'quick'
-              ? [GEMMA, 'apodex/apodex-1.1-mini:free', ULTRA]
-              : [
-                  env.OPENROUTER_MODEL || ULTRA,
-                  GEMMA,
-                  ULTRA,
-                  'nvidia/nemotron-3-super-120b-a12b:free',
-                ];
+  const preferred = [...policy.preferred[task]];
+  if (task === 'reasoning' && env.OPENROUTER_MODEL) preferred.unshift(env.OPENROUTER_MODEL);
   const available = new Set(free.map(m => m.id));
   const chain = [...preferred.filter(id => available.has(id)), ...free.map(m => m.id)];
   if (modalities.every(m => ['text', 'image'].includes(m))) chain.push('openrouter/free');
-  const audioRecovery = [];
-  // Auto can select a credit-required provider despite an available BYOK audio route.
-  // Try the verified audio model directly first; normal OpenRouter billing still applies.
-  if (
-    env.OPENROUTER_PAID_FALLBACK === 'true' &&
-    modalities.includes('audio') &&
-    compatible.some(m => m.id === 'google/gemini-3.8-flash')
-  )
-    audioRecovery.push('google/gemini-3.8-flash');
-  // Auto adapts to new task rankings. Paid recovery is server-owned, never user-selected.
-  if (env.OPENROUTER_PAID_FALLBACK === 'true') chain.push('openrouter/auto');
-  if (
-    env.OPENROUTER_FUSION_ENABLED === 'true' &&
-    task === 'reasoning' &&
-    /\b(research|compare|evaluate)\b/i.test(message) &&
-    message.length > 180 &&
-    (await getSpeechAvailability(env))
-  )
-    chain.unshift('openrouter/fusion');
   return {
-    chain: [...new Set(chain.filter(id => id !== 'openrouter/auto'))]
-      .slice(0, 7)
-      .concat(audioRecovery)
-      .concat(env.OPENROUTER_PAID_FALLBACK === 'true' ? ['openrouter/auto'] : []),
+    chain: [...new Set(chain)].slice(0, 7),
     task,
     modalities,
     checkedAt: current.checkedAt,
@@ -132,9 +85,6 @@ export function requestPlugins(model, messages) {
   const plugins = parts.some(p => p.type === 'file')
     ? [{ id: 'file-parser', pdf: { engine: 'cloudflare-ai' } }]
     : [];
-  if (model === 'openrouter/auto') plugins.push({ id: 'auto-router', cost_tier: 'low' });
-  if (model === 'openrouter/fusion')
-    plugins.push({ id: 'fusion', max_tool_calls: 1, max_completion_tokens: 1800 });
   return plugins;
 }
 
@@ -176,23 +126,7 @@ export function sanitizeAttachments(attachments = [], images = []) {
   });
 }
 
-let speechHealth;
-let speechHealthUntil = 0;
-/** A configured key does not prove that the paid speech endpoint can serve requests. */
-export async function getSpeechAvailability(env) {
-  if (!env.OPENROUTER_API_KEY) return false;
-  if (Date.now() < speechHealthUntil) return speechHealth;
-  try {
-    const response = await fetch('https://openrouter.ai/api/v1/credits', {
-      headers: { Authorization: `Bearer ${env.OPENROUTER_API_KEY}` },
-      signal: AbortSignal.timeout(4000),
-    });
-    const payload = await response.json();
-    speechHealth =
-      response.ok && Number(payload.data?.total_credits) > Number(payload.data?.total_usage);
-  } catch {
-    speechHealth = false;
-  }
-  speechHealthUntil = Date.now() + 60_000;
-  return speechHealth;
+/** Hosted speech generation is paid; device speech remains available. */
+export async function getSpeechAvailability(_env) {
+  return false;
 }

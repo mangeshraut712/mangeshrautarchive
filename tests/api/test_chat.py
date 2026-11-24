@@ -67,7 +67,7 @@ def test_web_tools_are_gated_to_fresh_external_questions():
     assert should_use_web_tools("latest OpenRouter Parallel web search updates", site_context) is True
 
 
-def test_openrouter_body_adds_parallel_web_tools_only_when_enabled():
+def test_openrouter_body_never_enables_paid_web_tools():
     messages = [{"role": "user", "content": "latest OpenRouter updates"}]
 
     plain = openrouter_request_body("google/gemini-2.5-flash", messages)
@@ -78,14 +78,14 @@ def test_openrouter_body_adds_parallel_web_tools_only_when_enabled():
     )
 
     assert "tools" not in plain
-    assert with_tools["tools"][0]["type"] == "openrouter:web_search"
-    assert with_tools["tools"][0]["parameters"]["engine"] == "parallel"
-    assert with_tools["tools"][1]["type"] == "openrouter:web_fetch"
+    assert "tools" not in with_tools
+    assert with_tools["model"].endswith(":free")
+    assert with_tools["provider"]["max_price"] == {"prompt": 0, "completion": 0}
 
 
 def test_deprecated_openrouter_model_maps_to_current_supported_model():
-    assert normalize_openrouter_model("x-ai/grok-4.1-fast") == "x-ai/grok-4.3"
-    assert normalize_openrouter_model("missing/provider-model") == "google/gemini-2.5-flash"
+    assert normalize_openrouter_model("x-ai/grok-4.1-fast") == "nvidia/nemotron-3-ultra-550b-a55b:free"
+    assert normalize_openrouter_model("missing/provider-model") == "nvidia/nemotron-3-ultra-550b-a55b:free"
 
 
 def test_chat_upstream_http_error_returns_local_fallback(client, monkeypatch):
@@ -452,13 +452,15 @@ def test_provider_citations_are_safe_unique_links():
     assert chat_sources(payload) == [{"url": "https://example.com/story", "title": "Source"}]
 
 
-def test_stream_discards_incomplete_attempt_before_recovery(monkeypatch):
+@pytest.mark.parametrize("finish_reason", [None, "length", "error"])
+def test_stream_discards_incomplete_attempt_before_recovery(monkeypatch, finish_reason):
     import asyncio
     import json
     from api.routes.chat import stream_openrouter_response
 
     attempts = iter([
-        [{"choices": [{"delta": {"content": "Abandoned partial answer"}}]}],
+        [{"choices": [{"delta": {"content": "Abandoned partial answer"}}]},
+         {"choices": [{"delta": {}, "finish_reason": finish_reason}]}],
         [{"choices": [{"delta": {"content": "Complete recovered answer."}, "finish_reason": "stop"}]}],
     ])
 
@@ -515,3 +517,38 @@ def test_health_does_not_use_public_catalog_as_authentication(client, monkeypatc
     response = client.get("/api/chat/health")
     assert response.json()["online"] is False
     assert urls == ["https://openrouter.ai/api/v1/key"]
+
+
+def test_stream_cancellation_is_not_converted_to_a_completed_answer(monkeypatch):
+    import asyncio
+    from api.routes.chat import stream_openrouter_response
+
+    class Response:
+        status_code = 200
+        headers = {}
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return False
+
+        async def aiter_lines(self):
+            raise asyncio.CancelledError()
+            yield ""
+
+    class Client(Response):
+        def stream(self, *_args, **_kwargs):
+            return Response()
+
+    monkeypatch.setattr("api.routes.chat.httpx.AsyncClient", lambda **_kwargs: Client())
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "test-placeholder")
+    monkeypatch.setattr("api.routes.chat._fallback_models", lambda *_args: ["test/model:free"])
+
+    async def collect():
+        return [frame async for frame in stream_openrouter_response(
+            "test/model:free", [{"role": "user", "content": "Explain retries"}]
+        )]
+
+    with pytest.raises(asyncio.CancelledError):
+        asyncio.run(collect())

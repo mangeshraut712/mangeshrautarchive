@@ -309,7 +309,7 @@ The broader browser suite remains available through `npm run test:e2e:all` acros
 
 The AI chatbot is the portfolio's interactive assistant:
 
-- **Model:** Live Cloudflare text primary: `nvidia/nemotron-3-ultra-550b-a55b:free`; Nemotron Super is the next free fallback. FastAPI routing and environment overrides are configured in `api/config.py` and `api/model_router.py`. Image requests use the separate vision chain.
+- **Model:** Live Cloudflare text primary: `nvidia/nemotron-3-ultra-550b-a55b:free`; Lightning and compatible current free models provide fallback. Both backends share `api/chat_policy.json`; paid recovery and hosted search/speech are disabled. Image requests use the separate vision chain.
 - **Proxy:** Frontend JS sends chat messages to `/api/chat`. FastAPI proxies to OpenRouter with streaming responses.
 - **Memory:** Conversation history managed by `api/memory_manager.py` with configurable context window.
 - **Site Knowledge:** `api/site_knowledge.py` injects portfolio context into system prompts.

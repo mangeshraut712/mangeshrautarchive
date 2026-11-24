@@ -118,13 +118,13 @@ test('text tasks select different specialists and recover from provider quota', 
     {}
   );
   const frames = (await response.text()).trim().split('\n').map(JSON.parse);
-  assert.equal(calls[0].model, 'cohere/north-mini-code:free');
-  assert.equal(calls[1].model, 'nvidia/nemotron-3-ultra-550b-a55b:free');
+  assert.equal(calls[0].model, 'nvidia/nemotron-3-ultra-550b-a55b:free');
+  assert.equal(calls[1].model, 'nvidia/nemotron-3.5-lightning:free');
   assert.equal(frames.at(-1).metadata.source, 'OpenRouter');
   failFirst = false;
 });
 
-test('quick factual queries route to Gemma for fast, token-efficient responses', async () => {
+test('quick factual queries route to Lightning for fast, token-efficient responses', async () => {
   calls = [];
   const response = await worker.fetch(
     request({ message: 'who is apple ceo?', stream: true }),
@@ -132,7 +132,7 @@ test('quick factual queries route to Gemma for fast, token-efficient responses',
     {}
   );
   const frames = (await response.text()).trim().split('\n').map(JSON.parse);
-  assert.equal(calls[0].model, 'google/gemma-4-26b-a4b-it:free');
+  assert.equal(calls[0].model, 'nvidia/nemotron-3.5-lightning:free');
   assert.equal(frames.at(-1).metadata.source, 'OpenRouter');
 });
 test('malformed and oversized attachments are rejected, never silently discarded', async () => {
@@ -185,7 +185,7 @@ test('contemporary news query activates live search and attaches live grounding 
   assert.equal(done.metadata.sources[0].url, 'https://example.com/news');
 });
 
-test('audio recovers through a compatible Gemini model before Auto after a free-provider limit', async () => {
+test('audio fails safely without paid recovery after a free-provider limit', async () => {
   calls = [];
   failFirst = true;
   const response = await worker.fetch(
@@ -199,8 +199,8 @@ test('audio recovers through a compatible Gemini model before Auto after a free-
   );
   await response.text();
   assert.equal(calls[0].model, 'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free');
-  assert.equal(calls[1].model, 'google/gemini-3.8-flash');
-  assert.equal(calls[1].messages.at(-1).content[1].type, 'input_audio');
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].messages.at(-1).content[1].type, 'input_audio');
   failFirst = false;
 });
 
@@ -252,4 +252,41 @@ test('github profile route returns user profile data', async () => {
   const data = await response.json();
   assert.equal(data.success, true);
   assert.equal(data.data.login, 'mangeshraut712');
+});
+
+test('paid flags and client overrides cannot enable paid models or search', async () => {
+  calls = [];
+  const response = await worker.fetch(
+    request({
+      message: 'Compare recent AI models and research their trade-offs.',
+      model: 'openrouter/fusion',
+      stream: true,
+    }),
+    { ...env, OPENROUTER_MODEL: 'paid/model', OPENROUTER_FUSION_ENABLED: 'true' },
+    {}
+  );
+  await response.text();
+  assert.ok(calls.length > 0);
+  for (const call of calls) {
+    assert.ok(call.model.endsWith(':free') || call.model === 'openrouter/free');
+    assert.deepEqual(call.provider.max_price, { prompt: 0, completion: 0 });
+    assert.equal(call.tools, undefined);
+    assert.deepEqual(call.plugins, []);
+  }
+});
+
+test('configured credentials cannot enable paid speech', async () => {
+  calls = [];
+  const response = await worker.fetch(
+    new Request('https://example.com/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: 'Hello' }),
+    }),
+    env,
+    {}
+  );
+  assert.equal(response.status, 503);
+  assert.equal((await response.json()).fallback, 'browser-speechSynthesis');
+  assert.equal(calls.length, 0);
 });

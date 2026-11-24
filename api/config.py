@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import base64
 import json
 import time
@@ -21,27 +22,19 @@ GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY", "").strip()
 LASTFM_API_KEY = os.getenv("LASTFM_API_KEY", "").strip()
 LASTFM_DEFAULT_USERNAME = os.getenv("LASTFM_USERNAME", "mbr63").strip() or "mbr63"
 
-FALLBACK_OPENROUTER_MODEL = "google/gemini-2.5-flash"
-PRIMARY_OPENROUTER_MODEL = "x-ai/grok-4.3"
-# Zero-credit online path when paid balance is exhausted (HTTP 402).
-# Nemotron Ultra free is verified in the live OpenRouter catalog and inference API.
-# Gemma free + openrouter/free remain spare recovery models.
-FREE_OPENROUTER_MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free"
-FREE_OPENROUTER_FALLBACKS = (
-    FREE_OPENROUTER_MODEL,
-    "nvidia/nemotron-3-super-120b-a12b:free",
-    "google/gemma-4-26b-a4b-it:free",
-    "google/gemma-4-31b-it:free",
-    "openrouter/free",
-)
-# Free multimodal (image/video/audio → text). OpenRouter image/audio *generation* is paid.
-FREE_VISION_OPENROUTER_MODEL = "google/gemma-4-26b-a4b-it:free"
-FREE_VISION_OPENROUTER_FALLBACKS = (
-    FREE_VISION_OPENROUTER_MODEL,
-    "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-    "google/gemma-4-31b-it:free",
-    "openrouter/free",
-)
+CHAT_POLICY = json.loads(Path(__file__).with_name("chat_policy.json").read_text())
+FREE_OPENROUTER_MODEL = CHAT_POLICY["primary"]
+PRIMARY_OPENROUTER_MODEL = FREE_OPENROUTER_MODEL
+FALLBACK_OPENROUTER_MODEL = "openrouter/free"
+FREE_OPENROUTER_FALLBACKS = tuple(m["id"] for m in CHAT_POLICY["models"] if "text" in m["inputs"]) + ("openrouter/free",)
+FREE_VISION_OPENROUTER_MODEL = CHAT_POLICY["vision"]
+FREE_VISION_OPENROUTER_FALLBACKS = tuple(m["id"] for m in CHAT_POLICY["models"] if "image" in m["inputs"]) + ("openrouter/free",)
+
+
+def is_free_model(model: str) -> bool:
+    return isinstance(model, str) and (model.endswith(":free") or model == "openrouter/free")
+
+
 AUTO_ROUTER_MODEL = "openrouter/auto"
 FUSION_MODEL = "openrouter/fusion"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
@@ -53,9 +46,8 @@ def get_openrouter_api_key() -> str:
 
 
 def get_openrouter_model_raw() -> str:
-    # Prefer explicit env. Default primary is Grok 4.3 when funded; chat fallback chain
-    # always tries FREE_OPENROUTER_MODEL (Nemotron free) + Gemma free on 402 / empty streams.
-    return os.getenv("OPENROUTER_MODEL", PRIMARY_OPENROUTER_MODEL).strip()
+    raw = os.getenv("OPENROUTER_MODEL", FREE_OPENROUTER_MODEL).strip()
+    return raw if is_free_model(raw) else FREE_OPENROUTER_MODEL
 
 
 def get_site_url() -> str:
@@ -128,50 +120,9 @@ MAX_CONTEXT_CHARS = 4000
 SESSION_ID_PATTERN = re.compile(r"^[a-f0-9]{16,64}$", re.I)
 
 # Models exposed to the frontend / monitor
-MODELS = [
-    {
-        "id": AUTO_ROUTER_MODEL,
-        "name": "OpenRouter Auto (best fit)",
-        "priority": 0,
-        "streaming": True,
-        "routing": "auto",
-    },
-    {
-        "id": FUSION_MODEL,
-        "name": "OpenRouter Fusion (multi-model)",
-        "priority": 1,
-        "streaming": False,
-        "routing": "fusion",
-    },
-    {
-        "id": PRIMARY_OPENROUTER_MODEL,
-        "name": "Grok 4.3 (real-time)",
-        "priority": 2,
-        "streaming": True,
-        "routing": "portfolio",
-    },
-    {
-        "id": "google/gemini-2.5-flash",
-        "name": "Gemini 2.5 Flash",
-        "priority": 3,
-        "streaming": True,
-        "routing": "fast",
-    },
-    {
-        "id": "google/gemini-2.5-pro",
-        "name": "Gemini 2.5 Pro",
-        "priority": 4,
-        "streaming": True,
-        "routing": "quality",
-    },
-    {
-        "id": "anthropic/claude-3.5-sonnet",
-        "name": "Claude 3.5 Sonnet",
-        "priority": 5,
-        "streaming": True,
-        "routing": "quality",
-    },
-]
+MODELS = [{"id": m["id"], "name": m["id"], "priority": i, "streaming": True, "routing": "free"}
+          for i, m in enumerate(CHAT_POLICY["models"])]
+
 OPENROUTER_MODEL_ALIASES = {
     "x-ai/grok-4.1-fast": PRIMARY_OPENROUTER_MODEL,
     "x-ai/grok-4-fast": PRIMARY_OPENROUTER_MODEL,
@@ -182,34 +133,12 @@ SUPPORTED_OPENROUTER_MODELS = {model["id"] for model in MODELS}
 
 
 def normalize_openrouter_model(model: str) -> str:
-    """Return a supported OpenRouter model ID or router alias."""
     requested = (model or "").strip()
-    if not requested:
-        return PRIMARY_OPENROUTER_MODEL
-    requested = OPENROUTER_MODEL_ALIASES.get(requested, requested)
-    if requested in ROUTER_MODEL_IDS or requested.startswith("openrouter/"):
-        return requested
-    # Preserve free-tier model slugs (e.g. google/gemma-*:free)
-    if requested.endswith(":free"):
-        return requested
-    if requested in SUPPORTED_OPENROUTER_MODELS:
-        return requested
-    if requested in FREE_OPENROUTER_FALLBACKS:
-        return requested
-    return FALLBACK_OPENROUTER_MODEL
+    return requested if is_free_model(requested) else FREE_OPENROUTER_MODEL
 
 
 def get_default_model() -> str:
-    """Env default, falling back to Grok then free/Auto Router."""
-    raw = get_openrouter_model_raw()
-    if raw in ROUTER_MODEL_IDS or raw.startswith("openrouter/") or raw.endswith(":free"):
-        return raw
-    if raw in FREE_OPENROUTER_FALLBACKS:
-        return raw
-    normalized = normalize_openrouter_model(raw)
-    if normalized != FALLBACK_OPENROUTER_MODEL or raw == FALLBACK_OPENROUTER_MODEL:
-        return normalized
-    return PRIMARY_OPENROUTER_MODEL
+    return normalize_openrouter_model(get_openrouter_model_raw())
 
 
 DEFAULT_MODEL = get_default_model()

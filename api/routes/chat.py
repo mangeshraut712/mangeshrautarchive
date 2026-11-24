@@ -25,7 +25,7 @@ from api.config import (
     get_site_title,
     FALLBACK_OPENROUTER_MODEL,
     PRIMARY_OPENROUTER_MODEL,
-    FUSION_MODEL,
+    normalize_openrouter_model,
     is_prompt_injection,
     sanitize_chat_text,
     sanitize_session_id,
@@ -49,11 +49,11 @@ from api.config import (
 )
 from api.monitoring import system_monitor, EventType
 from api.model_router import (
-    AUTO_ROUTER_ALLOWED,
-    AUTO_ROUTER_MODEL,
+    refresh_model_catalog,
     build_model_fallback_chain,
     resolve_chat_model,
 )
+from api.live_search import fetch_live_grounding
 from api.site_knowledge import (
     build_site_knowledge_prompt,
     format_blog_release_summary,
@@ -61,7 +61,6 @@ from api.site_knowledge import (
     format_recent_changelog_summary,
     format_usa_state_summary,
     retrieve_site_context,
-    should_use_web_tools,
 )
 
 router = APIRouter()
@@ -138,7 +137,7 @@ def openrouter_request_body(
     web_tools_enabled: bool = False,
     session_id: Optional[str] = None,
 ) -> Dict:
-    """Build a bounded OpenRouter request body with optional 2026 web tools."""
+    """Enforce free inference at the outbound boundary; never enable paid search."""
     user_message = next(
         (m["content"] for m in reversed(messages) if m.get("role") == "user"),
         "",
@@ -152,47 +151,10 @@ def openrouter_request_body(
     if not stream:
         body.pop("stream", None)
 
-    if model == AUTO_ROUTER_MODEL:
-        body["plugins"] = [
-            {
-                "id": "auto-router",
-                "cost_tier": "low",
-                "allowed_models": AUTO_ROUTER_ALLOWED,
-            }
-        ]
-        if session_id:
-            body["session_id"] = session_id
-
+    body["model"] = normalize_openrouter_model(model)
+    body["provider"] = {"max_price": {"prompt": 0, "completion": 0}}
     if any(part.get("type") == "file" for m in messages if isinstance(m.get("content"), list) for part in m["content"]):
-        body.setdefault("plugins", []).append({"id": "file-parser", "pdf": {"engine": "cloudflare-ai"}})
-
-    if web_tools_enabled:
-        body["tools"] = [
-            {
-                "type": "openrouter:web_search",
-                "parameters": {
-                    "engine": "parallel",
-                    "max_results": 5,
-                    "max_total_results": 10,
-                    "search_context_size": "medium",
-                },
-            },
-            {
-                "type": "openrouter:web_fetch",
-                "parameters": {
-                    "engine": "openrouter",
-                    "max_content_tokens": 12000,
-                    "blocked_domains": [
-                        "localhost",
-                        "127.0.0.1",
-                        "0.0.0.0",
-                        "[::1]",
-                        "169.254.169.254",
-                        "metadata.google.internal",
-                    ],
-                },
-            },
-        ]
+        body["plugins"] = [{"id": "file-parser", "pdf": {"engine": "cloudflare-ai"}}]
 
     return body
 
@@ -1038,17 +1000,8 @@ def build_local_chat_payload(
 
 def _fallback_models(model: str, messages: Optional[List[Dict]] = None) -> List[str]:
     types = {part.get("type") for m in messages or [] if isinstance(m.get("content"), list) for part in m["content"]}
-    if "input_audio" in types:
-        return [
-            "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
-            "google/gemini-3.8-flash",
-            "openrouter/auto",
-        ]
-    if "video_url" in types:
-        return ["google/gemma-4-26b-a4b-it:free", "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "openrouter/auto"]
-    if "image_url" in types:
-        return ["google/gemma-4-26b-a4b-it:free", "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free", "openrouter/auto"]
-    return build_model_fallback_chain(model)
+    modalities = ["text"] + [media for kind, media in (("image_url", "image"), ("video_url", "video"), ("input_audio", "audio")) if kind in types]
+    return build_model_fallback_chain(model, modalities)
 
 
 def extract_openrouter_generation_id(payload=None, headers=None) -> str:
@@ -1291,7 +1244,7 @@ async def stream_openrouter_response(
                                     if len(sources) < 8 and not any(item["url"] == citation["url"] for item in sources):
                                         sources.append(citation)
                                 choices = json_data.get("choices") or []
-                                if choices and choices[0].get("finish_reason") == "error":
+                                if choices and choices[0].get("finish_reason") in ("error", "length", "content_filter", "tool_calls"):
                                     completed = False
                                     break
                                 if choices and choices[0].get("finish_reason"):
@@ -1357,7 +1310,7 @@ async def stream_openrouter_response(
                                         "live_sources": len(sources),
                                         "knowledge_context": knowledge_context_enabled,
                                         "web_tools": web_tools_enabled,
-                                        "web_engine": "parallel" if web_tools_enabled else None,
+                                        "web_engine": None,
                                         "routing_tier": routing_tier,
                                         "char_count": len(full_content),
                                         "tokens_estimate": tokens_estimate,
@@ -1557,7 +1510,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                         break
 
     site_context = retrieve_site_context(retrieval_query, safe_context)
-    web_tools_enabled = should_use_web_tools(message, site_context)
+    web_tools_enabled = False
     session_id = sanitize_session_id(request.session_id)
     safe_images = sanitize_chat_images(getattr(request, "images", None))
     # Validate attachments before any local command can bypass the media request.
@@ -1632,7 +1585,10 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             user_payload = build_multimodal_user_content(message, safe_images, request.attachments)
         user_message = {"role": "user", "content": user_payload}
 
-        conversation = [system_message] + history + [user_message]
+        await refresh_model_catalog()
+        grounding = await fetch_live_grounding(message)
+        source_messages = [{"role": "user", "content": grounding["groundingPrompt"]}] if grounding["groundingPrompt"] else []
+        conversation = [system_message] + source_messages + history + [user_message]
 
         selected_model, routed_web, routing_tier = resolve_chat_model(
             message,
@@ -1662,6 +1618,10 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                         if await req.is_disconnected():
                             logger.info("Chat client disconnected; stopping upstream stream")
                             break
+                        data = json.loads(chunk)
+                        if data.get("type") == "done" and data.get("metadata", {}).get("source") == "OpenRouter":
+                            data["metadata"].update(sources=grounding["sources"], live_grounded=bool(grounding["sources"]), live_sources=len(grounding["sources"]))
+                            chunk = json.dumps(data) + "\n"
                         yield chunk
                         try:
                             # NDJSON chunks have trailing \n — strip before parsing
@@ -1707,13 +1667,13 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "confidence": 0.95,
             "runtime": f"{runtime}ms",
             "usage": response.get("usage"),
-            "sources": response.get("sources", []),
-            "live_grounded": bool(response.get("sources")),
-            "live_sources": len(response.get("sources", [])),
+            "sources": grounding["sources"],
+            "live_grounded": bool(grounding["sources"]),
+            "live_sources": len(grounding["sources"]),
             "timestamp": int(time.time() * 1000),
             "knowledge_context": bool(site_context),
             "web_tools": web_tools_enabled,
-            "web_engine": "parallel" if web_tools_enabled else None,
+            "web_engine": None,
         }
 
         if session_id:
@@ -1821,13 +1781,14 @@ async def get_models():
     current = get_default_model()
     return {
         "models": MODELS,
+        "free_only": True,
         "default": current,
         "current": current,
         "ai_configured": bool(get_openrouter_api_key()),
         "routing": {
             "portfolio": PRIMARY_OPENROUTER_MODEL,
-            "auto": AUTO_ROUTER_MODEL,
-            "fusion": FUSION_MODEL,
+            "auto": "openrouter/free",
+            "fusion": None,
             "fallback": FALLBACK_OPENROUTER_MODEL,
         },
     }

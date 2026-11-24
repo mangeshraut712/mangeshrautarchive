@@ -2940,14 +2940,14 @@ class AppleIntelligenceChatbot {
       primaryRow.appendChild(runtimeEl);
     }
 
-    // Live Grounded Badge (Apple Green gradient pill)
+    // Retrieval indicates available evidence, not independent fact verification.
     if (metadata.liveGrounded || (metadata.liveSources && metadata.liveSources > 0)) {
       const groundedBadge = document.createElement('span');
       groundedBadge.className = 'meta-grounded-badge';
       groundedBadge.title = `Live search grounded (${metadata.liveSources || 1} sources)`;
       const globeIcon = document.createElement('i');
       globeIcon.className = 'fas fa-globe';
-      groundedBadge.append(globeIcon, document.createTextNode(' Live Grounded'));
+      groundedBadge.append(globeIcon, document.createTextNode(' Sources available'));
       primaryRow.appendChild(groundedBadge);
     } else if (isPortfolioContext) {
       // Verified Portfolio Badge (Apple Blue gradient pill)
@@ -3057,7 +3057,7 @@ class AppleIntelligenceChatbot {
     // 4. Grounding / Knowledge
     if (metadata.liveGrounded || (metadata.liveSources && metadata.liveSources > 0)) {
       const count = metadata.liveSources || 1;
-      detailChips.push(`Grounding: Live Web (${count} sources)`);
+      detailChips.push(`Retrieved sources (${count} sources)`);
     } else if (isPortfolioContext) {
       detailChips.push('Knowledge: Official Portfolio Knowledge Base');
     }

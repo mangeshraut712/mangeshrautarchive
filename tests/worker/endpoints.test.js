@@ -157,7 +157,7 @@ test('chat rejects non-object bodies and non-string messages without invoking up
   }
 });
 
-test('speech rejects structured text before contacting the provider', async () => {
+test('speech stays disabled without contacting the provider', async () => {
   const response = await worker.fetch(
     new Request('https://worker.local/api/tts', {
       method: 'POST',
@@ -166,7 +166,7 @@ test('speech rejects structured text before contacting the provider', async () =
     }),
     env
   );
-  assert.equal(response.status, 400);
+  assert.equal(response.status, 503);
 });
 
 test('privacy deletion preflight permits DELETE and session credentials', async () => {
@@ -237,6 +237,43 @@ test('truncated upstream text is reset before a complete fallback answer', async
     const events =
       attempts === 1
         ? [{ choices: [{ delta: { content: 'Abandoned partial answer' } }] }]
+        : [
+            {
+              choices: [
+                { delta: { content: 'Complete recovered answer.' }, finish_reason: 'stop' },
+              ],
+            },
+          ];
+    return new Response(events.map(event => `data: ${JSON.stringify(event)}\n`).join(''));
+  });
+  const response = await worker.fetch(
+    new Request('https://worker.local/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Explain idempotency.', stream: true }),
+    }),
+    env
+  );
+  const frames = (await response.text()).trim().split('\n').map(JSON.parse);
+  assert.equal(attempts, 2);
+  assert.ok(frames.some(frame => frame.type === 'reset'));
+  assert.equal(frames.at(-1).full_content, 'Complete recovered answer.');
+});
+
+test('token-limited upstream text is reset before a complete fallback answer', async t => {
+  let attempts = 0;
+  t.mock.method(globalThis, 'fetch', async url => {
+    if (!String(url).endsWith('/chat/completions')) return Response.json({ data: [] });
+    attempts++;
+    const events =
+      attempts === 1
+        ? [
+            {
+              choices: [
+                { delta: { content: 'Abandoned partial answer' }, finish_reason: 'length' },
+              ],
+            },
+          ]
         : [
             {
               choices: [

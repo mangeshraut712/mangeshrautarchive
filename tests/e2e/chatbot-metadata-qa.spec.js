@@ -15,7 +15,7 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
   // 5 CROSSCHECK EXAMPLES: VERIFYING METADATA SCHEMA, BADGES, AND CLEANLINESS
   // ══════════════════════════════════════════════════════════════════════
 
-  test('Example 1: Contemporary News Query — Live Grounded badge and clean telemetry', async ({
+  test('Example 1: Contemporary News Query — Sources available badge and clean telemetry', async ({
     page,
   }) => {
     await page.route('**/api/chat', route => {
@@ -70,7 +70,7 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
 
     const groundedBadge = lastMsg.locator('.meta-grounded-badge');
     await expect(groundedBadge).toBeVisible();
-    await expect(groundedBadge).toContainText('Live Grounded');
+    await expect(groundedBadge).toContainText('Sources available');
 
     // Portfolio badge should NOT be present on a purely contemporary query
     await expect(lastMsg.locator('.meta-knowledge-badge')).toHaveCount(0);
@@ -85,7 +85,7 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
     await expect(details).toContainText('Model: NVIDIA Nemotron 3 Ultra (550B)');
     await expect(details).toContainText('Provider: NVIDIA via OpenRouter');
     await expect(details).toContainText('Route: ⚡ Quick Factual');
-    await expect(details).toContainText('Grounding: Live Web (2 sources)');
+    await expect(details).toContainText('Retrieved sources (2 sources)');
     await expect(details).toContainText('Compute: 🎯 34 tokens • ⚡ 29 tok/s');
     await expect(details).toContainText('OpenRouter charge: $0.0000');
 
