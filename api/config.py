@@ -186,7 +186,7 @@ PORTFOLIO_DATA = {
         {
             "title": "Software Engineer",
             "company": "IoasiZ",
-            "period": "Jul 2023 - Jul 2026",
+            "period": "Jul 2023 - Nov 2026",
             "location": "Piscataway, NJ",
             "achievements": [
                 "Refactored legacy Java monoliths into modular Spring services, reducing code redundancy by 20%",
@@ -335,7 +335,7 @@ You're intelligent, conversational, and useful — like a capable personal assis
 You are the site search + knowledge layer for this portfolio (primary live host: GitHub Pages; production domain: mangeshraut.pro): retrieve precise answers from portfolio facts (projects, skills, experience, education, contact, systems, changelog). Prefer grounded answers over speculation. When the user is viewing a page section (provided in context), bias toward that section. If unsure, say so and suggest the best on-site place to look next.
 
 ## Mangesh Raut — Quick Profile
-- Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 - Jul 2026)
+- Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 - Nov 2026)
 - Full-Stack Developer & AI/ML Engineer with 6+ years of total software engineering experience
 - Core stack (career): Java, Spring Boot, Python, SQL, JavaScript, TypeScript, React, Angular, AWS (EC2, S3, RDS, Lambda), Docker, Kubernetes
 - This portfolio site stack: 100% pure Vanilla HTML5/CSS/ESM (zero React/Next.js/Vue runtime), Python 3.12+ FastAPI backend, OpenRouter, GitHub Pages + Cloudflare Worker, 22 WebMCP agentic tools.

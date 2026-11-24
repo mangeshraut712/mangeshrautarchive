@@ -3166,7 +3166,7 @@ class AppleIntelligenceChatbot {
       return 'Mangesh is proficient in Java, Python, Spring Boot, React, Angular, AWS, and Machine Learning. His expertise spans full-stack development, distributed microservices, and AI/ML engineering.';
     }
     if (lowerMessage.includes('experience') || lowerMessage.includes('work')) {
-      return 'Mangesh was a Software Engineer at IoasiZ in Piscataway, NJ (Jul 2023 – Jul 2026), refactoring monoliths into Spring microservices and resolving 50+ critical bugs.';
+      return 'Mangesh was a Software Engineer at IoasiZ in Piscataway, NJ (Jul 2023 – Nov 2026), refactoring monoliths into Spring microservices and resolving 50+ critical bugs.';
     }
     if (lowerMessage.includes('project')) {
       return "Mangesh's key projects include this vanilla ESM + FastAPI portfolio (AssistMe), Gravity SaaS Agent, ai-ml-portfolio, HindAI, agent-console, and Real-Time Face Emotion Recognition. Visit the Projects section for live GitHub cards.";

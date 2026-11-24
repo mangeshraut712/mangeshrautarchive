@@ -77,7 +77,7 @@ You are the site search + knowledge layer for this entire portfolio: prefer prec
 - Speech: use AssistMe Voice Mode (+ → Voice Mode) with OpenRouter TTS when configured; otherwise Read Aloud.
 
 ## Portfolio facts (prefer these when relevant)
-- Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 – Jul 2026) — microservices, Spring, cloud automation.
+- Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 – Nov 2026) — microservices, Spring, cloud automation.
 - Prior: Aramark cloud automation.
 - MSCS, Drexel University (GPA 3.91 / 4.0); BE Computer Engineering, SPPU.
 - Career stack: Java Spring Boot, Python (FastAPI), AWS, Terraform, React/Angular, ML/LLMs (TensorFlow), agentic systems.
@@ -143,7 +143,7 @@ Every surface and section of this portfolio is fully integrated:
   • #home: Hero section with live Last.fm music card (#music-card), interactive terminal, quick action chips, and resume dropdown.
   • #about: Personal summary, Drexel MSCS journey, software engineering philosophy.
   • #skills: Interactive radar charts and categorized competencies (Java Spring Boot, Python FastAPI, AWS, Terraform, Docker, Kubernetes, ML/LLMs).
-  • #experience: Professional history (Software Engineer at IoasiZ Jul 2023–Jul 2026, Aramark Cloud Automation, CES).
+  • #experience: Professional history (Software Engineer at IoasiZ Jul 2023–Nov 2026, Aramark Cloud Automation, CES).
   • #engineering: Systems architecture notebook preview.
   • #projects: Standout applications (mangeshrautarchive, Gravity-SaaS-Agent, ai-ml-portfolio, HindAI, agent-console, Stanford-CS336).
   • #education: Drexel University (MSCS, GPA 3.91/4.0), Savitribai Phule Pune University (BE Computer Engineering).
@@ -382,7 +382,7 @@ function localAnswer(message) {
     return "Mangesh's cloud infrastructure expertise spans **AWS** (Lambda, EC2, ECS, S3), **Terraform** for IaC, and Dockerized microservices.";
   }
   if (/experience|work|job|company|ioasiz|aramark/.test(q)) {
-    return 'Mangesh was a **Software Engineer at IoasiZ** (Piscataway, NJ, Jul 2023 – Jul 2026). Previously: cloud automation at **Aramark**.';
+    return 'Mangesh was a **Software Engineer at IoasiZ** (Piscataway, NJ, Jul 2023 – Nov 2026). Previously: cloud automation at **Aramark**.';
   }
   if (/educat|degree|university|drexel|gpa/.test(q)) {
     return '**M.S. Computer Science, Drexel University** (GPA 3.91/4.0) · **B.E. Computer Engineering**, SPPU.';

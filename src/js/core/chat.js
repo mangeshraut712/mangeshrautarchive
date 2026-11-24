@@ -1072,7 +1072,7 @@ class IntelligentAssistant {
       lower.includes('work history')
     ) {
       return portfolio(
-        'Mangesh was a **Software Engineer at IoasiZ** (Piscataway, NJ, Jul 2023 – Jul 2026), building scalable microservices and cloud workflows with Java Spring Boot and AWS.'
+        'Mangesh was a **Software Engineer at IoasiZ** (Piscataway, NJ, Jul 2023 – Nov 2026), building scalable microservices and cloud workflows with Java Spring Boot and AWS.'
       );
     }
 

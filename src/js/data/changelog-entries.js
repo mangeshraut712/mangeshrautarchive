@@ -59,7 +59,7 @@ export const changelogEntries = [
     type: 'fix',
     title: 'Clearer contact, resumes, and conversation',
     summary:
-      'Restore pausable skills and aspiration marquees, keep social icons visible on hover in both themes, update USA and India resumes, hide unavailable Panchang and internal calendar messages, and simplify chat details.',
+      'Restore pausable skills and aspiration marquees, keep social icons visible on hover in both themes, update USA and India resumes, hide unavailable Panchang and internal calendar messages, simplify chat details, and align the IoasiZ end date with the supplied resume.',
     tags: ['design', 'assistme'],
     sha: null,
     commitVerified: false,
