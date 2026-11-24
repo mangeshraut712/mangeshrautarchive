@@ -3437,16 +3437,20 @@ html.dark .meta-details.expanded {
 }
 
 .meta-sources-item {
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(0, 113, 227, 0.1);
-  color: #0071e3;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 6px 0;
+  overflow-wrap: anywhere;
+  background: none;
+  color: var(--ui-accent);
   font-weight: var(--ui-weight-medium);
 }
 
-html.dark .meta-sources-item {
-  background: rgba(10, 132, 255, 0.18);
-  color: #64d2ff;
+a.meta-sources-item {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .meta-detail-chip {

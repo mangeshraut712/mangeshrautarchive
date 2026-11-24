@@ -2486,16 +2486,11 @@ class AppleIntelligenceChatbot {
     } else if (
       response?.rag_context ||
       response?.vector_search ||
-      response?.sources?.length ||
       response?.source === 'upstash_vector'
     ) {
-      const sim = response?.similarity || 0.94;
       const citationBadge = document.createElement('div');
       citationBadge.className = 'vector-citation-badge';
-      citationBadge.innerHTML = `
-            <i class="fas fa-brain" aria-hidden="true"></i>
-            <span>Context: Upstash Vector Index (similarity ${sim})</span>
-          `;
+      citationBadge.textContent = 'Portfolio context available';
       contentDiv.prepend(citationBadge);
     }
 
@@ -2708,6 +2703,7 @@ class AppleIntelligenceChatbot {
           response?.metadata?.liveGrounded ??
           response?.live_grounded ??
           false,
+        sources: response?.metadata?.sources || response?.sources || [],
         liveSources:
           response?.metadata?.live_sources ??
           response?.metadata?.liveSources ??
@@ -2752,6 +2748,12 @@ class AppleIntelligenceChatbot {
       }
       if (error?.code === 'RATE_LIMITED') {
         throw error;
+      }
+      if (error?.code === 'STREAM_INTERRUPTED') {
+        messageDiv?.remove();
+        this.hideTypingIndicator();
+        this.addErrorMessage('The response was interrupted. Your draft is ready to retry.');
+        return false;
       }
       console.error('Streaming error:', error);
       messageDiv?.classList.remove('streaming');
@@ -3097,13 +3099,36 @@ class AppleIntelligenceChatbot {
       detailsRow.appendChild(chip);
     });
 
-    if (metadata.liveGrounded || (metadata.liveSources && metadata.liveSources > 0)) {
+    if (Array.isArray(metadata.sources) && metadata.sources.length) {
       const sources = document.createElement('div');
       sources.className = 'meta-sources';
-      sources.innerHTML =
-        '<span class="meta-sources-label">Sources</span> <span class="meta-sources-item">Live Google News & Wikipedia</span>';
-      detailsRow.appendChild(sources);
-      detailsRow.classList.add('has-sources');
+      const label = document.createElement('span');
+      label.className = 'meta-sources-label';
+      label.textContent = 'Sources ';
+      sources.append(label);
+      const seen = new Set();
+      for (const source of metadata.sources.slice(0, 8)) {
+        let url;
+        try {
+          url = new URL(source.url);
+        } catch {
+          continue;
+        }
+        if (url.protocol !== 'https:' || url.username || url.password || seen.has(url.href))
+          continue;
+        seen.add(url.href);
+        const link = document.createElement('a');
+        link.className = 'meta-sources-item';
+        link.href = url.href;
+        link.textContent = String(source.title || url.hostname).slice(0, 180);
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        sources.append(link, document.createTextNode(' '));
+      }
+      if (seen.size) {
+        detailsRow.appendChild(sources);
+        detailsRow.classList.add('has-sources');
+      }
     } else if (isPortfolioContext) {
       const sources = document.createElement('div');
       sources.className = 'meta-sources';

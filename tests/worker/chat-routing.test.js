@@ -45,7 +45,7 @@ globalThis.fetch = async (url, options) => {
     const host = parsedUrl.hostname;
     if (host === 'news.google.com' || host === 'wikipedia.org' || host.endsWith('.wikipedia.org')) {
       return new Response(
-        '<rss><channel><item><title>Mock Real-Time Tech Headline</title><pubDate>Fri, 02 Oct 2026 12:00:00 GMT</pubDate><description>Verified contemporary tech update</description></item></channel></rss>',
+        '<rss><channel><item><title>Mock Real-Time Tech Headline</title><link>https://example.com/news</link><pubDate>Fri, 02 Oct 2026 12:00:00 GMT</pubDate><description>Verified contemporary tech update</description></item></channel></rss>',
         { status: 200 }
       );
     }
@@ -176,8 +176,13 @@ test('contemporary news query activates live search and attaches live grounding 
   assert.equal(done.metadata.live_grounded, true);
   assert.ok(done.metadata.live_sources > 0);
   const systemMessage = calls[0].messages.find(m => m.role === 'system');
-  assert.ok(systemMessage.content.includes('Mock Real-Time Tech Headline'));
-  assert.ok(systemMessage.content.includes('John Ternus is the CEO of Apple Inc.'));
+  assert.ok(!systemMessage.content.includes('Mock Real-Time Tech Headline'));
+  assert.ok(
+    calls[0].messages.some(
+      m => m.role === 'user' && m.content.includes('Mock Real-Time Tech Headline')
+    )
+  );
+  assert.equal(done.metadata.sources[0].url, 'https://example.com/news');
 });
 
 test('audio recovers through a compatible Gemini model before Auto after a free-provider limit', async () => {

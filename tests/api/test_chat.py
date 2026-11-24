@@ -440,3 +440,78 @@ def test_local_fallback_bounds_adversarial_input():
     assert get_local_math_or_constant_answer("9" * 2000) is None
     assert "100" in get_local_math_or_constant_answer("what is 25 * 4?")
     assert get_local_math_or_constant_answer("9" * 100 + " + 1") is None
+
+
+def test_provider_citations_are_safe_unique_links():
+    from api.routes.chat import chat_sources
+    payload = {"choices": [{"message": {"annotations": [
+        {"url_citation": {"url": "https://example.com/story", "title": "Source"}},
+        {"url_citation": {"url": "https://example.com/story", "title": "Duplicate"}},
+        {"url_citation": {"url": "javascript:alert(1)"}},
+    ]}}]}
+    assert chat_sources(payload) == [{"url": "https://example.com/story", "title": "Source"}]
+
+
+def test_stream_discards_incomplete_attempt_before_recovery(monkeypatch):
+    import asyncio
+    import json
+    from api.routes.chat import stream_openrouter_response
+
+    attempts = iter([
+        [{"choices": [{"delta": {"content": "Abandoned partial answer"}}]}],
+        [{"choices": [{"delta": {"content": "Complete recovered answer."}, "finish_reason": "stop"}]}],
+    ])
+
+    class Response:
+        status_code = 200
+        headers = {}
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return False
+
+        async def aiter_lines(self):
+            for event in next(attempts):
+                yield "data: " + json.dumps(event)
+
+    class Client(Response):
+        def stream(self, *_args, **_kwargs):
+            return Response()
+
+    monkeypatch.setattr("api.routes.chat.httpx.AsyncClient", lambda **_kwargs: Client())
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "test-only-placeholder")
+    monkeypatch.setattr("api.routes.chat._fallback_models", lambda *_args: ["first", "second"])
+
+    async def collect():
+        return [json.loads(frame) async for frame in stream_openrouter_response(
+            "first", [{"role": "user", "content": "Explain idempotency."}]
+        )]
+
+    frames = asyncio.run(collect())
+    assert any(frame["type"] == "reset" for frame in frames)
+    assert frames[-1]["type"] == "done"
+    assert frames[-1]["full_content"] == "Complete recovered answer."
+
+
+@pytest.mark.parametrize("upstream_status", [401, 503])
+def test_health_does_not_use_public_catalog_as_authentication(client, monkeypatch, upstream_status):
+    urls = []
+
+    class Client:
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *_args):
+            return False
+
+        async def get(self, url, **_kwargs):
+            urls.append(url)
+            return httpx.Response(upstream_status)
+
+    monkeypatch.setattr("api.routes.chat.get_openrouter_api_key", lambda: "test-only-placeholder")
+    monkeypatch.setattr("api.routes.chat.httpx.AsyncClient", Client)
+    response = client.get("/api/chat/health")
+    assert response.json()["online"] is False
+    assert urls == ["https://openrouter.ai/api/v1/key"]

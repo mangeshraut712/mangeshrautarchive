@@ -382,6 +382,7 @@ class IntelligentAssistant {
       if (
         error?.name === 'AbortError' ||
         error?.code === 'ABORT_ERR' ||
+        error?.code === 'STREAM_INTERRUPTED' ||
         (typeof DOMException !== 'undefined' &&
           error instanceof DOMException &&
           error.name === 'AbortError')
@@ -576,6 +577,7 @@ class IntelligentAssistant {
         const decoder = new TextDecoder();
         let fullText = '';
         let metadata = {};
+        let completed = false;
         let buffer = '';
 
         const cleanPayloadText = raw => {
@@ -634,6 +636,8 @@ class IntelligentAssistant {
             const items = parseStreamPayloads(trimmed);
             for (const data of items) {
               if (data.type === 'reset') {
+                completed = false;
+                metadata = {};
                 fullText = '';
                 options.onReset?.();
                 continue;
@@ -662,6 +666,7 @@ class IntelligentAssistant {
               // Handle completion — prefer authoritative full_content (multi-model
               // fallback may replace partial junk chunks with a corrected answer).
               else if (data.type === 'done') {
+                completed = true;
                 Object.assign(metadata, data.metadata || {});
                 if (data.full_content) {
                   const authoritative = String(data.full_content);
@@ -703,9 +708,11 @@ class IntelligentAssistant {
         // Servers may close after a final NDJSON frame without a newline.
         if (buffer.trim()) processChunk(new TextEncoder().encode('\n'));
 
-        if (metadata.streamError && !fullText.trim()) {
-          this.markServerUnavailable();
-          return null;
+        if (!completed || metadata.streamError) {
+          options.onReset?.();
+          throw Object.assign(new Error('The response was interrupted. Please retry.'), {
+            code: 'STREAM_INTERRUPTED',
+          });
         }
 
         if (this.isUpstreamFailureText(fullText) || this.isGarbageModelAnswer(fullText, metadata)) {
@@ -742,6 +749,7 @@ class IntelligentAssistant {
       if (
         error?.name === 'AbortError' ||
         error?.code === 'ABORT_ERR' ||
+        error?.code === 'STREAM_INTERRUPTED' ||
         (typeof DOMException !== 'undefined' &&
           error instanceof DOMException &&
           error.name === 'AbortError')

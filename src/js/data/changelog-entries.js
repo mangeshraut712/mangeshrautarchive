@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-24-chat-reliability-sources',
+    date: '2026-11-24',
+    type: 'fix',
+    title: 'Linked sources and reliable chat recovery',
+    summary:
+      'Open retrieved source links, retry interrupted replies without losing your draft, and keep failed model attempts separate. Provider health reflects authentication, with bounded fallback attempts.',
+    tags: ['assistme', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose:
+      'Improve chat reliability and source transparency across the frontend and both backends.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-24-sync-chat-diagnostics',
     date: '2026-11-24',
     type: 'fix',

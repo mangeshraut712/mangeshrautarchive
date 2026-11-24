@@ -3,6 +3,7 @@ import time
 import asyncio
 import re
 from datetime import datetime
+from urllib.parse import urlparse
 from typing import List, Dict, AsyncGenerator, Optional
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import StreamingResponse
@@ -1068,6 +1069,39 @@ def extract_openrouter_generation_id(payload=None, headers=None) -> str:
     return ""
 
 
+def chat_sources(payload: Dict) -> List[Dict]:
+    sources = []
+    seen = set()
+    for choice in payload.get("choices") or []:
+        if not isinstance(choice, dict):
+            continue
+        for part in (choice.get("delta") or {}, choice.get("message") or {}):
+            if not isinstance(part, dict):
+                continue
+            for annotation in part.get("annotations") or []:
+                if not isinstance(annotation, dict):
+                    continue
+                citation = annotation.get("url_citation") or {}
+                if not isinstance(citation, dict):
+                    continue
+                url = citation.get("url")
+                if not isinstance(url, str):
+                    continue
+                try:
+                    parsed = urlparse(url)
+                    if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+                        continue
+                except ValueError:
+                    continue
+                if url in seen:
+                    continue
+                seen.add(url)
+                sources.append({"url": url, "title": str(citation.get("title") or parsed.hostname)[:180]})
+                if len(sources) == 8:
+                    return sources
+    return sources
+
+
 async def stream_openrouter_response(
     model: str,
     messages: List[Dict],
@@ -1146,7 +1180,8 @@ async def stream_openrouter_response(
     # Send typing indicator start
     yield json.dumps({"type": "typing", "status": "start"}) + "\n"
 
-    max_retries = 2
+    max_retries = 0
+    deadline = time.monotonic() + 65
     retry_count = 0
     full_content = ""
     chunk_count = 0
@@ -1161,9 +1196,21 @@ async def stream_openrouter_response(
             chunk_count = 0
 
         for candidate_model in _fallback_models(model, messages):
+            if auth_failed:
+                break
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                break
+            # A failed attempt must not contaminate the next provider's answer.
+            if full_content:
+                yield json.dumps({"type": "reset"}) + "\n"
+            full_content = ""
+            chunk_count = 0
+            completed = False
+            sources = []
             try:
                 async with httpx.AsyncClient(
-                    timeout=httpx.Timeout(60.0, connect=10.0)
+                    timeout=httpx.Timeout(min(18.0, remaining), connect=min(10.0, remaining))
                 ) as client:
                     async with client.stream(
                         "POST",
@@ -1210,11 +1257,14 @@ async def stream_openrouter_response(
                             yield json.dumps({"type": "typing", "status": "stop"}) + "\n"
 
                         async for line in response.aiter_lines():
-                            if not line or not line.startswith("data: "):
+                            if time.monotonic() >= deadline:
+                                raise httpx.ReadTimeout("Stream budget exhausted")
+                            if not line or not line.startswith("data:"):
                                 continue
 
-                            data = line[6:]
+                            data = line[5:].lstrip()
                             if data == "[DONE]":
+                                completed = True
                                 break
 
                             try:
@@ -1228,15 +1278,24 @@ async def stream_openrouter_response(
                                         else str(err)
                                     )
                                     err_code = err.get("code") if isinstance(err, dict) else None
-                                    last_upstream_reason = err_msg or last_upstream_reason
+                                    last_upstream_reason = "OpenRouter provider stream error"
                                     if (
                                         err_code == 401
                                         or "user not found" in str(err_msg).lower()
                                         or "unauthorized" in str(err_msg).lower()
                                     ):
                                         auth_failed = True
-                                    full_content = ""
+                                    completed = False
                                     break
+                                for citation in chat_sources(json_data):
+                                    if len(sources) < 8 and not any(item["url"] == citation["url"] for item in sources):
+                                        sources.append(citation)
+                                choices = json_data.get("choices") or []
+                                if choices and choices[0].get("finish_reason") == "error":
+                                    completed = False
+                                    break
+                                if choices and choices[0].get("finish_reason"):
+                                    completed = True
                                 sse_id = extract_openrouter_generation_id(json_data)
                                 if sse_id:
                                     generation_id = sse_id
@@ -1259,11 +1318,11 @@ async def stream_openrouter_response(
                                         )
                                         + "\n"
                                     )
-                            except BaseException:
+                            except (json.JSONDecodeError, TypeError, KeyError, IndexError):
                                 continue
 
                         # Empty / classifier-junk stream → try free-tier fallback models
-                        if not full_content or _is_garbage_chat_answer(full_content, model):
+                        if not completed or not full_content or _is_garbage_chat_answer(full_content, model):
                             last_upstream_reason = (
                                 f"Empty/garbage stream from {candidate_model}"
                             )
@@ -1271,8 +1330,6 @@ async def stream_openrouter_response(
                                 "⚠️ Skipping empty/garbage stream from %s",
                                 candidate_model,
                             )
-                            full_content = ""
-                            chunk_count = 0
                             continue
 
                         elapsed = time.time() - start_time
@@ -1295,6 +1352,9 @@ async def stream_openrouter_response(
                                             else f"OpenRouter ({model.split('/')[-1]})"
                                         ),
                                         "category": "AI Response",
+                                        "sources": sources,
+                                        "live_grounded": bool(sources),
+                                        "live_sources": len(sources),
                                         "knowledge_context": knowledge_context_enabled,
                                         "web_tools": web_tools_enabled,
                                         "web_engine": "parallel" if web_tools_enabled else None,
@@ -1327,7 +1387,7 @@ async def stream_openrouter_response(
                 continue
             except httpx.RequestError as e:
                 last_upstream_reason = f"OpenRouter network ({type(e).__name__})"
-                logger.error(f"❌ Request error for {candidate_model}: {str(e)}")
+                logger.error(f"❌ Request error for {candidate_model}: {type(e).__name__}")
                 continue
 
         if auth_failed:
@@ -1337,8 +1397,10 @@ async def stream_openrouter_response(
             break
 
         retry_count += 1
-        await asyncio.sleep(0.5)
+        if retry_count <= max_retries:
+            await asyncio.sleep(0.5)
 
+    yield json.dumps({"type": "reset"}) + "\n"
     fallback = build_local_chat_payload(
         user_msg,
         site_context,
@@ -1384,10 +1446,14 @@ async def call_openrouter(
         raise Exception("API key not configured")
 
     last_error: Optional[Exception] = None
-    async with httpx.AsyncClient(timeout=30.0) as client:
+    deadline = time.monotonic() + 65
+    async with httpx.AsyncClient(timeout=18.0) as client:
         for candidate_model in _fallback_models(model, messages):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                break
             try:
-                response = await client.post(
+                response = await asyncio.wait_for(client.post(
                     API_URL,
                     headers={
                         "Authorization": f"Bearer {get_openrouter_api_key()}",
@@ -1401,7 +1467,7 @@ async def call_openrouter(
                         web_tools_enabled=web_tools_enabled,
                         session_id=session_id,
                     ),
-                )
+                ), timeout=min(18.0, remaining))
                 response.raise_for_status()
                 data = response.json()
 
@@ -1424,10 +1490,11 @@ async def call_openrouter(
                     "usage": data.get("usage"),
                     "model": resolved_model,
                     "generation_id": extract_openrouter_generation_id(data, response.headers),
+                    "sources": chat_sources(data),
                 }
             except Exception as exc:
                 last_error = exc
-                logger.error(f"❌ OpenRouter non-stream error for {candidate_model}: {exc}", exc_info=True)
+                logger.error("OpenRouter non-stream error for %s: %s", candidate_model, type(exc).__name__)
                 if isinstance(exc, httpx.HTTPStatusError) and exc.response.status_code == 401:
                     logger.warning("⚠️ OpenRouter authentication failed (HTTP 401) - aborting candidate chain")
                     break
@@ -1640,6 +1707,9 @@ async def chat_endpoint(request: ChatRequest, req: Request):
             "confidence": 0.95,
             "runtime": f"{runtime}ms",
             "usage": response.get("usage"),
+            "sources": response.get("sources", []),
+            "live_grounded": bool(response.get("sources")),
+            "live_sources": len(response.get("sources", [])),
             "timestamp": int(time.time() * 1000),
             "knowledge_context": bool(site_context),
             "web_tools": web_tools_enabled,
@@ -1708,32 +1778,23 @@ async def chat_health():
         try:
             async with httpx.AsyncClient() as client:
                 auth_resp = await client.get(
-                    "https://openrouter.ai/api/v1/auth/key",
+                    "https://openrouter.ai/api/v1/key",
                     headers={"Authorization": f"Bearer {api_key}"},
                     timeout=4.0,
                 )
                 if auth_resp.status_code == 200:
                     status = "healthy"
                     provider_status = "online"
-                    message = "OpenRouter authenticated and ready."
+                    message = "OpenRouter credential verified; inference availability is checked per request."
                 elif auth_resp.status_code == 401:
                     status = "degraded"
                     provider_status = "local_only"
                     message = "OpenRouter API key is invalid or unauthorized (HTTP 401). Falling back to local intelligence mode."
                 else:
-                    response = await client.get(
-                        "https://openrouter.ai/api/v1/models",
-                        headers={"Authorization": f"Bearer {api_key}"},
-                        timeout=4.0,
-                    )
-                    if response.status_code == 200:
-                        status = "healthy"
-                        provider_status = "online"
-                        message = "OpenRouter model catalog is reachable."
-                    else:
-                        status = "unhealthy"
-                        provider_status = "error"
-                        message = f"OpenRouter returned HTTP {response.status_code}."
+                    status = "unhealthy"
+                    provider_status = "error"
+                    message = f"OpenRouter credential probe returned HTTP {auth_resp.status_code}."
+
         except Exception:
             status = "unhealthy"
             provider_status = "error"

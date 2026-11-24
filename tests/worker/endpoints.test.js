@@ -228,3 +228,34 @@ test('stream authentication failure stops retries and explains local limitations
   assert.match(done.full_content, /local portfolio knowledge/);
   assert.doesNotMatch(text, /sensitive provider error fixture/);
 });
+
+test('truncated upstream text is reset before a complete fallback answer', async t => {
+  let attempts = 0;
+  t.mock.method(globalThis, 'fetch', async url => {
+    if (!String(url).endsWith('/chat/completions')) return Response.json({ data: [] });
+    attempts++;
+    const events =
+      attempts === 1
+        ? [{ choices: [{ delta: { content: 'Abandoned partial answer' } }] }]
+        : [
+            {
+              choices: [
+                { delta: { content: 'Complete recovered answer.' }, finish_reason: 'stop' },
+              ],
+            },
+          ];
+    return new Response(events.map(event => `data: ${JSON.stringify(event)}\n`).join(''));
+  });
+  const response = await worker.fetch(
+    new Request('https://worker.local/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Explain idempotency.', stream: true }),
+    }),
+    env
+  );
+  const frames = (await response.text()).trim().split('\n').map(JSON.parse);
+  assert.equal(attempts, 2);
+  assert.ok(frames.some(frame => frame.type === 'reset'));
+  assert.equal(frames.at(-1).full_content, 'Complete recovered answer.');
+});
