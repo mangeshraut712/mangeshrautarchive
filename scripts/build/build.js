@@ -522,7 +522,12 @@ function resolveProductionSiteUrl() {
 
 function getSortedBlogPosts() {
   // Explicit copy + sort (avoid relying on Array#toSorted for older local Node).
-  return [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+  // Same order as the journal index: newest first, ties broken by id.
+  return [...blogPosts].sort(
+    (a, b) =>
+      new Date(b.publishedAt || b.date) - new Date(a.publishedAt || a.date) ||
+      b.id.localeCompare(a.id)
+  );
 }
 
 /**

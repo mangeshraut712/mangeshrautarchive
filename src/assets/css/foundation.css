@@ -186,6 +186,7 @@ html[data-theme='dark'] {
     .section-kicker,
     .blog-index-kicker,
     .blog-kicker,
+    .blog-card-meta .blog-kicker + .blog-card-meta-sep,
     .article-kicker,
     .article-related-kicker,
     .keynote-hero__badge-row
