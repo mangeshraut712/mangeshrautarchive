@@ -25,7 +25,7 @@ functional continuity remain the goal.
 ## 1.1 Motion
 
 Use `--ui-motion-fast` (180ms) for interactions and `--ui-motion-enter` (240ms) for
-entry. Use ease-out, no bounce or spring overshoot. Decorative loops are retired except the user-requested Skills, Dream Companies, and Dream Cars discovery rails. These use continuous linear motion, pause on hover/focus, an explicit pause button, and static scrollable content under reduced motion.
+entry. Use ease-out, no bounce or spring overshoot. Decorative loops are retired except the user-requested Skills, Dream Companies, and Dream Cars discovery rails. These use continuous linear motion, pause on hover/focus, an explicit pause button, and static scrollable content under system or in-site reduced motion.
 Loading indicators may repeat while loading. Respect `prefers-reduced-motion`.
 
 ## 1.2 Spacing and shape

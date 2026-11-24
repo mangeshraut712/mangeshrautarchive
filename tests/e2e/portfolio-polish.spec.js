@@ -62,6 +62,14 @@ for (const width of [375, 768, 1440]) {
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
         true
       );
+      await page.evaluate(() => document.documentElement.classList.add('reduce-motion'));
+      expect(await skills.evaluate(el => getComputedStyle(el).animationName)).toBe('none');
+      await expect(page.locator('.marquee-pause').first()).toBeHidden();
+      expect(
+        await page.locator('.dream-cars-track').evaluate(el => getComputedStyle(el).animationName)
+      ).toBe('none');
+      await page.evaluate(() => document.documentElement.classList.remove('reduce-motion'));
+      expect(await skills.evaluate(el => getComputedStyle(el).animationName)).not.toBe('none');
       await page.emulateMedia({ reducedMotion: 'reduce' });
       expect(await skills.evaluate(el => getComputedStyle(el).animationName)).toBe('none');
       expect(

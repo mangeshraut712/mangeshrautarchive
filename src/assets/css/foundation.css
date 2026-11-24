@@ -357,6 +357,34 @@ html[data-theme='dark'] {
     display: none !important;
   }
 
+  :where(html.reduce-motion) :where(*, *::before, *::after) {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  :where(html.reduce-motion) :where(.marquee-pause) {
+    display: none !important;
+  }
+  :where(html.reduce-motion)
+    :where(.skill-scroll-container, .dream-companies-marquee, .dream-cars-marquee) {
+    overflow-x: auto !important;
+  }
+  :where(html.reduce-motion)
+    :where(.skill-scroll-wrapper, .dream-companies-track, .dream-cars-track) {
+    animation: none !important;
+    transform: none !important;
+  }
+  :where(html.reduce-motion)
+    :where(
+      .skill-marquee-set[aria-hidden],
+      .dream-companies-track > [aria-hidden],
+      .dream-cars-track > [aria-hidden]
+    ) {
+    display: none !important;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     :where(.marquee-pause) {
       display: none !important;
