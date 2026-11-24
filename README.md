@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Portfolio polish (2026-11-24): GPT-6 / Codex restores accessible discovery marquees, repairs social hover theme parity, replaces both supplied November resumes, hides unavailable Panchang/internal calendar text, and simplifies chat responses and source details. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Free-only chat (2026-11-24): GPT-6 / Codex enforces zero-price model routing, aligns cited retrieval across Worker/FastAPI, removes paid search/speech recovery, and rejects incomplete stream endings. See [the free chat contract](docs/FREE_CHAT.md). Exact model variant, reasoning mode, and token usage: unavailable.
 
 Chat reliability and sources (2026-11-24): GPT-6 / Codex improves source links and search-query cleanup, stream completion and retry recovery, bounded provider fallback, and authenticated health checks across the frontend, Worker, and FastAPI. Exact model variant, reasoning mode, and token usage: unavailable.

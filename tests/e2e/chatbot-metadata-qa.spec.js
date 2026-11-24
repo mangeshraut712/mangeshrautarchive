@@ -62,11 +62,11 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
 
     // 1. Primary Row Checks
     const modelBadge = lastMsg.locator('.meta-model-badge');
-    await expect(modelBadge).toBeVisible();
-    await expect(modelBadge).toContainText('Nemotron Ultra');
+    await expect(modelBadge).toHaveCount(0);
+    await expect(modelBadge).toHaveCount(0);
 
     const runtimeBadge = lastMsg.locator('.meta-runtime');
-    await expect(runtimeBadge).toBeVisible();
+    await expect(runtimeBadge).toHaveCount(0);
 
     const groundedBadge = lastMsg.locator('.meta-grounded-badge');
     await expect(groundedBadge).toBeVisible();
@@ -83,11 +83,11 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
 
     // 3. Informative Chips Present
     await expect(details).toContainText('Model: NVIDIA Nemotron 3 Ultra (550B)');
-    await expect(details).toContainText('Provider: NVIDIA via OpenRouter');
-    await expect(details).toContainText('Route: ⚡ Quick Factual');
-    await expect(details).toContainText('Retrieved sources (2 sources)');
-    await expect(details).toContainText('Compute: 🎯 34 tokens • ⚡ 29 tok/s');
-    await expect(details).toContainText('OpenRouter charge: $0.0000');
+    await expect(details).not.toContainText('Provider: NVIDIA via OpenRouter');
+    await expect(details).not.toContainText('Route: ⚡ Quick Factual');
+    await expect(details).not.toContainText('Retrieved sources (2 sources)');
+    await expect(details).not.toContainText('Compute: 🎯 34 tokens • ⚡ 29 tok/s');
+    await expect(details).not.toContainText('OpenRouter charge: $0.0000');
 
     // 4. Clutter & Unwanted Chips Strictly Excluded
     await expect(details).not.toContainText('gen-');
@@ -98,7 +98,7 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
 
     // 5. Screenshot
     await page.locator('#chatbot-widget').screenshot({
-      path: '/Users/mangeshraut/.gemini/antigravity/brain/c0290d41-3659-4d36-990d-d3892c2d1307/crosscheck-example-1-news.png',
+      path: 'artifacts/crosscheck-example-1-news.png',
     });
   });
 
@@ -145,24 +145,24 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
 
     // 1. Primary Row Checks
     const modelBadge = lastMsg.locator('.meta-model-badge');
-    await expect(modelBadge).toContainText('AssistMe Local');
+    await expect(modelBadge).toHaveCount(0);
 
     const knowledgeBadge = lastMsg.locator('.meta-knowledge-badge');
     await expect(knowledgeBadge).toBeVisible();
-    await expect(knowledgeBadge).toContainText('Verified Portfolio');
+    await expect(knowledgeBadge).toContainText('Portfolio context');
 
     // 2. Expand Details
     await lastMsg.getByRole('button', { name: 'Details', exact: true }).click();
     const details = lastMsg.locator('.meta-details');
     await expect(details).toBeVisible();
 
-    await expect(details).toContainText('Knowledge: Official Portfolio Knowledge Base');
+    await expect(details).not.toContainText('Knowledge: Official Portfolio Knowledge Base');
     await expect(details).toContainText('Portfolio site knowledge');
     await expect(details).not.toContainText('gen-');
 
     // 3. Screenshot
     await page.locator('#chatbot-widget').screenshot({
-      path: '/Users/mangeshraut/.gemini/antigravity/brain/c0290d41-3659-4d36-990d-d3892c2d1307/crosscheck-example-2-skills.png',
+      path: 'artifacts/crosscheck-example-2-skills.png',
     });
   });
 
@@ -206,17 +206,17 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
     await expect(lastMsg).toContainText('def invert_tree(root):');
 
     const modelBadge = lastMsg.locator('.meta-model-badge');
-    await expect(modelBadge).toContainText('Qwen 2.5 Coder');
+    await expect(modelBadge).toHaveCount(0);
 
     // Expand details
     await lastMsg.getByRole('button', { name: 'Details', exact: true }).click();
     const details = lastMsg.locator('.meta-details');
-    await expect(details).toContainText('Route: 💻 Code Synthesis');
-    await expect(details).toContainText('Compute: 🎯 68 tokens • ⚡ 45 tok/s');
+    await expect(details).not.toContainText('Route: 💻 Code Synthesis');
+    await expect(details).not.toContainText('Compute: 🎯 68 tokens • ⚡ 45 tok/s');
 
     // Screenshot
     await page.locator('#chatbot-widget').screenshot({
-      path: '/Users/mangeshraut/.gemini/antigravity/brain/c0290d41-3659-4d36-990d-d3892c2d1307/crosscheck-example-3-coding.png',
+      path: 'artifacts/crosscheck-example-3-coding.png',
     });
   });
 
@@ -263,7 +263,7 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
 
     // Screenshot
     await page.locator('#chatbot-widget').screenshot({
-      path: '/Users/mangeshraut/.gemini/antigravity/brain/c0290d41-3659-4d36-990d-d3892c2d1307/crosscheck-example-4-education.png',
+      path: 'artifacts/crosscheck-example-4-education.png',
     });
   });
 
@@ -313,7 +313,7 @@ test.describe('AssistMe Chatbot Metadata & Multi-Question Verification', () => {
 
     // Screenshot
     await page.locator('#chatbot-widget').screenshot({
-      path: '/Users/mangeshraut/.gemini/antigravity/brain/c0290d41-3659-4d36-990d-d3892c2d1307/crosscheck-example-5-architecture.png',
+      path: 'artifacts/crosscheck-example-5-architecture.png',
     });
   });
 

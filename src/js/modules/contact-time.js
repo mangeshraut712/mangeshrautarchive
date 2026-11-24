@@ -24,21 +24,24 @@ function renderPanchang() {
     ['tithi', 'nakshatra', 'yog', 'karan', 'sunrise', 'sunset'].every(
       key => typeof panchang[key] === 'string' && panchang[key].trim()
     );
-  const fields = valid
-    ? [
-        ['Tithi', panchang.tithi],
-        ['Nakshatra', panchang.nakshatra],
-        ['Yog', panchang.yog],
-        ['Karan', panchang.karan],
-        ['Sunrise', panchang.sunrise],
-        ['Sunset', panchang.sunset],
-      ]
-    : [];
+  root.hidden = !valid;
+  if (!valid) {
+    root.replaceChildren();
+    return;
+  }
+  const fields = [
+    ['Tithi', panchang.tithi],
+    ['Nakshatra', panchang.nakshatra],
+    ['Yog', panchang.yog],
+    ['Karan', panchang.karan],
+    ['Sunrise', panchang.sunrise],
+    ['Sunset', panchang.sunset],
+  ];
   root.innerHTML = `
     <div class="panchang-heading"><h4><i class="fas fa-calendar-day contact-context-icon" aria-hidden="true"></i> Today’s Panchang</h4><time datetime="${today}">${escapeHtml(new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short' }).format(new Date()))}</time></div>
-    ${valid ? `<dl class="panchang-values">${fields.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>` : '<p class="panchang-fallback">Today’s verified details are not available yet. View Kalnirnay’s official calendar.</p>'}
+    <dl class="panchang-values">${fields.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl>
     <a class="calendar-marathi-link" href="https://www.kalnirnay.com/" target="_blank" rel="noopener noreferrer">Open the official Marathi calendar <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
-    ${valid ? '<p class="panchang-source">Source: Kalnirnay</p>' : ''}`;
+    <p class="panchang-source">Source: Kalnirnay</p>`;
 }
 
 async function refreshPanchang() {
@@ -54,7 +57,7 @@ async function refreshPanchang() {
     const response = await fetch(url, { cache: 'no-cache', signal: AbortSignal.timeout(8000) });
     if (response.ok) panchang = await response.json();
   } catch {
-    // The official source link remains available when today's publication cannot be loaded.
+    // Keep unavailable daily details out of the public calendar.
   }
   renderPanchang();
 }

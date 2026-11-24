@@ -2810,67 +2810,6 @@ class AppleIntelligenceChatbot {
 
   // ── Condensed Metadata (replaces verbose chips) ──────
 
-  formatModelBadgeName(rawModel, metadata = {}) {
-    const raw = String(rawModel || '').trim();
-    if (!raw || raw === 'AI') return 'AssistMe AI';
-    const lower = raw.toLowerCase();
-    if (
-      lower === 'edge-local' ||
-      lower === 'local-fastapi' ||
-      lower === 'offline assistme' ||
-      lower === 'local intelligence' ||
-      lower.includes('local')
-    ) {
-      return 'AssistMe Local';
-    }
-    if (lower.includes('action') || lower.includes('agentic')) return 'Action Handler';
-    if (lower.includes('nemotron-3-ultra') || lower.includes('nemotron-ultra'))
-      return 'Nemotron Ultra';
-    if (lower.includes('nemotron-3.5-lightning') || lower.includes('nemotron-lightning')) {
-      return 'Nemotron Lightning';
-    }
-    if (lower.includes('nemotron-3-super') || lower.includes('nemotron-super'))
-      return 'Nemotron Super';
-    if (lower.includes('gemma-4')) {
-      const isVision =
-        metadata.routingTask === 'vision' ||
-        (Array.isArray(metadata.inputModalities) && metadata.inputModalities.includes('image'));
-      return isVision ? 'Gemma 4 Vision' : 'Gemma 4';
-    }
-    if (lower.includes('gemini-')) {
-      return raw
-        .split('/')
-        .pop()
-        .replace(/:free$/, '')
-        .replace(/^gemini-/, 'Gemini ')
-        .replace(/-/g, ' ')
-        .replace(/\b(flash|pro|lite)\b/g, word => word[0].toUpperCase() + word.slice(1));
-    }
-    if (lower.includes('grok-4.3')) return 'Grok 4.3';
-    if (lower.includes('apodex')) return 'Apodex Mini';
-    if (lower.includes('liquid') || lower.includes('lfm')) return 'Liquid LFM';
-    if (lower.includes('north-code') || lower.includes('north')) return 'North Code';
-    if (lower.includes('command-r')) return 'Command R';
-    if (lower.includes('llama-3.3')) return 'Llama 3.3';
-    if (lower.includes('llama-4')) return 'Llama 4';
-    if (lower.includes('llama-3')) return 'Llama 3';
-    if (lower.includes('deepseek-r1')) return 'DeepSeek R1';
-    if (lower.includes('deepseek-chat') || lower.includes('deepseek-v3')) {
-      return 'DeepSeek V3';
-    }
-    if (lower.includes('qwen-2.5-coder')) {
-      return 'Qwen 2.5 Coder';
-    }
-    if (lower.includes('qwen-2.5')) return 'Qwen 2.5';
-    if (lower.includes('gpt-4o-mini')) return 'GPT-4o Mini';
-    if (lower.includes('gpt-4o')) return 'GPT-4o';
-    if (lower.includes('gpt-5')) return 'GPT-5';
-    return raw
-      .split('/')
-      .pop()
-      .replace(/:free$/, '');
-  }
-
   formatDetailedModelName(rawModel) {
     const raw = String(rawModel || '').trim();
     if (!raw || raw === 'AI') return 'AssistMe Intelligent Router';
@@ -2913,32 +2852,9 @@ class AppleIntelligenceChatbot {
       )
     );
 
-    // Primary row: model + badges + runtime + actions
+    // Keep actions together; model details remain behind the disclosure.
     const primaryRow = document.createElement('div');
     primaryRow.className = 'meta-primary';
-
-    // Model badge
-    const modelBadge = document.createElement('span');
-    modelBadge.className = 'meta-model-badge';
-    const rawModel = metadata.model || 'AI';
-    const modelName = this.formatModelBadgeName(rawModel, metadata);
-    modelBadge.title = rawModel;
-    const modelIcon = document.createElement('i');
-    modelIcon.className = 'fas fa-wand-magic-sparkles';
-    modelBadge.append(modelIcon, document.createTextNode(` ${modelName}`));
-    primaryRow.appendChild(modelBadge);
-
-    // Runtime latency
-    if (metadata.runtime) {
-      const runtimeEl = document.createElement('span');
-      runtimeEl.className = 'meta-runtime';
-      const timeStr =
-        metadata.runtime < 1000
-          ? `${metadata.runtime}ms`
-          : `${(metadata.runtime / 1000).toFixed(1)}s`;
-      runtimeEl.textContent = timeStr;
-      primaryRow.appendChild(runtimeEl);
-    }
 
     // Retrieval indicates available evidence, not independent fact verification.
     if (metadata.liveGrounded || (metadata.liveSources && metadata.liveSources > 0)) {
@@ -2950,13 +2866,12 @@ class AppleIntelligenceChatbot {
       groundedBadge.append(globeIcon, document.createTextNode(' Sources available'));
       primaryRow.appendChild(groundedBadge);
     } else if (isPortfolioContext) {
-      // Verified Portfolio Badge (Apple Blue gradient pill)
       const knowledgeBadge = document.createElement('span');
       knowledgeBadge.className = 'meta-knowledge-badge';
-      knowledgeBadge.title = 'Verified from official portfolio knowledge base';
+      knowledgeBadge.title = 'Uses information supplied by this portfolio';
       const bookIcon = document.createElement('i');
       bookIcon.className = 'fas fa-book-open';
-      knowledgeBadge.append(bookIcon, document.createTextNode(' Verified Portfolio'));
+      knowledgeBadge.append(bookIcon, document.createTextNode(' Portfolio context'));
       primaryRow.appendChild(knowledgeBadge);
     }
 
@@ -3023,71 +2938,11 @@ class AppleIntelligenceChatbot {
 
     const detailChips = [];
 
-    // 1. Model
     if (metadata.model) {
       const fullModelName = this.formatDetailedModelName(metadata.model);
       detailChips.push(`Model: ${fullModelName}`);
     }
 
-    // 2. Provider
-    const providerName =
-      metadata.provider ||
-      (metadata.source === 'OpenRouter'
-        ? 'OpenRouter'
-        : metadata.source === 'Local Intelligence' || metadata.model === 'edge-local'
-          ? 'AssistMe Local Intelligence'
-          : metadata.source || 'OpenRouter');
-    if (providerName) detailChips.push(`Provider: ${providerName}`);
-
-    // 3. Routing Task
-    if (metadata.routingTask) {
-      const taskLabel =
-        metadata.routingTask === 'quick'
-          ? 'Route: ⚡ Quick Factual'
-          : metadata.routingTask === 'coding'
-            ? 'Route: 💻 Code Synthesis'
-            : metadata.routingTask === 'vision'
-              ? 'Route: 👁️ Vision Analysis'
-              : metadata.routingTask === 'reasoning'
-                ? 'Route: 🧠 Deep Reasoning'
-                : `Route: ${metadata.routingTask}`;
-      detailChips.push(taskLabel);
-    }
-
-    // 4. Grounding / Knowledge
-    if (metadata.liveGrounded || (metadata.liveSources && metadata.liveSources > 0)) {
-      const count = metadata.liveSources || 1;
-      detailChips.push(`Retrieved sources (${count} sources)`);
-    } else if (isPortfolioContext) {
-      detailChips.push('Knowledge: Official Portfolio Knowledge Base');
-    }
-
-    // 5. Compute (Tokens / Speed or Word Count)
-    const wordCount = contentText.trim().split(/\s+/).filter(Boolean).length;
-    if (metadata.tokens && !metadata.tokensEstimated) {
-      const speedStr = metadata.tokensPerSecond
-        ? ` • ⚡ ${Math.round(metadata.tokensPerSecond)} tok/s`
-        : '';
-      detailChips.push(`Compute: 🎯 ${metadata.tokens} tokens${speedStr}`);
-    } else if (metadata.tokens) {
-      // Estimated tokens — preserve 'estimated' keyword for test compliance
-      detailChips.push(
-        `Compute: 🎯 ≈ ${metadata.tokens} tokens (estimated) • 📝 ${wordCount} words`
-      );
-    } else if (wordCount > 0) {
-      detailChips.push(`Compute: 📝 ${wordCount} words`);
-    }
-
-    // 6. Pricing Tier
-    if (typeof metadata.cost === 'number') {
-      detailChips.push(`OpenRouter charge: $${metadata.cost.toFixed(4)}`);
-    }
-    if (metadata.byok) detailChips.push('Billing: Provider key (BYOK)');
-    if (metadata.byok && typeof metadata.upstreamCost === 'number') {
-      detailChips.push(`Provider-reported inference cost: $${metadata.upstreamCost.toFixed(6)}`);
-    }
-
-    // 7. Finish reason (length warning)
     if (metadata.finishReason === 'length') {
       detailChips.push('⚠️ Response limit reached — ask to continue');
     }

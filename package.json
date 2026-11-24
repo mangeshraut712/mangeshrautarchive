@@ -43,7 +43,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:e2e": "node scripts/utils/run-local.mjs npx playwright test --project=\"Desktop Chrome\"",
-    "test:e2e:critical": "node scripts/utils/run-local.mjs npx playwright test tests/e2e/critical-journeys.spec.js tests/e2e/chatbot-connectivity.spec.js tests/e2e/frontend-regressions.spec.js tests/e2e/chatbot-recovery-sources.spec.js --project=\"Desktop Chrome\" --workers=2 --retries=0",
+    "test:e2e:critical": "node scripts/utils/run-local.mjs npx playwright test tests/e2e/critical-journeys.spec.js tests/e2e/chatbot-connectivity.spec.js tests/e2e/frontend-regressions.spec.js tests/e2e/chatbot-recovery-sources.spec.js tests/e2e/portfolio-polish.spec.js --project=\"Desktop Chrome\" --workers=2 --retries=0",
     "test:e2e:chrome": "node scripts/utils/run-local.mjs npx playwright test --project=\"Desktop Chrome\"",
     "test:e2e:all": "node scripts/utils/run-local.mjs npx playwright test",
     "test:postman": "node scripts/qa/run-postman-tests.js",

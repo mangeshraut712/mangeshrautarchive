@@ -1,3 +1,4 @@
+import { initMarqueeControls } from './marquee-controls.js';
 /**
  * Skills Visualization Module
  * Interactive skill cards with proficiency levels and categories
@@ -171,7 +172,7 @@ class SkillsVisualization {
   }
 
   /**
-   * Create a readable category with each skill shown once.
+   * Create a looping rail with one accessible copy of each skill.
    */
   createCategorySection(category, skills, _categoryIndex) {
     const skillsHTML = skills.map((skill, index) => this.createSkillBadge(skill, index)).join('');
@@ -182,9 +183,10 @@ class SkillsVisualization {
           <h3 class="skill-category-title">${category}</h3>
           <span class="skill-category-count" aria-hidden="true">${skills.length} skills</span>
         </div>
-        <div class="skill-scroll-container">
+        <div class="skill-scroll-container" tabindex="0" aria-label="${category} skills; focus to pause">
           <div class="skill-scroll-wrapper">
-            ${skillsHTML}
+            <div class="skill-marquee-set">${skillsHTML}</div>
+            <div class="skill-marquee-set" aria-hidden="true">${skillsHTML}</div>
           </div>
         </div>
       </div>
@@ -206,6 +208,7 @@ class SkillsVisualization {
       .join('');
 
     container.innerHTML = categoriesHTML;
+    initMarqueeControls(container);
 
     // Add CSS styles
     this.injectStyles();

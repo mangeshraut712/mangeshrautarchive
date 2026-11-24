@@ -252,33 +252,61 @@ html[data-theme='dark'] {
     padding-inline: 0 !important;
   }
 
-  :where(.skill-scroll-wrapper) {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    width: 100% !important;
-    min-width: 0 !important;
-    animation: none !important;
+  /* Continuous discovery rails are explicitly requested; other motion stays brief. */
+  :where(.skill-scroll-wrapper, .dream-companies-track, .dream-cars-track) {
+    animation-duration: 40s !important;
+    animation-timing-function: linear !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  :where(.skill-scroll-container, .dream-companies-marquee, .dream-cars-marquee):focus-within
+    > div {
+    animation-play-state: paused !important;
+  }
+
+  :where(.is-user-paused) {
+    animation-play-state: paused !important;
+  }
+  :where(.marquee-pause) {
+    min-height: 44px;
+    padding: 8px 0;
+    background: transparent !important;
+    border: 0 !important;
+    color: var(--ui-accent) !important;
+  }
+
+  :where(
+    #chatbot-widget .meta-model-badge,
+    #chatbot-widget .meta-knowledge-badge,
+    #chatbot-widget .meta-grounded-badge,
+    #chatbot-widget .meta-detail-chip,
+    #chatbot-widget .meta-details
+  ) {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    color: var(--ui-text-secondary) !important;
+    padding-inline: 0 !important;
+  }
+  :where(#chatbot-widget .input-wrapper:focus-within) {
+    outline: none !important;
+    border-color: var(--ui-border) !important;
     transform: none !important;
-    will-change: auto !important;
   }
-
-  :where(.skill-badge-icon) {
-    flex: 0 0 24px !important;
-    width: 24px !important;
-    height: 24px !important;
-  }
-
-  @media (width <= 600px) {
-    :where(.skill-scroll-wrapper) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px !important;
-    }
-  }
-
-  :where(.skill-scroll-wrapper .skill-badge) {
-    min-width: 0 !important;
-    max-width: none !important;
+  :where(#chatbot-typing-indicator) {
     padding: 8px 0 !important;
+    min-height: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+  :where(#chatbot-typing-indicator .thinking-shimmer) {
+    display: none !important;
+  }
+  :where(#chatbot-widget .assistant-message .message-content) {
+    border: 0 !important;
+    padding: 8px 0 !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
   }
 
   :where(#builder-profile .eng-card-q) {
@@ -309,6 +337,11 @@ html[data-theme='dark'] {
     box-shadow: none !important;
     border: 0 !important;
     background: transparent !important;
+    transform: none !important;
+  }
+
+  :where(.wrapper .icon, .contact-social-wrapper .icon):is(:hover, :focus-within) {
+    color: var(--ui-accent) !important;
   }
 
   :where(
@@ -325,6 +358,19 @@ html[data-theme='dark'] {
   }
 
   @media (prefers-reduced-motion: reduce) {
+    :where(.marquee-pause) {
+      display: none !important;
+    }
+    :where(.dream-companies-marquee, .dream-cars-marquee) {
+      overflow-x: auto !important;
+    }
+    :where(.dream-companies-track, .dream-cars-track, .skill-scroll-wrapper) {
+      animation: none !important;
+      transform: none !important;
+    }
+    :where(.dream-companies-track, .dream-cars-track) > [aria-hidden] {
+      display: none !important;
+    }
     :where(*, *::before, *::after) {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;

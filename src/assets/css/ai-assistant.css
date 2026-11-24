@@ -161,11 +161,11 @@ body.chatbot-open .a11y-toolbar {
   pointer-events: none;
 }
 
-/* Desktop: Keep the chatbot toggle button visible and interactive when open */
+/* The close control is the only launcher action while the conversation is open. */
 body.chatbot-open #chatbot-toggle {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
   z-index: 200001 !important;
 }
 
@@ -1313,8 +1313,8 @@ html.dark .meta-chip-confidence {
 }
 
 .msg-action-btn {
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: none;
   background: rgb(0 0 0 / 5%);
@@ -1415,21 +1415,11 @@ html.dark .input-wrapper {
   border: 1.5px solid rgba(255, 255, 255, 0.12);
 }
 
-.input-wrapper:focus-within {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow:
-    0 8px 40px rgb(0 122 255 / 20%),
-    0 4px 16px rgb(0 122 255 / 15%),
-    0 0 0 2px rgb(0 122 255 / 20%);
-  border-color: rgba(0, 122, 255, 0.4);
-}
-
+.input-wrapper:focus-within,
 html.dark .input-wrapper:focus-within {
-  box-shadow:
-    0 8px 40px rgb(10 132 255 / 25%),
-    0 4px 16px rgb(10 132 255 / 20%),
-    0 0 0 2px rgb(10 132 255 / 25%);
-  border-color: rgba(10, 132, 255, 0.5);
+  transform: none;
+  box-shadow: none;
+  border-color: var(--ui-border);
 }
 
 /* Voice Button (Left) - Enhanced Green Circle */

@@ -25,7 +25,7 @@ functional continuity remain the goal.
 ## 1.1 Motion
 
 Use `--ui-motion-fast` (180ms) for interactions and `--ui-motion-enter` (240ms) for
-entry. Use ease-out, no bounce or spring overshoot. Decorative loops are retired.
+entry. Use ease-out, no bounce or spring overshoot. Decorative loops are retired except the user-requested Skills, Dream Companies, and Dream Cars discovery rails. These use continuous linear motion, pause on hover/focus, an explicit pause button, and static scrollable content under reduced motion.
 Loading indicators may repeat while loading. Respect `prefers-reduced-motion`.
 
 ## 1.2 Spacing and shape
@@ -186,14 +186,13 @@ Some developer environments install three design audit skills under the ignored 
 
 - Desktop chat starts 12px below the navigation height and uses the remaining viewport above its launcher. Remove fixed 620px height caps; the transcript scrolls inside the window while the composer remains reachable.
 - Mobile chat fits the available viewport below navigation with safe-area clearance. Header controls have a minimum 44px target.
-- Response details remain collapsed until requested. Model labels and token usage come from the answering service; estimates are explicitly labeled. General questions do not receive unrelated portfolio shortcut chips.
+- Response details remain collapsed until requested. Model names come from the answering service and appear once in Details. General questions do not receive unrelated portfolio shortcut chips.
 
 ### AssistMe multimodal attachments and routing details
 
 - Use one attachment rail for image, audio, video, PDF, and text files. Non-image files use readable
   file names and Apple Blue icons; images retain previews. Keep Remove reachable at mobile widths.
-- Model badges use concise names. Exact model IDs, routing task, supplied usage, provider, and cost
-  belong in collapsed Details. Zero cost is a valid reported value, not missing metadata.
+- Show the answering model and actual source links in collapsed Details. Routing, billing, and token telemetry stay out of the public interface.
 - Never show provider errors or reasoning traces as answer prose. A failed attachment gets a clear
   processing notice rather than a portfolio answer. Cloud speech readiness requires availability
   evidence; a configured key alone is insufficient.
@@ -264,3 +263,7 @@ and focus restoration. Keep the selector at least 44px tall and support both the
 
 Coding agent: GPT-6 / Codex. Purpose: compact payment selection and a clean enlarged QR viewer.
 Exact model variant, reasoning mode, and token usage: unavailable.
+
+### Public calendar and compact chat
+
+Hide Panchang unless all daily fields match today and the official source. Keep sync timestamps, browser-storage implementation notes, and owner sign-in links out of the public calendar. AssistMe shows a single set of response actions; model and source details expand on demand. No public routing, billing, or token telemetry. The launcher hides while chat is open and the composer uses one focus ring.

@@ -1,3 +1,4 @@
+import { initMarqueeControls } from './marquee-controls.js';
 /**
  * Contact Page & Section Interactive Module (2026 Apple Standard)
  * Handles direct message form submissions, clipboard copy for crypto/emails,
@@ -10,6 +11,7 @@ import { openCalendlyPopup } from '../utils/calendly.js';
 import { openLumaCalendar } from '../utils/luma.js';
 
 export function initContactInteractions() {
+  initMarqueeControls();
   initBlessingMediaModal();
   initContactForm();
   initGuidedMessageButton();

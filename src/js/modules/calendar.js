@@ -1,5 +1,4 @@
 import {
-  CALENDAR_OWNER_URL,
   CALENDAR_SYNC_INTERVAL,
   fetchPublicCalendar,
   reconcilePublicCalendar,
@@ -616,21 +615,6 @@ export class CalendarWidget {
     if (this.syncVisibility) document.removeEventListener('visibilitychange', this.syncVisibility);
   }
 
-  renderSyncStatus() {
-    const { configured, lastSuccessAt, stale } = this.syncState;
-    const timestamp = lastSuccessAt && new Date(lastSuccessAt);
-    const updated =
-      timestamp && Number.isFinite(timestamp.getTime())
-        ? `Last updated ${timestamp.toLocaleString()}.`
-        : 'No successful automatic update yet.';
-    const health = stale
-      ? 'Updates delayed; showing last available events.'
-      : configured
-        ? 'Automatic calendar updates enabled.'
-        : 'Saved calendar snapshot; automatic sync is not connected.';
-    return `<div class="calendar-sync-status"><p role="status">${escapeHtml(health)} ${escapeHtml(updated)}</p><p>New reminders stay in this browser.</p><a href="${CALENDAR_OWNER_URL}" target="_blank" rel="noopener noreferrer">Owner sign-in · private reminders &amp; passes</a></div>`;
-  }
-
   getLiveEventDays(year, month) {
     const eventDays = new Set();
 
@@ -924,7 +908,6 @@ export class CalendarWidget {
             </div>
           </div>
 
-          ${this.renderSyncStatus()}
           <div class="year-progress-widget">
             <div class="year-progress-caption"><span>${currentYear} · ${percentPassed}% complete</span><span>${daysLeft} days left</span></div>
             <progress class="year-progress-track" value="${elapsedDays}" max="${totalYearDays}" aria-label="Year ${currentYear} progress">${percentPassed}%</progress>

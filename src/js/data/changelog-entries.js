@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-24-portfolio-polish',
+    date: '2026-11-24',
+    type: 'fix',
+    title: 'Clearer contact, resumes, and conversation',
+    summary:
+      'Restore pausable skills and aspiration marquees, keep social icons visible on hover in both themes, update USA and India resumes, hide unavailable Panchang and internal calendar messages, and simplify chat details.',
+    tags: ['design', 'assistme'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Repair theme and motion regressions and simplify public interfaces.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-24-free-only-chat',
     date: '2026-11-24',
     type: 'fix',

@@ -256,7 +256,7 @@ html.dark .skill-scroll-container {
   }
 
   100% {
-    transform: translate3d(var(--skill-marquee-distance, -33.333%), 0, 0);
+    transform: translate3d(calc(-50% - 0.5rem), 0, 0);
   }
 }
 
@@ -799,4 +799,19 @@ html.dark .skill-badge[data-skill='Django'] .skill-badge-icon {
 
 html.dark .skill-badge[data-skill='Django'] .skill-badge-progress {
   background: #44b78b !important;
+}
+
+.skill-marquee-set {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-scroll-container {
+    overflow-x: auto;
+  }
+  .skill-marquee-set[aria-hidden] {
+    display: none;
+  }
 }

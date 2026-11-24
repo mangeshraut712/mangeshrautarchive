@@ -187,7 +187,7 @@ test.describe('AssistMe chat', () => {
     await expect(answer.locator('.meta-details')).toBeHidden();
     await details.click();
     await expect(details).toHaveAttribute('aria-expanded', 'true');
-    await expect(answer.locator('.meta-details')).toContainText('estimated');
+    await expect(answer.locator('.meta-details')).not.toContainText('tokens');
     await details.click();
     await expect(answer.locator('.meta-details')).toBeHidden();
     const completedCount = await page.evaluate(() => window.appleIntelligenceChatbot.messageCount);
@@ -390,10 +390,7 @@ test('contact calendar scrolls, clocks use timezones, and stale Panchang stays h
     .poll(() => page.locator('.world-clock time').allTextContents())
     .toEqual(expectedTimes);
   await expect(page.locator('#contact-panchang')).not.toContainText('Outdated source value');
-  await expect(page.locator('#contact-panchang .calendar-marathi-link')).toHaveAttribute(
-    'href',
-    'https://www.kalnirnay.com/'
-  );
+  await expect(page.locator('#contact-panchang')).toBeHidden();
   await expect(page.locator('.calendar-snapshot-note,.card-source')).toHaveCount(0);
   await expect(page.getByRole('progressbar', { name: 'Year 2026 progress' })).toHaveAttribute(
     'value',

@@ -63,7 +63,7 @@ test('GitHub Pages sends AssistMe health and streamed chat to the edge API', asy
   await expect(answer).toContainText('An idempotency key prevents duplicate operations.');
   await expect(answer).not.toContainText('Discard this interrupted attempt.');
   await expect(answer).toContainText('test-provider');
-  await expect(answer).toContainText('8 tokens');
+  await expect(answer).not.toContainText('8 tokens');
   await expect(answer).not.toContainText('Free Tier');
   await expect(answer).not.toContainText('OpenRouter charge:');
   expect(chatRequests).toBe(1);
@@ -73,10 +73,9 @@ test('GitHub Pages sends AssistMe health and streamed chat to the edge API', asy
   await expect(page.locator('#go-to-top')).toHaveClass(/visible/);
   await page.getByRole('button', { name: 'Open AI Assistant', exact: true }).click();
   const window = await page.locator('#chatbot-widget').boundingBox();
-  const launcher = await page.locator('#chatbot-toggle').boundingBox();
+  await expect(page.locator('#chatbot-toggle')).toBeHidden();
   expect(window.y).toBeLessThan(88);
-  expect(window.y + window.height).toBeLessThanOrEqual(launcher.y);
-  expect(launcher.y - (window.y + window.height)).toBeLessThan(24);
+  expect(window.y + window.height).toBeLessThanOrEqual(page.viewportSize().height);
   await page.unrouteAll({ behavior: 'ignoreErrors' });
 });
 
@@ -98,7 +97,7 @@ test('AssistMe previews and submits audio, video, PDF and text without exposing 
           full_content: 'The attached file was processed.',
           metadata: {
             source: 'OpenRouter',
-            model: 'google/gemini-3.8-flash',
+            model: 'google/gemma-4-26b-a4b-it:free',
             tokens: 9,
             cost: 0,
             usage: { is_byok: true, cost_details: { upstream_inference_cost: 0.002493 } },
@@ -128,13 +127,13 @@ test('AssistMe previews and submits audio, video, PDF and text without exposing 
     await page.getByRole('button', { name: 'Send message', exact: true }).click();
     const answer = page.locator('#chatbot-messages .assistant-message').last();
     await expect(answer).toContainText('The attached file was processed.');
-    await expect(answer).toContainText('Gemini 3.8 Flash');
+    await expect(answer).toContainText('Google Gemma 4');
     await expect(answer).not.toContainText('Gemini 2.5');
     await expect(answer).not.toContainText('full_content');
     await expect(answer.locator('.meta-details')).toBeHidden();
     await answer.getByRole('button', { name: 'Details', exact: true }).click();
-    await expect(answer.locator('.meta-details')).toContainText('OpenRouter charge: $0.0000');
-    await expect(answer.locator('.meta-details')).toContainText(
+    await expect(answer.locator('.meta-details')).not.toContainText('OpenRouter charge: $0.0000');
+    await expect(answer.locator('.meta-details')).not.toContainText(
       'Provider-reported inference cost: $0.002493'
     );
     await expect(answer.locator('.meta-details')).not.toContainText('Free Tier');
