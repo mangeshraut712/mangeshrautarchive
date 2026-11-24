@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Motion repair (2026-11-24): GPT-6 / Codex restores continuous music artwork, equalizer and loading indicators without extending ordinary interaction transitions. JavaScript motion responds to runtime reduced-motion changes. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Local AssistMe tools (2026-11-24): GPT-6 / Codex adds deterministic clocks, decimal calculations, percentages, tips, unit conversions, and date differences before AI routing. See [local tools](docs/LOCAL_CHAT_TOOLS.md). Exact model variant, reasoning mode, and token usage: unavailable.
 
 Theme and awards repair (2026-11-24): GPT-6 / Codex fixes Safari award-card height growth, applies theme-aware Apple blue headings and solid surfaces, and preserves social brand colors through hover/focus. Exact model variant, reasoning mode, and token usage: unavailable.

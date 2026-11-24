@@ -26,7 +26,7 @@ functional continuity remain the goal.
 
 Use `--ui-motion-fast` (180ms) for interactions and `--ui-motion-enter` (240ms) for
 entry. Use ease-out, no bounce or spring overshoot. Decorative loops are retired except the user-requested Skills, Dream Companies, and Dream Cars discovery rails. These use continuous linear motion, pause on hover/focus, an explicit pause button, and static scrollable content under system or in-site reduced motion.
-Loading indicators may repeat while loading. Respect `prefers-reduced-motion`.
+Loading indicators repeat at a readable cadence (1s spinners). Music artwork rotates over 8s and equalizer bars alternate over 700–900ms only during playback. These functional loops are exempt from the 240ms entrance limit. Both system and in-site reduced motion stop music visuals immediately; JavaScript transforms also reset when the preference changes.
 
 ## 1.2 Spacing and shape
 

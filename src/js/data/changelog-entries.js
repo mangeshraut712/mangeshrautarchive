@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-24-motion-repair',
+    date: '2026-11-24',
+    type: 'fix',
+    title: 'Playback motion that stays in step',
+    summary:
+      'Restore continuous music artwork, equalizer bars, and readable loading indicators. Keep short interaction transitions and respect reduced motion as settings change.',
+    tags: ['design'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Repair functional animation cadence and runtime reduced-motion behavior.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-24-local-chat-tools',
     date: '2026-11-24',
     type: 'improvement',

@@ -91,8 +91,56 @@ test('hero and music controls keep 44px targets and stop decorative motion', asy
 });
 
 test('music artwork rotates when playing and pauses when idle', async ({ page }) => {
+  await page.route('**/api/music/recent?*', route =>
+    route.fulfill({
+      json: {
+        recenttracks: {
+          track: [
+            {
+              name: 'Motion check',
+              artist: { '#text': 'Test artist' },
+              '@attr': { nowplaying: 'true' },
+            },
+          ],
+        },
+      },
+    })
+  );
   await gotoSiteReady(page, '/');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
+  for (const width of [375, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const theme of ['light', 'dark']) {
+      await page.evaluate(async theme => {
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        const { default: music } = await import('/js/modules/lastfm.js');
+        music.setHeroMusicState('playing');
+      }, theme);
+      const sample = () =>
+        page.locator('#album-art').evaluate(el => ({
+          transform: getComputedStyle(el).transform,
+          duration: getComputedStyle(el).animationDuration,
+          iterations: getComputedStyle(el).animationIterationCount,
+        }));
+      await page.waitForTimeout(350);
+      const before = await sample();
+      await page.waitForTimeout(350);
+      const after = await sample();
+      expect(after.duration).toBe('8s');
+      expect(after.iterations).toBe('infinite');
+      expect(after.transform).not.toBe(before.transform);
+      await page.screenshot({ path: `artifacts/motion-${width}-${theme}.png` });
+      await page.evaluate(() => document.documentElement.classList.add('reduce-motion'));
+      await expect(page.locator('#album-art')).toHaveCSS('animation-name', 'none');
+      await expect(page.locator('#playing-indicator span').first()).toHaveCSS(
+        'animation-name',
+        'none'
+      );
+      await page.evaluate(() => document.documentElement.classList.remove('reduce-motion'));
+      await expect(page.locator('#album-art')).toHaveCSS('animation-iteration-count', 'infinite');
+    }
+  }
   const start = await page.evaluate(async () => {
     const { default: music } = await import('/js/modules/lastfm.js');
     music.setHeroMusicState('idle');

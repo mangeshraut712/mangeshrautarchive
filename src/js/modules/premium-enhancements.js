@@ -9,7 +9,9 @@
   'use strict';
 
   // Check for reduced motion preference
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReducedMotion = () =>
+    motionMedia.matches || document.documentElement.classList.contains('reduce-motion');
   const lowPowerDevice =
     (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
     (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
@@ -19,7 +21,7 @@
    * Shows reading progress at the top of the page
    */
   function initScrollProgress() {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion()) return;
 
     const progressBar = document.createElement('div');
     progressBar.className = 'scroll-progress';
@@ -60,7 +62,7 @@
    * Counts up numbers when they come into view
    */
   function initSkillCounters() {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion()) return;
 
     const counters = document.querySelectorAll(
       '.hero-stat-value, .project-stat-value, [data-counter]'
@@ -91,14 +93,14 @@
 
     const target = parseInt(match[1], 10);
     const suffix = match[2] || '';
-    const duration = 2000;
+    const duration = 240;
     const startTime = performance.now();
 
     element.classList.add('counting');
 
     function update(currentTime) {
       const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
+      const progress = prefersReducedMotion() ? 1 : Math.min(elapsed / duration, 1);
 
       // Easing function (ease-out cubic)
       const easeOut = 1 - Math.pow(1 - progress, 3);
@@ -150,7 +152,7 @@
    * Buttons subtly follow the cursor
    */
   function initMagneticButtons() {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion()) return;
 
     const buttons = document.querySelectorAll('.hero-cta, .btn-primary, .projects-view-all-btn');
 
@@ -158,6 +160,10 @@
       button.classList.add('magnetic-btn');
 
       button.addEventListener('mousemove', e => {
+        if (prefersReducedMotion()) {
+          button.style.transform = '';
+          return;
+        }
         const rect = button.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
@@ -176,7 +182,7 @@
    * Adds parallax-like effect on scroll
    */
   function initParallax() {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion()) return;
     const parallaxElements = Array.from(document.querySelectorAll('[data-parallax="scroll"]'));
     if (!parallaxElements.length) return;
 
@@ -189,7 +195,7 @@
     let ticking = false;
 
     function updateParallax() {
-      const disableParallax = window.innerWidth <= 900;
+      const disableParallax = prefersReducedMotion() || window.innerWidth <= 900;
       const viewportCenter = window.innerHeight * 0.5;
 
       parallaxConfig.forEach(({ el, speed, maxShift }) => {
@@ -247,7 +253,7 @@
    */
   function initTypingEffect() {
     const heroTitle = document.querySelector('.hero-title[data-typing]');
-    if (!heroTitle || prefersReducedMotion) return;
+    if (!heroTitle || prefersReducedMotion()) return;
 
     heroTitle.classList.add('typing-animation');
   }
@@ -271,7 +277,7 @@
 
           window.scrollTo({
             top: targetPosition,
-            behavior: prefersReducedMotion ? 'auto' : 'smooth',
+            behavior: prefersReducedMotion() ? 'auto' : 'smooth',
           });
         }
       });
@@ -315,10 +321,14 @@
    * 3D tilt on hover for cards
    */
   function applyTiltToElement(card) {
-    if (prefersReducedMotion || lowPowerDevice || card.dataset.tiltInitialized) return;
+    if (prefersReducedMotion() || lowPowerDevice || card.dataset.tiltInitialized) return;
     card.dataset.tiltInitialized = 'true';
 
     card.addEventListener('mousemove', e => {
+      if (prefersReducedMotion()) {
+        card.style.transform = '';
+        return;
+      }
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -344,7 +354,7 @@
   }
 
   function initCardTilt() {
-    if (prefersReducedMotion || lowPowerDevice) return;
+    if (prefersReducedMotion() || lowPowerDevice) return;
 
     const cards = document.querySelectorAll(
       '.bento-card, .apple-card, .project-card, .blog-card, .apple-3d-project, .uses-hero-showcase, .case-study-hero, .systems-overview-card, .stat-card'
@@ -357,7 +367,7 @@
    * Subtle light following cursor on dark mode
    */
   function initCursorSpotlight() {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion()) return;
 
     const spotlight = document.createElement('div');
     spotlight.className = 'cursor-spotlight';
@@ -477,6 +487,20 @@
     initTypingEffect();
     initHoverSounds(); // Enabled only when localStorage flag is present
   }
+
+  function resetReducedMotionTransforms() {
+    if (!prefersReducedMotion()) return;
+    document
+      .querySelectorAll('.magnetic-btn, [data-tilt-initialized], [data-parallax="scroll"]')
+      .forEach(element => {
+        element.style.transform = '';
+      });
+  }
+  new MutationObserver(resetReducedMotionTransforms).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
+  motionMedia.addEventListener('change', resetReducedMotionTransforms);
 
   // Run when DOM is ready
   if (document.readyState === 'loading') {
