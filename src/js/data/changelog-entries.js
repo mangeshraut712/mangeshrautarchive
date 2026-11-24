@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-24-sync-chat-diagnostics',
+    date: '2026-11-24',
+    type: 'fix',
+    title: 'Clearer calendar recovery and chatbot fallback',
+    summary:
+      'Recognize expired Google grants, explain missing Apple calendar selections, verify chatbot credentials, and disclose local response limitations. Private reminders and passes remain owner-only.',
+    tags: ['assistme', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Diagnose synchronization failures and make fallback health accurate.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: 'linux-browser-isolation-20261124',
     date: '2026-11-24',
     type: 'fix',

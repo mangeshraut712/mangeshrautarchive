@@ -186,3 +186,45 @@ test('privacy deletion preflight permits DELETE and session credentials', async 
   assert.match(response.headers.get('Access-Control-Allow-Headers'), /X-Session-Token/i);
   assert.match(response.headers.get('Access-Control-Allow-Headers'), /X-Session-ID/i);
 });
+
+test('chat health rejects invalid credentials even when the public catalog is available', async t => {
+  const urls = [];
+  t.mock.method(globalThis, 'fetch', async url => {
+    urls.push(String(url));
+    return new Response('{}', { status: String(url).endsWith('/key') ? 401 : 200 });
+  });
+  const res = await worker.fetch(new Request('https://worker.local/api/chat/health'), env);
+  const data = await res.json();
+  assert.deepEqual(urls, ['https://openrouter.ai/api/v1/key']);
+  assert.equal(data.online, false);
+  assert.equal(data.provider_status, 'authentication_failed');
+});
+
+test('stream authentication failure stops retries and explains local limitations without leaking errors', async t => {
+  let attempts = 0;
+  t.mock.method(globalThis, 'fetch', async url => {
+    if (String(url).endsWith('/chat/completions')) attempts++;
+    return new Response('sensitive provider error fixture', { status: 401 });
+  });
+  const res = await worker.fetch(
+    new Request('https://worker.local/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: 'Explain idempotency when retrying HTTP requests.',
+        stream: true,
+      }),
+    }),
+    env
+  );
+  const text = await res.text();
+  const done = text
+    .trim()
+    .split('\n')
+    .map(JSON.parse)
+    .find(frame => frame.type === 'done');
+  assert.equal(attempts, 1);
+  assert.equal(done.metadata.fallback_reason, 'provider_http_401');
+  assert.match(done.full_content, /local portfolio knowledge/);
+  assert.doesNotMatch(text, /sensitive provider error fixture/);
+});

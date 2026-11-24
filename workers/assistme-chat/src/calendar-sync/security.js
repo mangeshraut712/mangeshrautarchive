@@ -130,7 +130,8 @@ export async function fetchBounded(url, init = {}, maxBytes = 5_000_000) {
     redirect: 'manual',
     signal: AbortSignal.timeout(20_000),
   });
-  if (!response.ok)
+  const googleTokenError = !response.ok && String(url) === 'https://oauth2.googleapis.com/token';
+  if (!response.ok && !googleTokenError)
     throw Object.assign(new Error(`provider_http_${response.status}`), {
       providerStatus: response.status,
     });
@@ -153,5 +154,23 @@ export async function fetchBounded(url, init = {}, maxBytes = 5_000_000) {
     bytes.set(chunk, offset);
     offset += chunk.length;
   }
-  return new TextDecoder().decode(bytes);
+  const text = new TextDecoder().decode(bytes);
+  if (googleTokenError) {
+    let code;
+    try {
+      code = JSON.parse(text).error;
+    } catch {
+      /* Keep only the HTTP status. */
+    }
+    // Never retain provider descriptions, tokens, or arbitrary response text.
+    throw Object.assign(
+      new Error(
+        code === 'invalid_grant' ? 'reconnect_required' : `provider_http_${response.status}`
+      ),
+      {
+        providerStatus: response.status,
+      }
+    );
+  }
+  return text;
 }

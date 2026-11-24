@@ -412,7 +412,7 @@ function localAnswer(message) {
   if (/what is 2\s*\+\s*2|2\+2/.test(q)) {
     return '**4**. Want a portfolio question next — skills, experience, or projects?';
   }
-  return "I'm AssistMe (edge). I can cover Mangesh's portfolio, 18 technical blog articles, projects, systems architecture, and general questions. Try asking about skills, experience, blog, projects, contact, or the Debug Runner game!";
+  return "I'm currently using local portfolio knowledge and can't answer this question reliably. Please try again later for AI responses, or ask about Mangesh's skills, experience, projects, or contact details.";
 }
 
 function isGarbage(text, userMessage = '') {
@@ -744,6 +744,7 @@ function streamChatWithFallbacks(apiKey, chain, messages, userMessage, cors, env
       };
 
       const deadline = Date.now() + 75_000;
+      let fallbackReason = 'provider_unavailable';
       for (const model of chain) {
         if (session.cancelled) return;
         if (Date.now() >= deadline) break;
@@ -753,6 +754,7 @@ function streamChatWithFallbacks(apiKey, chain, messages, userMessage, cors, env
             signal: session.controller.signal,
           });
           if (!res.ok) {
+            fallbackReason = `provider_http_${res.status}`;
             await res.text().catch(() => '');
             if (res.status === 401) {
               console.error('OpenRouter authentication failed (HTTP 401) - aborting chain');
@@ -774,7 +776,9 @@ function streamChatWithFallbacks(apiKey, chain, messages, userMessage, cors, env
             if (!session.cancelled) controller.close();
             return;
           }
+          fallbackReason = 'provider_empty_response';
         } catch {
+          fallbackReason = 'provider_request_failed';
           // Discard an interrupted attempt before streaming another model.
           push({ type: 'reset' });
           continue;
@@ -800,6 +804,7 @@ function streamChatWithFallbacks(apiKey, chain, messages, userMessage, cors, env
           source: 'Local Intelligence',
           sourceLabel: 'AssistMe Edge',
           host: 'cloudflare-worker',
+          fallback_reason: fallbackReason,
         },
       });
       controller.close();
@@ -1099,7 +1104,8 @@ async function handleHealth(env, cors) {
 
   if (apiKey) {
     try {
-      const probe = await fetch('https://openrouter.ai/api/v1/models', {
+      // The public model catalog succeeds even for invalid credentials.
+      const probe = await fetch('https://openrouter.ai/api/v1/key', {
         headers: { Authorization: `Bearer ${apiKey}` },
         signal: AbortSignal.timeout(5000),
       });
@@ -1107,13 +1113,13 @@ async function handleHealth(env, cors) {
         status = 'healthy';
         provider_status = 'online';
         message =
-          'OpenRouter reachable via Cloudflare Worker. Primary: ' +
+          'OpenRouter credential verified; inference availability is checked per request. Primary: ' +
           (env.OPENROUTER_MODEL || PRIMARY_MODEL) +
           ' (free models auto-fallback on HTTP 402).';
       } else {
         status = 'unhealthy';
-        provider_status = 'error';
-        message = `OpenRouter models probe HTTP ${probe.status}`;
+        provider_status = probe.status === 401 ? 'authentication_failed' : 'error';
+        message = `OpenRouter credential probe HTTP ${probe.status}; local portfolio knowledge remains available.`;
       }
     } catch (e) {
       status = 'unhealthy';

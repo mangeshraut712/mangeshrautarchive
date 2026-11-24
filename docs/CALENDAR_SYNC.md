@@ -61,6 +61,27 @@ Old Git history is not rewritten. The static fallback contains verified Luma eve
 
 ## Verification and limits
 
+### Recovering stalled connections
+
+Google OAuth remains in Testing mode by owner choice. Reconnect both accounts weekly
+through the owner workspace using the existing read-only scopes. An expired or revoked
+grant reports `reconnect_required`; reconnecting preserves the source identity and
+previous snapshot until a complete refresh succeeds. Client configuration errors are
+reported separately and cannot be repaired by repeatedly granting consent.
+
+If the Mac helper reports `selection`, its saved IDs are missing or disallowed. Run the
+installed helper's `list-calendars` command with its existing config path. Compare the
+listed source, kind and title with the intended selection, then explicitly update IDs
+and run `validate` before `sync`. Never select every calendar to work around a missing
+ID: this can import unintended calendars or Google/Luma mirrors. No event content or
+upload credential is needed to diagnose selection metadata.
+
+Chat health uses OpenRouter's authenticated `/api/v1/key` endpoint, not the public model
+catalog. HTTP 401 requires the owner to replace `OPENROUTER_API_KEY` in the Worker and
+its GitHub deployment secret. A successful credential check is not proof of successful
+inference; verify a real non-contact chat response after deployment. Local fallback
+reports a safe reason code and cannot reliably answer arbitrary questions.
+
 Worker tests cover publication, authentication/CSRF, scoped uploads/replay, occurrence
 identity, pagination, expired cursors, cancellations, failed atomic refreshes, and
 recurrence timezones. Frontend tests cover replacement, errors, date mapping and late

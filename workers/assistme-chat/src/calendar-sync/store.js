@@ -27,6 +27,7 @@ export function sourceErrorCode(error) {
     return 'credential_decryption_failed';
   }
   const status = error?.providerStatus;
+  if (error?.message === 'reconnect_required') return 'reconnect_required';
   if (status === 401 || status === 403) return 'reconnect_required';
   if (Number.isInteger(status) && status >= 300 && status <= 599) return `provider_http_${status}`;
   if (['AbortError', 'TimeoutError'].includes(error?.name)) return 'provider_timeout';

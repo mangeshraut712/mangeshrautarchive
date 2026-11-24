@@ -646,3 +646,30 @@ test('Google full sync skips cancelled recurrence expansion while incremental sy
   assert.equal(incrementalRequests, 1);
   assert.equal(tombstonePages, 0);
 });
+
+test('expired Google grants request reconnection without exposing provider descriptions', async t => {
+  t.mock.method(globalThis, 'fetch', async () =>
+    Response.json(
+      {
+        error: 'invalid_grant',
+        error_description: 'private provider details',
+      },
+      { status: 400 }
+    )
+  );
+  await assert.rejects(fetchBounded('https://oauth2.googleapis.com/token'), error => {
+    assert.equal(sourceErrorCode(error), 'reconnect_required');
+    assert.doesNotMatch(error.message, /private provider details/);
+    return true;
+  });
+});
+
+test('Google client configuration errors are not mislabeled as expired user consent', async t => {
+  t.mock.method(globalThis, 'fetch', async () =>
+    Response.json({ error: 'invalid_client' }, { status: 400 })
+  );
+  await assert.rejects(fetchBounded('https://oauth2.googleapis.com/token'), error => {
+    assert.equal(sourceErrorCode(error), 'provider_http_400');
+    return true;
+  });
+});

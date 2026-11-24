@@ -258,6 +258,9 @@ func requestAuthorization(_ configuration: Configuration) async throws {
             // Provider errors can contain item content or URLs: emit categories only.
             let category = (error as? HelperError).map { String(describing: $0) } ?? "operation"
             fputs("Calendar helper failed: \(category). Previous server snapshot is preserved.\n", stderr)
+            if (error as? HelperError) == .selection {
+                fputs("Saved calendar selection is unavailable or disallowed. Run list-calendars with this config and explicitly reselect calendars; never replace missing IDs with all calendars.\n", stderr)
+            }
             exit(1)
         }
     }
