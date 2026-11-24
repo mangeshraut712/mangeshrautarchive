@@ -1,3 +1,4 @@
+import { answerLocalUtility } from '../chatbot/local-tools.js';
 import { api } from './config.js';
 import { agenticActions } from '../modules/agentic-actions.js';
 import { EDGE_API_BASE } from '../utils/api-host.js';
@@ -413,6 +414,9 @@ class IntelligentAssistant {
 
   async processQuery(query, options = {}) {
     const trimmed = query.trim();
+    const local =
+      options.attachments?.length || options.images?.length ? null : answerLocalUtility(trimmed);
+    if (local) return local;
     const responses = [];
 
     if (!this.isReady()) {

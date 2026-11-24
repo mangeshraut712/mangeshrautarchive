@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-24-local-chat-tools',
+    date: '2026-11-24',
+    type: 'improvement',
+    title: 'Everyday answers without a network',
+    summary:
+      'Resolve clocks, decimal arithmetic, percentages, tips, unit conversions, and date differences locally. Handle ambiguity and invalid inputs explicitly, without spending AI quota.',
+    tags: ['assistme'],
+    sha: null,
+    commitVerified: false,
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Make everyday utility answers deterministic and available offline.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-24-theme-awards',
     date: '2026-11-24',
     type: 'fix',

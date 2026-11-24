@@ -1,3 +1,4 @@
+import { answerLocalUtility } from '../chatbot/local-tools.js';
 /**
  * Apple Intelligence Chatbot — 2026 Premium Edition
  * Enhanced with streaming responses, Markdown support, voice input,
@@ -559,7 +560,7 @@ class AppleIntelligenceChatbot {
     const remaining = this.getRemainingQueries();
     // Keep the composer quiet unless quota is low or exhausted.
     if (remaining <= 0) {
-      status.textContent = 'Daily free-message estimate reached';
+      status.textContent = 'AI allowance reached · local tools still available';
     } else if (remaining <= 3) {
       status.textContent = `${remaining} free AI messages left today`;
     } else {
@@ -666,8 +667,8 @@ class AppleIntelligenceChatbot {
         status === 'online'
           ? 'Connected to the live AI service; each answer shows its actual model'
           : status === 'local'
-            ? 'Answering from portfolio knowledge (live API host unavailable)'
-            : 'No network — offline portfolio answers only';
+            ? 'On-device tools and portfolio knowledge are available'
+            : 'No network — calculations, clocks, conversions, and portfolio answers available';
     }
   }
 
@@ -799,7 +800,7 @@ class AppleIntelligenceChatbot {
         throw new Error('AssistMe is already answering. Please wait a moment.');
       }
       const remaining = this.getRemainingQueries();
-      if (remaining <= 0) {
+      if (remaining <= 0 && !answerLocalUtility(text)) {
         throw new Error(
           `Daily free message limit reached (${this.maxSessionMessages}). Try again later.`
         );
@@ -818,7 +819,12 @@ class AppleIntelligenceChatbot {
           session_id: this.chatAPI.sessionId,
           stream: options.stream !== false,
         });
-        if (response && typeof response === 'object' && (response.answer || response.content)) {
+        if (
+          response &&
+          typeof response === 'object' &&
+          response.source !== 'local-utility' &&
+          (response.answer || response.content)
+        ) {
           this.decrementRemainingQueries();
           this.updateRateLimitBadge();
         }
@@ -2296,7 +2302,8 @@ class AppleIntelligenceChatbot {
 
     // Check rate limit first
     const remaining = this.getRemainingQueries();
-    if (remaining <= 0) {
+    const localUtility = !this.pendingAttachments?.length && answerLocalUtility(text);
+    if (remaining <= 0 && !localUtility) {
       this.addErrorMessage(
         `You have reached the daily estimate of ${this.maxSessionMessages} free AI messages. Please try again later.`
       );
@@ -2632,7 +2639,7 @@ class AppleIntelligenceChatbot {
           ensureStreamBubble();
           fullText = askOptions.attachments?.length
             ? 'I could not process the attached files. Please retry or ask a typed question.'
-            : 'I could not reach the live AI service, but I can still answer portfolio questions offline. Try asking about skills, projects, experience, or contact details.';
+            : 'I could not reach the live AI service. I can still help with calculations, unit conversions, city clocks, and portfolio questions on this device.';
           metadata.error = true;
         }
       }
@@ -2728,7 +2735,7 @@ class AppleIntelligenceChatbot {
       // Show contextual follow-up chips
       this.showFollowupChips(fullText, userMessage);
 
-      if (!metadata.error) {
+      if (!metadata.error && metadata.source !== 'local-utility') {
         this.decrementRemainingQueries();
       }
 

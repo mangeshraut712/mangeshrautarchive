@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Local AssistMe tools (2026-11-24): GPT-6 / Codex adds deterministic clocks, decimal calculations, percentages, tips, unit conversions, and date differences before AI routing. See [local tools](docs/LOCAL_CHAT_TOOLS.md). Exact model variant, reasoning mode, and token usage: unavailable.
+
 Theme and awards repair (2026-11-24): GPT-6 / Codex fixes Safari award-card height growth, applies theme-aware Apple blue headings and solid surfaces, and preserves social brand colors through hover/focus. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Portfolio polish (2026-11-24): GPT-6 / Codex restores discovery marquees that respect both system and in-site reduced-motion settings, repairs social hover theme parity, replaces both supplied November resumes, hides unavailable Panchang/internal calendar text, and simplifies chat responses and source details. The IoasiZ end date now matches the supplied November resume across the page and all chat fallbacks. Exact model variant, reasoning mode, and token usage: unavailable.

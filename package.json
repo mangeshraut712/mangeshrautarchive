@@ -6,7 +6,7 @@
   "scripts": {
     "check-node": "node scripts/utils/check-node.mjs",
     "vendor:markdown": "node scripts/build/vendor-rich-markdown.mjs",
-    "prebuild": "node scripts/utils/check-node.mjs && npm run audit:blog-content && npm run build:css && npm run assets:icons && npm run assets:blog-catalog && npm run vendor:markdown",
+    "prebuild": "node scripts/utils/check-node.mjs && npm run audit:blog-content && npm run build:css && npm run assets:icons && npm run assets:blog-catalog && npm run vendor:markdown && npm run vendor:local-tools",
     "test": "node scripts/utils/run-local.mjs npm run test:suites",
     "test:unit": "node scripts/utils/run-local.mjs node --test tests/unit/*.test.js",
     "build": "node scripts/build/build.js",
@@ -43,7 +43,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:e2e": "node scripts/utils/run-local.mjs npx playwright test --project=\"Desktop Chrome\"",
-    "test:e2e:critical": "node scripts/utils/run-local.mjs npx playwright test tests/e2e/critical-journeys.spec.js tests/e2e/chatbot-connectivity.spec.js tests/e2e/frontend-regressions.spec.js tests/e2e/chatbot-recovery-sources.spec.js tests/e2e/portfolio-polish.spec.js --project=\"Desktop Chrome\" --workers=2 --retries=0",
+    "test:e2e:critical": "node scripts/utils/run-local.mjs npx playwright test tests/e2e/critical-journeys.spec.js tests/e2e/chatbot-connectivity.spec.js tests/e2e/frontend-regressions.spec.js tests/e2e/chatbot-recovery-sources.spec.js tests/e2e/portfolio-polish.spec.js tests/e2e/chatbot-local-tools.spec.js --project=\"Desktop Chrome\" --workers=2 --retries=0",
     "test:e2e:chrome": "node scripts/utils/run-local.mjs npx playwright test --project=\"Desktop Chrome\"",
     "test:e2e:all": "node scripts/utils/run-local.mjs npx playwright test",
     "test:postman": "node scripts/qa/run-postman-tests.js",
@@ -78,7 +78,8 @@
     "test:local": "npm test",
     "clean:apply": "node scripts/build/clean.js --apply",
     "security:staged": "node scripts/deployment/security-check.js --staged",
-    "safety:check": "node scripts/safety/check-policy.mjs"
+    "safety:check": "node scripts/safety/check-policy.mjs",
+    "vendor:local-tools": "node scripts/build/vendor-local-tools.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -111,7 +112,8 @@
     "katex": "^0.19.0",
     "marked": "^18.0.14",
     "marked-footnote": "^1.2.2",
-    "ws": "^8.22.0"
+    "ws": "^8.22.0",
+    "decimal.js": "10.6.0"
   },
   "overrides": {
     "dompurify": "3.4.17",

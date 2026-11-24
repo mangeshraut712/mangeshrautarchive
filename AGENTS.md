@@ -266,13 +266,13 @@ Full map: [docs/STRUCTURE.md](docs/STRUCTURE.md).
 
 All five test suites must pass before any merge to `main`:
 
-| Suite        | Runner           | Command                       | Coverage                                                                               |
-| ------------ | ---------------- | ----------------------------- | -------------------------------------------------------------------------------------- |
-| API          | pytest           | `npm run test:api`            | See `tests/README.md` — FastAPI endpoints, middleware                                  |
-| Worker       | Node test runner | `npm run test:worker`         | Routing, streams, persistent uptime and incidents; counts in `tests/README.md`         |
-| Unit         | Node test runner | `npm run test:unit`           | 67 tests — Blog escaping, charts, published surfaces, sync logic, analytics scheduling |
-| E2E Critical | Playwright       | `npm run test:e2e:critical`   | 34 critical user journeys on Desktop Chrome                                            |
-| Tester Army  | `e2e`            | `npm run test:tester-army:ci` | 23 deterministic journeys on desktop Chromium only (`--target desktop`)                |
+| Suite        | Runner           | Command                       | Coverage                                                                                |
+| ------------ | ---------------- | ----------------------------- | --------------------------------------------------------------------------------------- |
+| API          | pytest           | `npm run test:api`            | See `tests/README.md` — FastAPI endpoints, middleware                                   |
+| Worker       | Node test runner | `npm run test:worker`         | Routing, streams, persistent uptime and incidents; counts in `tests/README.md`          |
+| Unit         | Node test runner | `npm run test:unit`           | 105 tests — Blog escaping, charts, published surfaces, sync logic, analytics scheduling |
+| E2E Critical | Playwright       | `npm run test:e2e:critical`   | 40 critical user journeys on Desktop Chrome                                             |
+| Tester Army  | `e2e`            | `npm run test:tester-army:ci` | 23 deterministic journeys on desktop Chromium only (`--target desktop`)                 |
 
 The broader browser suite remains available through `npm run test:e2e:all` across 16 configured projects.
 
