@@ -130,7 +130,7 @@ function pageShell({
     ? [
         `<meta property="article:published_time" content="${escapeHTML(article.publishedTime)}" />`,
         `<meta property="article:modified_time" content="${escapeHTML(article.modifiedTime)}" />`,
-        '<meta property="article:author" content="Mangesh Raut" />',
+        `<meta property="article:author" content="${SITE_URL}/about.html" />`,
         article.section
           ? `<meta property="article:section" content="${escapeHTML(article.section)}" />`
           : '',
@@ -233,7 +233,7 @@ function renderBlogIndex(posts, tags) {
         <h2 class="blog-title"><a href="${blogPostHref(post.id)}" class="blog-title-link">${escapeHTML(post.title)}</a></h2>
         <p class="blog-summary">${escapeHTML(post.readerPromise || post.summary)}</p>
         <div class="blog-tags blog-tags--pills">${topicPills(post.tags, 2)}</div>
-        <a class="blog-card-readlink" href="${blogPostHref(post.id)}" aria-label="Read ${escapeHTML(post.title)}">Read article<span aria-hidden="true">→</span></a>
+        <a class="blog-card-readlink" href="${blogPostHref(post.id)}" aria-label="Read article: ${escapeHTML(post.title)}">Read article<span aria-hidden="true">→</span></a>
       </div>
     </article>`
     )
