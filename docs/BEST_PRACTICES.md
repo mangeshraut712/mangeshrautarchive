@@ -138,7 +138,7 @@ _Write code that is testable at unit, integration, and end-to-end levels, and tr
 
 - **Repository Implementation:**
   - **API Tests:** The pytest suite (`tests/api/`) covers API contracts covering FastAPI endpoints, security headers, rate limits, and streaming responses.
-  - **Worker Tests:** The Node test runner (`tests/worker/`) executes 27 routing, CORS, multimodal streaming, and edge boundary checks.
+  - **Worker Tests:** The Node test runner (`tests/worker/`) executes 85 routing, CORS, multimodal streaming, and edge boundary checks.
   - **Unit Tests:** `npm run test:unit` covers blog HTML escaping, AssistMe chart rendering, published-surface integrity, and scheduled-sync logic (see the current suite inventory in `tests/README.md`).
   - **Critical Browser Tests:** The focused Playwright suite (`tests/e2e/critical-journeys.spec.js`) verifies critical desktop journeys alongside connectivity and frontend regression specifications.
   - **Tester Army Journeys:** 23 deterministic journeys (`tests/tester-army/`) across desktop Chromium and mobile WebKit (46 checks total).

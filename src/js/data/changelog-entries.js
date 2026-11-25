@@ -71,6 +71,22 @@ export const changelogEntries = [
     usage: 'unavailable',
   },
   {
+    id: '2026-11-25-published-test-counts',
+    date: '2026-11-25',
+    type: 'fix',
+    title: 'Quality gates show the suites that actually run',
+    summary:
+      'Uses, Monitor, and AssistMe were still quoting 211, 212, 213, 15, 18, or 20 tests. The release gate is 235 pytest API tests and 40 critical browser journeys, which is what those surfaces and the smoke check now report.',
+    tags: ['monitor', 'systems'],
+    sha: null,
+    commitVerified: false,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose: 'Replace stale published test counts with the suites collected on November 25, 2026.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-25-field-notes-catalogue',
     date: '2026-11-25',
     type: 'fix',

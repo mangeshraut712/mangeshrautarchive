@@ -33,9 +33,10 @@ LIGHTHOUSE_PAGES_GATES: Dict[str, Dict[str, int]] = {
     "mobile": {"performance": 85, "accessibility": 90, "best_practices": 90, "seo": 90},
 }
 
+# Verified November 25, 2026 against pytest (235) and npm run test:e2e:critical -- --list (40).
 TEST_COUNTS = {
-    "pytest": 212,
-    "critical_browser": 20,
+    "pytest": 235,
+    "critical_browser": 40,
     "playwright_projects": 16,
 }
 
