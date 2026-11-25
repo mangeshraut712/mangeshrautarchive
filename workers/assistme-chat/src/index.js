@@ -93,8 +93,8 @@ You are the site search + knowledge layer for this entire portfolio: prefer prec
   • Uses Setup: MacBook Pro M-series and software stack on /uses.
   • WebMCP Tools: 22 deterministic browser tools support navigation, mini-game execution (play_debug_runner), privacy controls (open_privacy_dashboard), blog reading and search (open_blog_article, search_blog_articles), case-study inspection (inspect_case_study), resume downloads, calendar reminders (add_calendar_reminder, get_calendar_events, filter_calendar_view), music queries (get_now_playing), travel stats (get_travel_stats), and system metrics (get_system_status).
 
-## Technical Blog Catalogue (All 18 Published Articles by Mangesh in 2026)
-Mangesh has written and published 18 deep-dive technical articles in his portfolio blog (#blog). When asked about "blog", "articles", "recent writings", or specific topics listed below, answer authoritatively based on his work:
+## Technical Blog Catalogue (All 22 Published Articles by Mangesh in 2026)
+Mangesh has written and published 22 deep-dive technical articles in his portfolio blog (#blog). When asked about "blog", "articles", "recent writings", or specific topics listed below, answer authoritatively based on his work:
 1. "Apple September Event 2026: Hardware Announcements, Software Decisions" (apple-september-event-2026, Sept 29, 2026):
    - Scope: In-depth technical review of Apple's September 9, 2026 event.
    - Hardware: iPhone 17 and iPhone 18 lineup, Camera Control evolution, A19/A20 Pro silicon benchmarks, thermal dissipation, display innovations.
@@ -103,7 +103,7 @@ Mangesh has written and published 18 deep-dive technical articles in his portfol
 2. "OpenAI DevDay 2026: Models, Ongoing Agents, and Reliable Workflows" (openai-devday-2026, Sept 29, 2026):
    - Confirmed DevDay announcements including frontier model GPT-6.1 Sol and dots personal assistant.
    - Practical engineering framework for evaluating agentic loops, inference costs, state persistence, and completed work reliability.
-3. "Razorpay Vulcan: 4 Billion Payments, 3 Trillion Data Points, and a Foundation Model for Money" (razorpay-vulcan-payments-foundation-model, Aug 18 / Sep 10, 2026):
+3. "Razorpay Vulcan: How to Evaluate a Payments Foundation Model" (razorpay-vulcan-payments-foundation-model; issue date: Aug 18, 2026; first published: Sept 10, 2026):
    - India's first payments transformer foundation model built by Razorpay with NVIDIA & AWS.
    - Trained on 4B payments & 3T data points; boosted transaction success rates by 8-10% and detected 8x more fraud.
 4. "Cursor Origin in 2026: Native Git Hosting, Mirrors, and the Agent Review Loop" (cursor-origin-agent-native-code-hosting, Aug 17, 2026):
@@ -120,7 +120,7 @@ Mangesh has written and published 18 deep-dive technical articles in his portfol
    - Gemini 3.5/3.8 Flash, Antigravity IDE, WebMCP browser agentic protocol, device vs cloud split.
 10. "X Algorithm Field Notes: Phoenix, Retrieval, and Grok-Based Ranking" (grok-x-algorithm-systems-2026, May 15, 2026):
     - Phoenix retrieval, candidate generation, in-network vs out-of-network graph, Grok ranking.
-11. "Anthropic Reasoning Field Notes: Observer Bias Without Safety Theater" (anthropic-mythos-2026, Apr 20, 2026):
+11. "Observer Selection Field Notes: The Missing Denominator in AI Evaluations" (anthropic-mythos-2026, Apr 20, 2026):
     - Observer selection reasoning, epistemic humility, pragmatic safety controls.
 12. "Apple at 50 Field Notes: Integration, Restraint, and Taste You Can Measure" (apple-50th-anniversary-2026, Apr 1, 2026):
     - Retrospective on Apple (1976-2026): hardware-software integration, restraint, AI era risks.
@@ -136,6 +136,14 @@ Mangesh has written and published 18 deep-dive technical articles in his portfol
     - Open-source local assistants, chat gateways, permission scoping.
 18. "Google AI Ecosystem Field Notes: Put Intelligence Where Context Already Lives" (google-ai-ecosystem-2026, Jan 10, 2026):
     - Distribution across Android, Workspace, Gemini, device context.
+19. "Gemini 4 Argon and Carbon Field Notes: Autonomous Coding, Cyber Defense, and Benchmark Fatigue" (gemini-4-argon-and-carbon-deepmind-2026, Oct 28, 2026):
+    - Google's Gemini 4 announcements, the limits of its reported security benchmarks, introductory pricing caveats, and a reproducible defensive patch-evaluation plan.
+20. "Touchscreen MacBook Pro Field Notes: PROLED XDR, Dual Input, and macOS Ergonomics" (macbook-pro-touchscreen-proled-xdr-2026, Oct 29, 2026):
+    - An architectural review of Apple's first touchscreen Mac: tandem OLED PROLED XDR display, M5 Pro/Max silicon, dual-input ergonomics, and how web and desktop software must adapt to hybrid pointer events.
+21. "GTA VI Field Notes: Building a World That Feels Continuous" (gta-vi-launch-engineering-2026, Nov 23, 2026):
+    - GTA VI provides a November lens on streaming deadlines, frame budgets, durable state, and the engineering behind a continuous world.
+22. "Nue Health Field Notes: Data UX, Uncertainty, and Trust" (nue-health-data-ux-trust-2026, Nov 23, 2026):
+    - A November review of Nue Health's public product presentation, with a practical framework for evidence, uncertainty, consent, and trustworthy health-data interfaces.
 
 ## Complete Portfolio Site Map & Section Directory
 Every surface and section of this portfolio is fully integrated:
@@ -151,7 +159,7 @@ Every surface and section of this portfolio is fully integrated:
   • #awards: Graduate Academic Distinction, Student of the Year.
   • #recommendations: Manager and peer endorsements.
   • #certifications: AWS Solutions Architect, Oracle Java SE, DeepLearning.AI TensorFlow.
-  • #blog: Interactive catalogue containing all 18 articles above.
+  • #blog: Interactive catalogue containing all 22 articles above.
   • #faq: Common hiring, availability, stack, and relocation queries.
   • #contact: Apple-styled contact hub with 4+4 card grid, 1:1 meeting scheduler (Google Calendar / Calendly), direct email, devotional Ganapati Aarti / Hanuman Chalisa blessings modal, and world clocks.
   • #debug-runner-section (#game): Chrome Dino-style interactive mini-game. Controls: Spacebar / Up Arrow to jump, Down Arrow to duck / fast-fall, P to pause, M to mute audio, R to restart. Dodge bugs, NullPointerExceptions, Merge Conflicts, Memory Leaks, 404s, flying drones; collect Coffee and Test Suite shields. Tracks local high scores.
@@ -345,8 +353,23 @@ function localAnswer(message) {
   if (/devday|openai\s*devday/.test(q)) {
     return "In his article **'OpenAI DevDay 2026: Models, Ongoing Agents, and Reliable Workflows'** (published September 29, 2026), Mangesh reviews OpenAI's DevDay announcements, including the frontier **GPT-6.1 Sol** model, the **dots personal assistant**, and a pragmatic engineering blueprint for evaluating agentic loop costs, runtime reliability, and finished work.";
   }
-  if (/blog|article|post|writeup|writing/.test(q)) {
-    return "Mangesh has authored **18 technical articles** in his portfolio blog ([#blog](#blog)), focusing on systems engineering, agentic AI, and distributed architectures. Recent standout pieces include:\n- **Apple September Event 2026**: Hardware Announcements, Software Decisions (Sept 29, 2026)\n- **OpenAI DevDay 2026**: Models, Ongoing Agents, and Reliable Workflows (Sept 29, 2026)\n- **Razorpay Vulcan**: 4B payments, 3T data points, and India's first fintech foundation model with NVIDIA & AWS\n- **OpenRouter Field Notes**: AI USB Hub routing policy\n- **Google I/O 2026**: Agents, WebMCP, and Gemini 3.5/3.8 Flash\n- **Grok 4.5 & Grok Build**: Open-source agent harnesses\nYou can read all 18 articles directly in the [#blog](#blog) section!";
+  if (/\bnue[\s-]+health\b|\bnue-health-data-ux\b/.test(q)) {
+    return "In his article **'Nue Health Field Notes: Data UX, Uncertainty, and Trust'** (published November 23, 2026), Mangesh reviews Nue Health's public product presentation and offers a practical framework for evidence, uncertainty, consent, and trustworthy health-data interfaces. You can read it in the [#blog](#blog) section.";
+  }
+  if (/\bgta\s*vi\b|gta-vi-launch/.test(q)) {
+    return "In his article **'GTA VI Field Notes: Building a World That Feels Continuous'** (published November 23, 2026), Mangesh uses GTA VI as a November lens on streaming deadlines, frame budgets, durable state, and the engineering behind a continuous world. You can read it in the [#blog](#blog) section.";
+  }
+  if (/touchscreen\s*macbook|proled\s*xdr|macbook-pro-touchscreen/.test(q)) {
+    return "In his article **'Touchscreen MacBook Pro Field Notes: PROLED XDR, Dual Input, and macOS Ergonomics'** (published October 29, 2026), Mangesh reviews Apple's first touchscreen Mac: the tandem OLED PROLED XDR display, M5 Pro/Max silicon, dual-input ergonomics, and how web and desktop software must adapt to hybrid pointer events. You can read it in the [#blog](#blog) section.";
+  }
+  if (/gemini\s*4|argon\s*and\s*carbon|gemini-4-argon/.test(q)) {
+    return "In his article **'Gemini 4 Argon and Carbon Field Notes: Autonomous Coding, Cyber Defense, and Benchmark Fatigue'** (published October 28, 2026), Mangesh covers Google's Gemini 4 announcements, the limits of its reported security benchmarks, introductory pricing caveats, and a reproducible defensive patch-evaluation plan. You can read it in the [#blog](#blog) section.";
+  }
+  if (/razorpay|vulcan/.test(q)) {
+    return "In his article **'Razorpay Vulcan: How to Evaluate a Payments Foundation Model'** (issue date August 18, 2026; first published September 10, 2026), Mangesh examines what Razorpay documents about Vulcan's shared payment representation and how to read its routing and fraud claims using denominators, decision-time data, and controlled evaluation. You can read it in the [#blog](#blog) section.";
+  }
+  if (/blog|article|post|writeup|writing|field\s*notes/.test(q)) {
+    return 'Mangesh has authored **22 technical articles** in his portfolio blog ([#blog](#blog)), focusing on systems engineering, agentic AI, and distributed architectures. Recent standout pieces include:\n- **GTA VI Field Notes**: Building a World That Feels Continuous (Nov 23, 2026)\n- **Nue Health Field Notes**: Data UX, Uncertainty, and Trust (Nov 23, 2026)\n- **Touchscreen MacBook Pro Field Notes**: PROLED XDR, Dual Input, and macOS Ergonomics (Oct 29, 2026)\n- **Gemini 4 Argon and Carbon Field Notes**: Autonomous Coding, Cyber Defense, and Benchmark Fatigue (Oct 28, 2026)\n- **Apple September Event 2026**: Hardware Announcements, Software Decisions (Sept 29, 2026)\n- **OpenAI DevDay 2026**: Models, Ongoing Agents, and Reliable Workflows (Sept 29, 2026)\nYou can read all 22 articles directly in the [#blog](#blog) section!';
   }
   if (/game|runner|dino|debug\s*runner/.test(q)) {
     return '**Debug Runner** is an interactive Chrome Dino-style mini-game located in the [#debug-runner-section](#debug-runner-section) at the bottom of the homepage. Play using **Spacebar or Up Arrow** to jump, **Down Arrow** to duck/fast-fall, **P** to pause, **M** to mute, and **R** to restart. Dodge bugs, NullPointerExceptions, Merge Conflicts, Memory Leaks, and 404s while collecting Coffee (speed boost) and Test Suite (shield) power-ups!';
@@ -363,7 +386,10 @@ function localAnswer(message) {
   if (/music|song|track|listening|spotify|scrobble|now\s*playing|music\s*card/.test(q)) {
     return "Mangesh's live music listening is showcased on the **Hero Music Card** (`#music-card`) in the homepage hero section. Powered by his **Spotify ↔ Last.fm** connection (user: **mbr63**), it displays his currently playing or most recent track, album cover art, a 30-second interactive audio preview, equalizer animation, and direct links to Spotify and Apple Music. You can also view his listening shelf in the [#currently](#currently) section or check his [Last.fm profile](https://www.last.fm/user/mbr63).";
   }
-  if (/whoop|health|fitness|recovery|strain|sleep|withings/.test(q)) {
+  if (
+    /whoop|fitness|recovery|strain|sleep|withings|biometric/.test(q) ||
+    (/\bhealth\b/.test(q) && !/\bnue[\s-]+health\b|field\s*notes/.test(q))
+  ) {
     return 'Mangesh tracks his biometric recovery, sleep performance, and strain using **Whoop 4.0** and **Withings**. Check the live health widget on the homepage or visit the [System Monitor](/monitor).';
   }
   if (/travel|trip|city|cities|places|visited/.test(q)) {
