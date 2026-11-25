@@ -70,6 +70,22 @@ export const changelogEntries = [
     usage: 'unavailable',
   },
   {
+    id: '2026-11-25-patch-dependencies',
+    date: '2026-11-25',
+    type: 'improvement',
+    title: 'Patch the CSS compiler, dotenv, and WebSocket library',
+    summary:
+      'Tailwind CSS 4.3.5 fixes empty var() fallbacks and a color-mix crash. dotenv 18.0.10 fixes parser and CLI edge cases. websockets 17.4 rejects fragment floods that could exhaust memory. Generated utility CSS now matches 4.3.5.',
+    tags: ['other'],
+    sha: null,
+    commitVerified: false,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose: 'Apply reviewed patch releases without moving to a new minor or major.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-25-live-chat-links',
     date: '2026-11-25',
     type: 'fix',
