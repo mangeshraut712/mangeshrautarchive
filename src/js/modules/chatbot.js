@@ -195,7 +195,7 @@ const SECTION_CONTEXT_PROMPTS = {
   awards: ['Awards & Honors', 'What awards and distinctions has Mangesh received?'],
   recommendations: ['Recommendations', 'What do colleagues and managers say about Mangesh?'],
   certifications: ['Certifications', 'Which certifications does Mangesh hold?'],
-  blog: ['Blog', 'What does Mangesh write about in his 18 technical articles?'],
+  blog: ['Blog', 'What does Mangesh write about in his 22 technical articles?'],
   faq: ['FAQ', 'What are answers to common questions about hiring and availability?'],
   contact: ['Contact', 'How do I get in touch with Mangesh?'],
   'debug-runner-section': [

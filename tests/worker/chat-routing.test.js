@@ -290,3 +290,66 @@ test('configured credentials cannot enable paid speech', async () => {
   assert.equal((await response.json()).fallback, 'browser-speechSynthesis');
   assert.equal(calls.length, 0);
 });
+
+test('local fallback answers Nue Health by article, not Whoop biometrics', async () => {
+  const response = await worker.fetch(
+    request({ message: 'What does the Nue Health Field Notes say about trust?', stream: false }),
+    { OPENROUTER_API_KEY: '' },
+    {}
+  );
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.equal(data.model, 'edge-local');
+  assert.match(data.answer, /Nue Health Field Notes/i);
+  assert.match(data.answer, /November 23, 2026/);
+  assert.doesNotMatch(data.answer, /Whoop/);
+});
+
+test('local fallback still answers Whoop health questions with biometrics', async () => {
+  const response = await worker.fetch(
+    request({ message: 'How is his Whoop recovery and health?', stream: false }),
+    { OPENROUTER_API_KEY: '' },
+    {}
+  );
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.match(data.answer, /Whoop/);
+  assert.doesNotMatch(data.answer, /Nue Health/);
+});
+
+test('local fallback reports both Razorpay issue and publication dates', async () => {
+  const response = await worker.fetch(
+    request({ message: 'When was the Razorpay Vulcan article published?', stream: false }),
+    { OPENROUTER_API_KEY: '' },
+    {}
+  );
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.match(data.answer, /Razorpay Vulcan/);
+  assert.match(data.answer, /August 18, 2026/);
+  assert.match(data.answer, /September 10, 2026/);
+});
+
+test('local fallback does not treat continue-health wording as the Nue Health article', async () => {
+  const response = await worker.fetch(
+    request({ message: 'How do I continue health recovery?', stream: false }),
+    { OPENROUTER_API_KEY: '' },
+    {}
+  );
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.match(data.answer, /Whoop/);
+  assert.doesNotMatch(data.answer, /Nue Health Field Notes/);
+});
+
+test('local fallback matches hyphenated nue-health phrasing as the article', async () => {
+  const response = await worker.fetch(
+    request({ message: 'Summarize the nue-health field notes', stream: false }),
+    { OPENROUTER_API_KEY: '' },
+    {}
+  );
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.match(data.answer, /Nue Health Field Notes/i);
+  assert.doesNotMatch(data.answer, /Whoop/);
+});

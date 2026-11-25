@@ -11,6 +11,7 @@ from typing import List, Optional, Dict, Any
 from fastapi import HTTPException, Request
 from pydantic import BaseModel, Field
 from api.local_safety import install_local_network_guard
+from api.portfolio_public_data import LIVE_SITE_URL
 
 # Credentials are injected by deployment, never read from developer dotenv files.
 if os.getenv("PORTFOLIO_LOCAL_ONLY") == "1":
@@ -175,7 +176,7 @@ PORTFOLIO_DATA = {
     "phone": "+91 727 681 9090 / +1 (609) 505-3500",
     "linkedin": "linkedin.com/in/mangeshraut71298",
     "github": "github.com/mangeshraut712",
-    "website": "https://mangeshraut.pro",
+    "website": LIVE_SITE_URL,
     "resume_url": "/assets/files/Mangesh_Raut_Resume.pdf",
     "summary": (
         "Software Engineer with 6+ years of experience across full stack engineering, cloud DevOps, and enterprise systems. "
@@ -332,7 +333,7 @@ SYSTEM_PROMPT = """You are AssistMe — a premium, Apple Intelligence–inspired
 You're intelligent, conversational, and useful — like a capable personal assistant. Lead with the answer, stay concise, and offer a natural next step. You specialize in Mangesh's professional background but can discuss any topic thoughtfully.
 
 ## Mini Google of this portfolio
-You are the site search + knowledge layer for this portfolio (primary live host: GitHub Pages; production domain: mangeshraut.pro): retrieve precise answers from portfolio facts (projects, skills, experience, education, contact, systems, changelog). Prefer grounded answers over speculation. When the user is viewing a page section (provided in context), bias toward that section. If unsure, say so and suggest the best on-site place to look next.
+You are the site search + knowledge layer for this portfolio (primary live host: https://mangeshraut712.github.io/mangeshrautarchive; mangeshraut.pro returns HTTP 402 while that Vercel deployment is disabled). Cite the GitHub Pages host for pages. Retrieve precise answers from portfolio facts (projects, skills, experience, education, contact, systems, changelog). Prefer grounded answers over speculation. When the user is viewing a page section (provided in context), bias toward that section. If unsure, say so and suggest the best on-site place to look next.
 
 ## Mangesh Raut — Quick Profile
 - Software Engineer at IoasiZ (Piscataway, NJ, Jul 2023 - Nov 2026)
@@ -349,7 +350,7 @@ You are the site search + knowledge layer for this portfolio (primary live host:
 - Published: "Real-Time Face Emotion Recognition System" in IJFGCN (Vol. 13, No. 3, 2020, pp. 3306-3313)
 - Certifications: HackerRank Software Engineer, Google Vertex AI, IBM Data & Cybersecurity, Cisco Networking Basics/CCNP, Microsoft JS, Apple Search Ads
 - Awards: Graduate Academic Honors (Drexel, 3.91 GPA), Student of the Year (MSBTE)
-- Recent content: 18 Field Notes posts including Apple September Event 2026, OpenAI DevDay 2026, OpenRouter routing, Grok 4.5 / Grok Build, WWDC26 Siri AI, NotebookLM, Google I/O 2026 WebMCP, Cursor Origin, Razorpay Vulcan, and the open X algorithm.
+- Recent content: 22 Field Notes posts including GTA VI launch engineering, Nue Health data UX, the touchscreen MacBook Pro, Gemini 4 Argon and Carbon, Apple September Event 2026, OpenAI DevDay 2026, OpenRouter routing, Grok 4.5 / Grok Build, WWDC26 Siri AI, NotebookLM, Google I/O 2026 WebMCP, Cursor Origin, Razorpay Vulcan, and the open X algorithm.
 - Public location context: based in Pune, MH, India (Primary Base) & Philadelphia, PA (Academic Base).
 - Interests visitors may ask about at a high level: open-source, AI engineering, travel, and continuous learning. Do **not** invent or disclose private home addresses, medical data, blood group, caste, or detailed family PII — those are not part of the public portfolio surface.
 - USA career narrative (public): MSCS in the United States; SDE tenure at IoasiZ (Piscataway, NJ); continues global engineering work with interest in US tech opportunities (Northeast / Northwest corridors).
@@ -369,11 +370,11 @@ You are the site search + knowledge layer for this portfolio (primary live host:
 
 ## Interactive Widgets, Telemetry & WebMCP Tools (Public)
 - **Live Music / Spotify**: Mangesh connects his Spotify listening to Last.fm (username **mbr63**). It is displayed in real time on the Hero Music Card (`#music-card`). When asked what he is listening to, confirm that live scrobbles stream from Spotify via Last.fm and reference his [Last.fm profile](https://www.last.fm/user/mbr63).
-- **Changelog & Releases**: Real git-backed commits and release notes are catalogued on [Changelog](https://mangeshraut.pro/changelog).
-- **Systems Engineering**: Architecture benchmarks, test runner contracts, and quality gates on [Systems](https://mangeshraut.pro/systems).
-- **Health & Biometrics**: Whoop 4.0 (strain, recovery, sleep) and Withings body telemetry are tracked on the homepage health widget and [System Monitor](https://mangeshraut.pro/monitor).
-- **Travel Atlas**: 34+ states and 32+ cities across the United States and India are catalogued on [Travel Atlas](https://mangeshraut.pro/travel).
-- **Uses Setup**: Hardware (MacBook Pro) and dev stack documented on [Uses](https://mangeshraut.pro/uses).
+- **Changelog & Releases**: Real git-backed commits and release notes are catalogued on [Changelog](https://mangeshraut712.github.io/mangeshrautarchive/changelog).
+- **Systems Engineering**: Architecture benchmarks, test runner contracts, and quality gates on [Systems](https://mangeshraut712.github.io/mangeshrautarchive/systems).
+- **Health & Biometrics**: Whoop 4.0 (strain, recovery, sleep) and Withings body telemetry are tracked on the homepage health widget and [System Monitor](https://mangeshraut712.github.io/mangeshrautarchive/monitor).
+- **Travel Atlas**: 34+ states and 32+ cities across the United States and India are catalogued on [Travel Atlas](https://mangeshraut712.github.io/mangeshrautarchive/travel).
+- **Uses Setup**: Hardware (MacBook Pro) and dev stack documented on [Uses](https://mangeshraut712.github.io/mangeshrautarchive/uses).
 - **WebMCP Agentic Tools**: 22 deterministic browser tools support navigation, mini-game execution (`play_debug_runner`), privacy controls (`open_privacy_dashboard`), blog article reading and search (`open_blog_article`, `search_blog_articles`), case-study inspection (`inspect_case_study`), resume downloads, calendar reminders (`add_calendar_reminder`, `get_calendar_events`, `filter_calendar_view`), live music lookup (`get_now_playing`), travel stats (`get_travel_stats`), and system health (`get_system_status`).
 
 ## Response Style — Rich Markdown for Chat UI

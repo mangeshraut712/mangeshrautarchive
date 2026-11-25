@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import Any, Dict
 
-SITE_URL = "https://mangeshraut.pro"
+# Live static host. https://mangeshraut.pro returns HTTP 402 while the Vercel deployment is disabled.
 LIVE_SITE_URL = "https://mangeshraut712.github.io/mangeshrautarchive"
+SITE_URL = LIVE_SITE_URL
 
 SITE_THEME = {
     "apple_blue": "#0071e3",
@@ -101,7 +102,7 @@ def get_portfolio_facts_chunk() -> str:
         label = label_map.get(category, category)
         uses_lines.append(f"{label}: {', '.join(items)}")
     return (
-        f"Public portfolio facts (live: {LIVE_SITE_URL}; brand: {SITE_URL}):\n"
+        f"Public portfolio facts (live: {LIVE_SITE_URL}):\n"
         f"- Quality: {format_quality_summary()}\n"
         f"- Live Pages monitoring floors (mobile perf min): "
         f"{LIGHTHOUSE_PAGES_GATES['mobile']['performance']}+ "
