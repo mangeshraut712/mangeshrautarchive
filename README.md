@@ -125,6 +125,8 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 
 ### 5.1 Coding agent and purpose
 
+Contribution graph boot (2026-11-25): Grok 4.7 in Cursor stops #projects hash-alignment retries from yanking an in-section scroll back to the heading before the contribution graph boots, and rechecks graph visibility on scroll. Exact model variant, reasoning mode, and token usage: unavailable.
+
 Journal archive cleanup (2026-11-25): Grok Bot stops repeating the featured article as the first archive card, removes the stray separator left by hidden kickers, replaces per-card buttons with one text link, keeps source-card arrows inside their cards, fixes filter-count contrast, and adds article dates and tags to page metadata. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Motion repair (2026-11-24): GPT-6 / Codex restores continuous music artwork, equalizer and loading indicators without extending ordinary interaction transitions. JavaScript motion responds to runtime reduced-motion changes. Exact model variant, reasoning mode, and token usage: unavailable.

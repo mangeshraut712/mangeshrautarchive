@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-25-contribution-graph-boot',
+    date: '2026-11-25',
+    type: 'fix',
+    title: 'Keep the contribution graph in view while it boots',
+    summary:
+      'Landing on #projects kept retrying heading alignment for several seconds. Scrolling down to the contribution graph could be undone before IntersectionObserver built the shell, so Quality Gates sometimes missed #gh-total and the heatmap. Alignment now leaves an in-section scroll alone, and the graph also rechecks visibility on scroll.',
+    tags: ['monitor', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose:
+      'Stop a CI flake in the Project Showcase contribution graph without weakening assertions.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-25-field-notes-catalogue',
     date: '2026-11-25',
     type: 'fix',
