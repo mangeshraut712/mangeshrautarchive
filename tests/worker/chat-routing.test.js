@@ -332,7 +332,7 @@ test('local fallback reports both Razorpay issue and publication dates', async (
 
 test('local fallback does not treat continue-health wording as the Nue Health article', async () => {
   const response = await worker.fetch(
-    request({ message: 'How is his continuing health?', stream: false }),
+    request({ message: 'How do I continue health recovery?', stream: false }),
     { OPENROUTER_API_KEY: '' },
     {}
   );
