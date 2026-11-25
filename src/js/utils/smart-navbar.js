@@ -192,7 +192,10 @@ function stabilizeScrollToSection(sectionId) {
       if (window.location.hash.replace('#', '').trim() !== sectionId) return;
 
       const expectedTop = getSectionOffset();
-      const delta = target.getBoundingClientRect().top - expectedTop;
+      const headingTop = target.getBoundingClientRect().top;
+      // The reader (or a test) has already scrolled into the section. Leave them there.
+      if (headingTop < expectedTop - 18) return;
+      const delta = headingTop - expectedTop;
       if (Math.abs(delta) <= 18) return;
 
       withNativeScrollJump(() => {
