@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-25-field-notes-catalogue',
+    date: '2026-11-25',
+    type: 'fix',
+    title: 'AssistMe knows all 22 Field Notes',
+    summary:
+      'The edge assistant still described 18 articles and omitted the October and November notes: Gemini 4 Argon and Carbon, the touchscreen MacBook Pro, GTA VI, and Nue Health. It also quoted older titles for the Razorpay and observer-selection notes. The catalogue now matches the published archive.',
+    tags: ['assistme', 'blog'],
+    sha: null,
+    commitVerified: false,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose: 'Stop AssistMe from undercounting and mis-titling the published Field Notes.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-25-journal-index-polish',
     date: '2026-11-25',
     type: 'fix',

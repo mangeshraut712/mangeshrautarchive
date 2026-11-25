@@ -349,7 +349,7 @@ You are the site search + knowledge layer for this portfolio (primary live host:
 - Published: "Real-Time Face Emotion Recognition System" in IJFGCN (Vol. 13, No. 3, 2020, pp. 3306-3313)
 - Certifications: HackerRank Software Engineer, Google Vertex AI, IBM Data & Cybersecurity, Cisco Networking Basics/CCNP, Microsoft JS, Apple Search Ads
 - Awards: Graduate Academic Honors (Drexel, 3.91 GPA), Student of the Year (MSBTE)
-- Recent content: 18 Field Notes posts including Apple September Event 2026, OpenAI DevDay 2026, OpenRouter routing, Grok 4.5 / Grok Build, WWDC26 Siri AI, NotebookLM, Google I/O 2026 WebMCP, Cursor Origin, Razorpay Vulcan, and the open X algorithm.
+- Recent content: 22 Field Notes posts including GTA VI launch engineering, Nue Health data UX, the touchscreen MacBook Pro, Gemini 4 Argon and Carbon, Apple September Event 2026, OpenAI DevDay 2026, OpenRouter routing, Grok 4.5 / Grok Build, WWDC26 Siri AI, NotebookLM, Google I/O 2026 WebMCP, Cursor Origin, Razorpay Vulcan, and the open X algorithm.
 - Public location context: based in Pune, MH, India (Primary Base) & Philadelphia, PA (Academic Base).
 - Interests visitors may ask about at a high level: open-source, AI engineering, travel, and continuous learning. Do **not** invent or disclose private home addresses, medical data, blood group, caste, or detailed family PII — those are not part of the public portfolio surface.
 - USA career narrative (public): MSCS in the United States; SDE tenure at IoasiZ (Piscataway, NJ); continues global engineering work with interest in US tech opportunities (Northeast / Northwest corridors).
