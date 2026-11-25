@@ -15,7 +15,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
-from api.portfolio_public_data import get_portfolio_facts_chunk
+from api.portfolio_public_data import LIVE_SITE_URL, get_portfolio_facts_chunk
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,85 +26,85 @@ PUBLIC_SOURCES: Sequence[Dict[str, str]] = (
     {
         "path": "README.md",
         "title": "Repository README and deployment notes",
-        "url": "https://mangeshraut.pro/",
+        "url": f"{LIVE_SITE_URL}/",
         "kind": "markdown",
     },
     {
         "path": "src/index.html",
         "title": "Main portfolio homepage",
-        "url": "https://mangeshraut.pro/",
+        "url": f"{LIVE_SITE_URL}/",
         "kind": "html",
     },
     {
         "path": "src/about.html",
         "title": "About Mangesh Raut standalone page",
-        "url": "https://mangeshraut.pro/about",
+        "url": f"{LIVE_SITE_URL}/about",
         "kind": "html",
     },
     {
         "path": "src/contact.html",
         "title": "Contact Mangesh Raut standalone page",
-        "url": "https://mangeshraut.pro/contact",
+        "url": f"{LIVE_SITE_URL}/contact",
         "kind": "html",
     },
     {
         "path": "src/travel.html",
         "title": "Travel Atlas page",
-        "url": "https://mangeshraut.pro/travel",
+        "url": f"{LIVE_SITE_URL}/travel",
         "kind": "html",
     },
     {
         "path": "src/monitor.html",
         "title": "System Monitor page",
-        "url": "https://mangeshraut.pro/monitor",
+        "url": f"{LIVE_SITE_URL}/monitor",
         "kind": "html",
     },
     {
         "path": "src/systems.html",
         "title": "Systems engineering notebook",
-        "url": "https://mangeshraut.pro/systems",
+        "url": f"{LIVE_SITE_URL}/systems",
         "kind": "html",
     },
     {
         "path": "src/uses.html",
         "title": "Uses — hardware, software, and AI stack",
-        "url": "https://mangeshraut.pro/uses",
+        "url": f"{LIVE_SITE_URL}/uses",
         "kind": "html",
     },
     {
         "path": "src/changelog.html",
         "title": "Portfolio Changelog and release notes page",
-        "url": "https://mangeshraut.pro/changelog",
+        "url": f"{LIVE_SITE_URL}/changelog",
         "kind": "html",
     },
     {
         "path": "src/js/data/changelog-entries.js",
         "title": "Portfolio Changelog canonical entries",
-        "url": "https://mangeshraut.pro/changelog",
+        "url": f"{LIVE_SITE_URL}/changelog",
         "kind": "javascript",
     },
     {
         "path": "src/js/data/portfolio-public-data.js",
         "title": "Canonical portfolio public facts",
-        "url": "https://mangeshraut.pro/systems",
+        "url": f"{LIVE_SITE_URL}/systems",
         "kind": "javascript",
     },
     {
         "path": "src/js/modules/blog-data.js",
         "title": "Technical blog catalogue",
-        "url": "https://mangeshraut.pro/#blog",
+        "url": f"{LIVE_SITE_URL}/#blog",
         "kind": "javascript",
     },
     {
         "path": "src/js/data/travel-locations.js",
         "title": "Travel Atlas locations and city data",
-        "url": "https://mangeshraut.pro/travel",
+        "url": f"{LIVE_SITE_URL}/travel",
         "kind": "javascript",
     },
     {
         "path": "src/js/modules/blessing-media-modal.js",
         "title": "Support and devotional blessings lyrics (Ganapati Aarti, Hanuman Chalisa)",
-        "url": "https://mangeshraut.pro/#contact",
+        "url": f"{LIVE_SITE_URL}/#contact",
         "kind": "javascript",
     },
 )
@@ -522,7 +522,7 @@ def build_site_knowledge() -> List[KnowledgeChunk]:
             KnowledgeChunk(
                 source="derived:portfolio-facts",
                 title="Derived portfolio facts",
-                url="https://mangeshraut.pro/",
+                url=f"{LIVE_SITE_URL}/",
                 text=derived,
                 tokens=_tokenize(derived),
             )
