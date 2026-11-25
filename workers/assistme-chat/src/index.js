@@ -353,10 +353,10 @@ function localAnswer(message) {
   if (/devday|openai\s*devday/.test(q)) {
     return "In his article **'OpenAI DevDay 2026: Models, Ongoing Agents, and Reliable Workflows'** (published September 29, 2026), Mangesh reviews OpenAI's DevDay announcements, including the frontier **GPT-6.1 Sol** model, the **dots personal assistant**, and a pragmatic engineering blueprint for evaluating agentic loop costs, runtime reliability, and finished work.";
   }
-  if (/nue\s*health|nue-health-data-ux/.test(q)) {
+  if (/\bnue[\s-]+health\b|\bnue-health-data-ux\b/.test(q)) {
     return "In his article **'Nue Health Field Notes: Data UX, Uncertainty, and Trust'** (published November 23, 2026), Mangesh reviews Nue Health's public product presentation and offers a practical framework for evidence, uncertainty, consent, and trustworthy health-data interfaces. You can read it in the [#blog](#blog) section.";
   }
-  if (/gta\s*vi|gta-vi-launch/.test(q)) {
+  if (/\bgta\s*vi\b|gta-vi-launch/.test(q)) {
     return "In his article **'GTA VI Field Notes: Building a World That Feels Continuous'** (published November 23, 2026), Mangesh uses GTA VI as a November lens on streaming deadlines, frame budgets, durable state, and the engineering behind a continuous world. You can read it in the [#blog](#blog) section.";
   }
   if (/touchscreen\s*macbook|proled\s*xdr|macbook-pro-touchscreen/.test(q)) {
@@ -388,7 +388,7 @@ function localAnswer(message) {
   }
   if (
     /whoop|fitness|recovery|strain|sleep|withings|biometric/.test(q) ||
-    (/\bhealth\b/.test(q) && !/nue\s*health|field\s*notes/.test(q))
+    (/\bhealth\b/.test(q) && !/\bnue[\s-]+health\b|field\s*notes/.test(q))
   ) {
     return 'Mangesh tracks his biometric recovery, sleep performance, and strain using **Whoop 4.0** and **Withings**. Check the live health widget on the homepage or visit the [System Monitor](/monitor).';
   }

@@ -329,3 +329,27 @@ test('local fallback reports both Razorpay issue and publication dates', async (
   assert.match(data.answer, /August 18, 2026/);
   assert.match(data.answer, /September 10, 2026/);
 });
+
+test('local fallback does not treat continue-health wording as the Nue Health article', async () => {
+  const response = await worker.fetch(
+    request({ message: 'How is his continuing health?', stream: false }),
+    { OPENROUTER_API_KEY: '' },
+    {}
+  );
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.match(data.answer, /Whoop/);
+  assert.doesNotMatch(data.answer, /Nue Health Field Notes/);
+});
+
+test('local fallback matches hyphenated nue-health phrasing as the article', async () => {
+  const response = await worker.fetch(
+    request({ message: 'Summarize the nue-health field notes', stream: false }),
+    { OPENROUTER_API_KEY: '' },
+    {}
+  );
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.match(data.answer, /Nue Health Field Notes/i);
+  assert.doesNotMatch(data.answer, /Whoop/);
+});
