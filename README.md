@@ -173,6 +173,8 @@ Luma reconciliation (2026-11-13): GPT-6 / Codex verified 10 upcoming and 53 past
 
 Calendar refresh (2026-11-13): GPT-6 / Codex refreshed the local Apple Calendar snapshot, reconciled the full 2026 Google calendar and checked scheduled 2027 events, normalized occurrence timestamps to prevent duplicates, and removed seeded reminders after Apple Reminders and both signed-in Google Tasks accounts returned no items. The combined view has 156 entries, with verified renamed/rescheduled invitations consolidated. The second Google calendar was read through its Apple mirror; Exchange remains unavailable and its cached entries are marked as cached in the data. Exact model variant, reasoning mode, and token usage: unavailable. This is a website snapshot, not continuous two-way account synchronization; browser-created reminders remain local.
 
+Live chat links (2026-11-25): Grok 4.7 in Cursor points AssistMe changelog answers, site-knowledge citations, and the public website fact at GitHub Pages. https://mangeshraut.pro returns HTTP 402 while that Vercel deployment is disabled; https://mangeshraut712.github.io/mangeshrautarchive returns HTTP 200. Exact model variant, reasoning mode, and token usage: unavailable.
+
 I maintain this portfolio with assistance from several coding tools. Each shipped change records its contributor and purpose in the [changelog](src/js/data/changelog-entries.js); earlier records are preserved in [development history](docs/DEVELOPMENT_HISTORY.md).
 
 | This maintenance contribution              | Record                                                                                                                |

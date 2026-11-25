@@ -54,6 +54,22 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-25-live-chat-links',
+    date: '2026-11-25',
+    type: 'fix',
+    title: 'AssistMe cites the site that answers',
+    summary:
+      'Offline changelog answers and site-knowledge sources were still linking to mangeshraut.pro, which returns HTTP 402 while that Vercel deployment is disabled. Those citations now use the GitHub Pages host that returns HTTP 200.',
+    tags: ['assistme', 'api'],
+    sha: null,
+    commitVerified: false,
+    model: 'Grok 4.7',
+    ide: 'Cursor',
+    purpose: 'Stop AssistMe from sending visitors to the disabled Vercel hostname.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+  },
+  {
     id: '2026-11-25-journal-index-polish',
     date: '2026-11-25',
     type: 'fix',
