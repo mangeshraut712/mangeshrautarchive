@@ -1728,19 +1728,22 @@ html.dark #home .hero-name-text {
         window.addEventListener('touchstart', cancelAlignment, { passive: true, once: true });
         window.addEventListener('keydown', cancelAlignment, { passive: true, once: true });
 
-        function alignTarget() {
+        function alignTarget(isRetry) {
           if (cancelled) return;
           var offset = (nav ? nav.offsetHeight : 60) + 12;
           var headingTop = target.getBoundingClientRect().top;
-          // Already scrolled into the section — do not yank back to the heading.
-          if (headingTop < offset - 18) return;
+          // Retries only: if the reader already scrolled into the section, leave them there.
+          // The first call must still jump upward (for example, Projects → Home).
+          if (isRetry && headingTop < offset - 18) return;
           var top = Math.max(0, headingTop + window.scrollY - offset);
           window.scrollTo(0, top);
         }
 
-        alignTarget();
+        alignTarget(false);
         [220, 700, 1400, 2400, 3600, 5200, 7600, 9800].forEach(function (delay) {
-          window.setTimeout(alignTarget, delay);
+          window.setTimeout(function () {
+            alignTarget(true);
+          }, delay);
         });
 
         window.setTimeout(function () {
