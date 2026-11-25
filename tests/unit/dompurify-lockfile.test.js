@@ -35,3 +35,14 @@ test('lockfile resolves dompurify >= 3.5.0 and isomorphic-dompurify >= 4.9.0', (
   const iso = lock.packages['node_modules/isomorphic-dompurify'];
   assert.ok(iso && atLeast(iso.version, '4.9.0'), `isomorphic-dompurify is ${iso?.version}`);
 });
+
+test('checked-in rich-markdown bundle embeds DOMPurify >= 3.5.0', () => {
+  // The dev server serves src/js/vendor/rich-markdown.js as committed; only the
+  // production prebuild regenerates it, so a stale bundle keeps the old sanitizer.
+  const bundle = readFileSync(new URL('src/js/vendor/rich-markdown.js', root), 'utf8');
+  const versions = [...bundle.matchAll(/\.version="(\d+\.\d+\.\d+)",\w+\.removed=\[\]/g)].map(m => m[1]);
+  assert.ok(versions.length > 0, 'DOMPurify version marker not found in the bundle');
+  for (const version of versions) {
+    assert.ok(atLeast(version, '3.5.0'), `bundled DOMPurify is ${version}`);
+  }
+});
