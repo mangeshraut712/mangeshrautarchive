@@ -13,6 +13,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+from api.portfolio_public_data import LIVE_SITE_URL
 from api.config import (
     ChatRequest,
     TypingIndicator,
@@ -760,7 +761,7 @@ async def handle_direct_command(message: str) -> Optional[Dict]:
 
     if is_changelog_query(lower):
         return {
-            "answer": f"🚀 **Recent Portfolio Releases**\n\n{format_recent_changelog_summary(5)}\n\nExplore all release notes and git commits at [/changelog](https://mangeshraut.pro/changelog)!",
+            "answer": f"🚀 **Recent Portfolio Releases**\n\n{format_recent_changelog_summary(5)}\n\nExplore all release notes and git commits at [/changelog]({LIVE_SITE_URL}/changelog)!",
             "source": "Site Knowledge",
             "model": "Changelog Index",
             "category": "Changelog",
