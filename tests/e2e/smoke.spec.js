@@ -722,7 +722,7 @@ test.describe('Chrome smoke tests', () => {
       page.locator('.keynote-bento-card--gate', { hasText: 'Critical Browser Journeys' })
     ).toBeVisible();
     await expect(page.locator('.keynote-bento-card--gate', { hasText: 'Pytest' })).toContainText(
-      '234 / 234'
+      '235 / 235'
     );
 
     // Verify zero horizontal overflow on tools grid

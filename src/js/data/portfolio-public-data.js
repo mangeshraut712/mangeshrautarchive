@@ -43,9 +43,9 @@ export const LIGHTHOUSE_VERCEL_GATES = {
   mobile: { performance: 55, accessibility: 90, bestPractices: 90, seo: 90 },
 };
 
-/** Verified November 25, 2026 against `pytest` (234) and `npm run test:e2e:critical -- --list` (40). */
+/** Verified November 25, 2026 against `pytest` (235) and `npm run test:e2e:critical -- --list` (40). */
 export const TEST_COUNTS = {
-  pytest: 234,
+  pytest: 235,
   criticalBrowser: 40,
   playwrightProjects: 16,
 };
