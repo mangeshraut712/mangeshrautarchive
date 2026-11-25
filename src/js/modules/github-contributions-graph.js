@@ -923,18 +923,43 @@ function init() {
   if (!root || isPerfAudit()) return;
   state.root = root;
 
-  const start = () => boot();
+  let starting = false;
+  let io = null;
+  const GRAPH_ROOT_MARGIN = 240;
+
+  const inView = () => {
+    const rect = root.getBoundingClientRect();
+    return (
+      rect.bottom + GRAPH_ROOT_MARGIN >= 0 && rect.top - GRAPH_ROOT_MARGIN <= window.innerHeight
+    );
+  };
+
+  const start = () => {
+    if (starting || state.built) return;
+    starting = true;
+    io?.disconnect();
+    window.removeEventListener('scroll', recheck);
+    window.removeEventListener('resize', recheck);
+    return boot();
+  };
+
+  const recheck = () => {
+    if (!starting && inView()) start();
+  };
+
   if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
+    io = new IntersectionObserver(
       entries => {
-        if (entries.some(e => e.isIntersecting)) {
-          io.disconnect();
-          start();
-        }
+        if (entries.some(e => e.isIntersecting)) start();
       },
-      { rootMargin: '240px 0px' }
+      { rootMargin: `${GRAPH_ROOT_MARGIN}px 0px` }
     );
     io.observe(root);
+    // Hash-alignment retries can move the graph out of view in the same frame
+    // as a programmatic scroll. Recheck on scroll/resize until boot starts.
+    window.addEventListener('scroll', recheck, { passive: true });
+    window.addEventListener('resize', recheck);
+    requestAnimationFrame(recheck);
   } else {
     start();
   }

@@ -1,5 +1,7 @@
 import { test, expect } from './helpers/isolated-test.js';
 import AxeBuilder from '@axe-core/playwright';
+
+test.use({ serviceWorkers: 'block' });
 const repos = Array.from({ length: 106 }, (_, i) => ({
   name:
     i === 0 ? 'mangeshrautarchive' : i === 105 ? 'प्रयोग' : `project-${String(i).padStart(3, '0')}`,
@@ -38,6 +40,23 @@ async function mockGitHub(page) {
     });
   });
 }
+
+// Visiting /#projects schedules hash-alignment retries that can undo a single
+// scrollIntoView before IntersectionObserver boots the empty graph shell.
+// Keep the graph in view until #gh-total exists; assertions stay unchanged.
+async function loadContributionGraph(page) {
+  const root = page.locator('#gh-contrib');
+  await expect
+    .poll(
+      async () => {
+        await root.scrollIntoViewIfNeeded();
+        return page.locator('#gh-total').count();
+      },
+      { message: 'contribution graph shell did not boot after scrolling into view' }
+    )
+    .toBe(1);
+}
+
 for (const width of [375, 768, 1440])
   for (const theme of ['light', 'dark']) {
     test(`showcase discovery and preview at ${width}px ${theme}`, async ({ page }) => {
@@ -79,7 +98,7 @@ for (const width of [375, 768, 1440])
         false
       );
       await expect(page.locator('#projects-catalog-status')).toContainText('GitHub catalog');
-      await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
+      await loadContributionGraph(page);
       await expect(page.locator('.gh-contrib__settings-btn')).toBeVisible();
       for (const selector of [
         '#projects-refresh-btn',
@@ -120,7 +139,7 @@ test('contribution failure clears stale statistics and offers a working retry', 
   );
   await page.goto('/#projects');
   await expect(page.locator('#projects-catalog-status')).toContainText('GitHub catalog');
-  await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
+  await loadContributionGraph(page);
   await expect(page.locator('#gh-total')).toHaveText('7');
   fail = true;
   await page.locator('.gh-contrib__year').nth(1).click();
@@ -146,7 +165,7 @@ test('initial activity loading stays bounded and heatmap has one keyboard entry'
   await expect(page.locator('#projects-activity-caption')).toContainText(`${visible}/106`);
   expect(requested.size).toBeLessThanOrEqual(8);
   await expect(page.locator('#projects-catalog-status')).toContainText('GitHub catalog');
-  await page.locator('#gh-contrib').scrollIntoViewIfNeeded();
+  await loadContributionGraph(page);
   const cells = page.locator('.gh-hm__cell[data-label]');
   await expect(cells).toHaveCount(14);
   await expect(page.locator('.gh-hm__cell[tabindex="0"]')).toHaveCount(1);

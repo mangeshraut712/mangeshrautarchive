@@ -1731,7 +1731,10 @@ html.dark #home .hero-name-text {
         function alignTarget() {
           if (cancelled) return;
           var offset = (nav ? nav.offsetHeight : 60) + 12;
-          var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
+          var headingTop = target.getBoundingClientRect().top;
+          // Already scrolled into the section — do not yank back to the heading.
+          if (headingTop < offset - 18) return;
+          var top = Math.max(0, headingTop + window.scrollY - offset);
           window.scrollTo(0, top);
         }
 
