@@ -103,7 +103,7 @@ Mangesh has written and published 22 deep-dive technical articles in his portfol
 2. "OpenAI DevDay 2026: Models, Ongoing Agents, and Reliable Workflows" (openai-devday-2026, Sept 29, 2026):
    - Confirmed DevDay announcements including frontier model GPT-6.1 Sol and dots personal assistant.
    - Practical engineering framework for evaluating agentic loops, inference costs, state persistence, and completed work reliability.
-3. "Razorpay Vulcan: How to Evaluate a Payments Foundation Model" (razorpay-vulcan-payments-foundation-model, Aug 18, 2026):
+3. "Razorpay Vulcan: How to Evaluate a Payments Foundation Model" (razorpay-vulcan-payments-foundation-model; issue date: Aug 18, 2026; first published: Sept 10, 2026):
    - India's first payments transformer foundation model built by Razorpay with NVIDIA & AWS.
    - Trained on 4B payments & 3T data points; boosted transaction success rates by 8-10% and detected 8x more fraud.
 4. "Cursor Origin in 2026: Native Git Hosting, Mirrors, and the Agent Review Loop" (cursor-origin-agent-native-code-hosting, Aug 17, 2026):
@@ -353,7 +353,22 @@ function localAnswer(message) {
   if (/devday|openai\s*devday/.test(q)) {
     return "In his article **'OpenAI DevDay 2026: Models, Ongoing Agents, and Reliable Workflows'** (published September 29, 2026), Mangesh reviews OpenAI's DevDay announcements, including the frontier **GPT-6.1 Sol** model, the **dots personal assistant**, and a pragmatic engineering blueprint for evaluating agentic loop costs, runtime reliability, and finished work.";
   }
-  if (/blog|article|post|writeup|writing/.test(q)) {
+  if (/nue\s*health|nue-health-data-ux/.test(q)) {
+    return "In his article **'Nue Health Field Notes: Data UX, Uncertainty, and Trust'** (published November 23, 2026), Mangesh reviews Nue Health's public product presentation and offers a practical framework for evidence, uncertainty, consent, and trustworthy health-data interfaces. You can read it in the [#blog](#blog) section.";
+  }
+  if (/gta\s*vi|gta-vi-launch/.test(q)) {
+    return "In his article **'GTA VI Field Notes: Building a World That Feels Continuous'** (published November 23, 2026), Mangesh uses GTA VI as a November lens on streaming deadlines, frame budgets, durable state, and the engineering behind a continuous world. You can read it in the [#blog](#blog) section.";
+  }
+  if (/touchscreen\s*macbook|proled\s*xdr|macbook-pro-touchscreen/.test(q)) {
+    return "In his article **'Touchscreen MacBook Pro Field Notes: PROLED XDR, Dual Input, and macOS Ergonomics'** (published October 29, 2026), Mangesh reviews Apple's first touchscreen Mac: the tandem OLED PROLED XDR display, M5 Pro/Max silicon, dual-input ergonomics, and how web and desktop software must adapt to hybrid pointer events. You can read it in the [#blog](#blog) section.";
+  }
+  if (/gemini\s*4|argon\s*and\s*carbon|gemini-4-argon/.test(q)) {
+    return "In his article **'Gemini 4 Argon and Carbon Field Notes: Autonomous Coding, Cyber Defense, and Benchmark Fatigue'** (published October 28, 2026), Mangesh covers Google's Gemini 4 announcements, the limits of its reported security benchmarks, introductory pricing caveats, and a reproducible defensive patch-evaluation plan. You can read it in the [#blog](#blog) section.";
+  }
+  if (/razorpay|vulcan/.test(q)) {
+    return "In his article **'Razorpay Vulcan: How to Evaluate a Payments Foundation Model'** (issue date August 18, 2026; first published September 10, 2026), Mangesh examines what Razorpay documents about Vulcan's shared payment representation and how to read its routing and fraud claims using denominators, decision-time data, and controlled evaluation. You can read it in the [#blog](#blog) section.";
+  }
+  if (/blog|article|post|writeup|writing|field\s*notes/.test(q)) {
     return 'Mangesh has authored **22 technical articles** in his portfolio blog ([#blog](#blog)), focusing on systems engineering, agentic AI, and distributed architectures. Recent standout pieces include:\n- **GTA VI Field Notes**: Building a World That Feels Continuous (Nov 23, 2026)\n- **Nue Health Field Notes**: Data UX, Uncertainty, and Trust (Nov 23, 2026)\n- **Touchscreen MacBook Pro Field Notes**: PROLED XDR, Dual Input, and macOS Ergonomics (Oct 29, 2026)\n- **Gemini 4 Argon and Carbon Field Notes**: Autonomous Coding, Cyber Defense, and Benchmark Fatigue (Oct 28, 2026)\n- **Apple September Event 2026**: Hardware Announcements, Software Decisions (Sept 29, 2026)\n- **OpenAI DevDay 2026**: Models, Ongoing Agents, and Reliable Workflows (Sept 29, 2026)\nYou can read all 22 articles directly in the [#blog](#blog) section!';
   }
   if (/game|runner|dino|debug\s*runner/.test(q)) {
@@ -371,7 +386,10 @@ function localAnswer(message) {
   if (/music|song|track|listening|spotify|scrobble|now\s*playing|music\s*card/.test(q)) {
     return "Mangesh's live music listening is showcased on the **Hero Music Card** (`#music-card`) in the homepage hero section. Powered by his **Spotify ↔ Last.fm** connection (user: **mbr63**), it displays his currently playing or most recent track, album cover art, a 30-second interactive audio preview, equalizer animation, and direct links to Spotify and Apple Music. You can also view his listening shelf in the [#currently](#currently) section or check his [Last.fm profile](https://www.last.fm/user/mbr63).";
   }
-  if (/whoop|health|fitness|recovery|strain|sleep|withings/.test(q)) {
+  if (
+    /whoop|fitness|recovery|strain|sleep|withings|biometric/.test(q) ||
+    (/\bhealth\b/.test(q) && !/nue\s*health|field\s*notes/.test(q))
+  ) {
     return 'Mangesh tracks his biometric recovery, sleep performance, and strain using **Whoop 4.0** and **Withings**. Check the live health widget on the homepage or visit the [System Monitor](/monitor).';
   }
   if (/travel|trip|city|cities|places|visited/.test(q)) {
