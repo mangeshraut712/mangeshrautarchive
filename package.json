@@ -87,9 +87,9 @@
     "@eslint/js": "^10.0.1",
     "@oxlint/plugins": "^1.86.0",
     "@playwright/test": "^1.63.0",
-    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/cli": "^4.3.5",
     "cross-env": "^10.1.0",
-    "dotenv": "^18.0.5",
+    "dotenv": "^18.0.10",
     "e2e": "0.21.2",
     "esbuild": "^0.28.2",
     "eslint": "^10.12.0",
@@ -101,19 +101,19 @@
     "start-server-and-test": "^3.0.12",
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.5"
   },
   "dependencies": {
     "@ogtirth/liquid-glass-oss": "^0.1.0",
     "@vercel/analytics": "^2.0.1",
+    "decimal.js": "10.6.0",
     "html-to-image": "^1.11.13",
     "ical.js": "2.2.1",
     "isomorphic-dompurify": "^4.4.0",
     "katex": "^0.19.0",
     "marked": "^18.0.14",
     "marked-footnote": "^1.2.2",
-    "ws": "^8.22.0",
-    "decimal.js": "10.6.0"
+    "ws": "^8.22.0"
   },
   "overrides": {
     "dompurify": "3.4.17",
