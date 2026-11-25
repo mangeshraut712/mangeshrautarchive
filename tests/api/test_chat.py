@@ -320,13 +320,23 @@ def test_build_context_prompt_handles_sanitized_visible_projects():
 
 def test_direct_changelog_command_returns_recent_releases():
     import asyncio
+    from api.portfolio_public_data import LIVE_SITE_URL
     from api.routes.chat import handle_direct_command
 
     res = asyncio.run(handle_direct_command("what's new in the changelog"))
     assert res is not None
     assert res["category"] == "Changelog"
     assert "Recent Portfolio Releases" in res["answer"]
-    assert "/changelog" in res["answer"]
+    assert f"{LIVE_SITE_URL}/changelog" in res["answer"]
+    assert "mangeshraut.pro" not in res["answer"]
+
+
+def test_site_knowledge_cites_the_live_pages_host():
+    from api.portfolio_public_data import LIVE_SITE_URL
+
+    travel = retrieve_site_context("What is on the travel atlas page?", {})
+    assert f"Source: Travel Atlas page ({LIVE_SITE_URL}/travel)" in travel
+    assert "https://mangeshraut.pro/" not in travel
 
 
 def test_local_mode_does_not_hardcode_stale_office_holders():
