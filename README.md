@@ -128,6 +128,7 @@ Start with [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md), and the [
 Contribution graph boot (2026-11-25): Grok 4.7 in Cursor stops #projects hash-alignment retries from yanking an in-section scroll back to the heading before the contribution graph boots, and rechecks graph visibility on scroll. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Published test counts (2026-11-25): Grok 4.7 in Cursor replaces the stale 211/212/213 API and 15/18/20 critical-journey figures on Uses, Monitor, and the AssistMe prompt with the collected totals: 235 pytest tests and 40 critical browser journeys. Exact model variant, reasoning mode, and token usage: unavailable.
+Sanitizer update (2026-11-27): GLM-5.4 in Cursor moves the HTML sanitizer to the DOMPurify 3.5.0 security release (SAFE_FOR_TEMPLATES bypasses, IN_PLACE fail-closed gaps, a hook-attribute crash), raises isomorphic-dompurify to 4.9.0, lifts the dompurify override from 3.4.17 to 3.5.0, and rebuilds the vendored rich-markdown bundle. Exact model variant, reasoning mode, and token usage: unavailable.
 
 Journal archive cleanup (2026-11-25): Grok Bot stops repeating the featured article as the first archive card, removes the stray separator left by hidden kickers, replaces per-card buttons with one text link, keeps source-card arrows inside their cards, fixes filter-count contrast, and adds article dates and tags to page metadata. Exact model variant, reasoning mode, and token usage: unavailable.
 

@@ -54,6 +54,21 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-27-dompurify-3-5-0',
+    date: '2026-11-27',
+    type: 'fix',
+    title: 'Sanitizer updated to DOMPurify 3.5.0',
+    summary:
+      'Moves the HTML sanitizer to DOMPurify 3.5.0, a security release that closes SAFE_FOR_TEMPLATES bypasses (nested tags reassembling expressions on reparse, DOM-built style text with entity encoding, NUL-split markers, early-ending comments), several IN_PLACE fail-closed gaps, and a hook-attribute crash. isomorphic-dompurify goes to 4.9.0 and the dompurify override to 3.5.0 so the override no longer pins the old 3.4.17; the vendored rich-markdown bundle is rebuilt. A lockfile test fails on the previous pin and passes now.',
+    tags: ['systems', 'other'],
+    sha: null,
+    commitVerified: false,
+    model: 'GLM-5.4',
+    ide: 'Cursor',
+    purpose:
+      'Ship the DOMPurify security release and record the sanitizer upgrade so the release trail is complete.',
+  },
+  {
     id: '2026-11-25-contribution-graph-boot',
     date: '2026-11-25',
     type: 'fix',
