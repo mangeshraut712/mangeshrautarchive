@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'fs/promises';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { upstreamStudies } from '../../src/js/data/upstream-studies.js';
 import { caseStudies } from '../../src/js/modules/case-studies-data.js';
 import { SITE_URL as CANONICAL_SITE_URL } from '../../src/js/data/portfolio-public-data.js';
 import {
@@ -81,6 +82,7 @@ function renderCaseStudyBody(cs) {
         <h1>${escapeHTML(cs.title)}</h1>
         <p class="case-study-tagline">${escapeHTML(cs.tagline)}</p>
         <div class="case-study-evidence-bar">
+          ${cs.prUrl ? `<a href="${escapeHTML(cs.prUrl)}">Merged pull request</a>` : ''}
           ${cs.repoUrl ? `<a href="${escapeHTML(cs.repoUrl)}" target="_blank" rel="noopener noreferrer">Repository</a>` : ''}
           ${cs.demoUrl ? `<a href="${escapeHTML(cs.demoUrl)}" target="_blank" rel="noopener noreferrer">Live demo</a>` : ''}
           ${cs.architectureAnchor ? `<a href="${ASSET_PREFIX}/${escapeHTML(cs.architectureAnchor)}">Architecture</a>` : ''}
@@ -92,13 +94,23 @@ function renderCaseStudyBody(cs) {
       ${renderVideo(cs)}
 
       <article class="case-study-story lg-glass-card">
-        <div class="case-study-step" id="architecture"><h2>Problem</h2><p>${escapeHTML(cs.problem)}</p></div>
+        ${
+          cs.sections
+            ? cs.sections
+                .map(
+                  ([heading, text]) =>
+                    `<div class="case-study-step"><h2>${escapeHTML(heading)}</h2><p>${escapeHTML(text)}</p></div>`
+                )
+                .join('')
+            : `<div class="case-study-step" id="architecture"><h2>Problem</h2><p>${escapeHTML(cs.problem)}</p></div>
         <div class="case-study-step"><h2>Why existing solutions fail</h2><p>${escapeHTML(cs.whyExistingFail)}</p></div>
         <div class="case-study-step"><h2>My approach</h2><p>${escapeHTML(cs.approach)}</p></div>
         <div class="case-study-step"><h2>Tradeoffs</h2><p>${escapeHTML(cs.tradeoffs)}</p></div>
         <div class="case-study-step"><h2>Results</h2><ul>${cs.results.map(r => `<li>${escapeHTML(r)}</li>`).join('')}</ul></div>
         <div class="case-study-step"><h2>What I would improve</h2><ul>${cs.improvements.map(r => `<li>${escapeHTML(r)}</li>`).join('')}</ul></div>
-        <div class="case-study-stack">${cs.stack.map(s => `<span>${escapeHTML(s)}</span>`).join('')}</div>
+        <div class="case-study-stack">${cs.stack.map(s => `<span>${escapeHTML(s)}</span>`).join('')}</div>`
+        }
+
       </article>
 
       <footer class="systems-footer-links">
@@ -190,7 +202,7 @@ export async function generateCaseStudyPages(distDir) {
   await mkdir(outDir, { recursive: true });
 
   await Promise.all(
-    caseStudies.map(async cs => {
+    [...caseStudies, ...upstreamStudies].map(async cs => {
       const canonical = `${SITE_URL}/case-studies/${cs.slug}`;
       const html = pageShell({
         title: `${cs.title} | Mangesh Raut`,
@@ -202,7 +214,9 @@ export async function generateCaseStudyPages(distDir) {
     })
   );
 
-  console.log(`📐 Generated ${caseStudies.length} case study pages in case-studies/`);
+  console.log(
+    `📐 Generated ${caseStudies.length + upstreamStudies.length} case study pages in case-studies/`
+  );
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

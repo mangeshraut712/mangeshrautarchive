@@ -54,6 +54,20 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-28-upstream-case-studies',
+    date: '2026-11-28',
+    type: 'improvement',
+    title: 'Two upstream fixes, from reproduction to merge',
+    summary:
+      'Carbon DatePicker and AWS Labs audit-test case studies document the failure, focused validation and maintainer merge.',
+    tags: ['systems'],
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose: 'Verify upstream evidence and publish portfolio case studies.',
+    sha: null,
+    commitVerified: false,
+  },
+  {
     id: '2026-11-27-dompurify-3-5-0',
     date: '2026-11-27',
     type: 'fix',

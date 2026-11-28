@@ -212,3 +212,5 @@ Current guides and dated historical audits are indexed separately. Generated out
 Code is released under the [MIT License](LICENSE). See [CITATION.cff](CITATION.cff) for software citation metadata.
 
 [Mangesh Raut](https://mangeshraut712.github.io/mangeshrautarchive/) · [GitHub](https://github.com/mangeshraut712) · [LinkedIn](https://www.linkedin.com/in/mangeshraut71298/) · [Contact](https://mangeshraut712.github.io/mangeshrautarchive/#contact)
+
+The Carbon DatePicker and AWS Labs audit-clock case studies were prepared with GPT-6 / Codex using the upstream review and merge records.
