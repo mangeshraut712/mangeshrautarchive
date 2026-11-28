@@ -214,3 +214,5 @@ Code is released under the [MIT License](LICENSE). See [CITATION.cff](CITATION.c
 [Mangesh Raut](https://mangeshraut712.github.io/mangeshrautarchive/) · [GitHub](https://github.com/mangeshraut712) · [LinkedIn](https://www.linkedin.com/in/mangeshraut71298/) · [Contact](https://mangeshraut712.github.io/mangeshrautarchive/#contact)
 
 The seven upstream engineering case studies were prepared with GPT-6 / Codex using the upstream review and merge records.
+
+The homepage Selected Engineering Impact index was implemented and checked with GPT-6 / Codex.

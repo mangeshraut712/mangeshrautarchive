@@ -6723,3 +6723,37 @@ section#projects .gh-contrib__settings-btn {
     transform: none;
   }
 }
+
+.impact-index {
+  scroll-margin-top: 6rem;
+  margin-block: 1.5rem 2rem;
+}
+
+.impact-index h3 {
+  font-size: 1.4rem;
+}
+
+.impact-index ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: 0 2rem;
+  list-style: none;
+  padding: 0;
+}
+
+.impact-index a {
+  display: block;
+  padding-block: 0.85rem;
+  border-top: 1px solid var(--project-border-light);
+  color: inherit;
+}
+
+.impact-index strong {
+  display: block;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+html.dark .impact-index a {
+  border-color: var(--project-border-dark);
+}
