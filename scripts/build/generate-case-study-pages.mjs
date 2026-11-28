@@ -113,6 +113,18 @@ function renderCaseStudyBody(cs) {
 
       </article>
 
+      ${
+        cs.sections
+          ? `<nav aria-label="More upstream case studies"><h2>More upstream fixes</h2><ul>${upstreamStudies
+              .filter(other => other.slug !== cs.slug)
+              .map(
+                other =>
+                  `<li><a href="./${escapeHTML(other.slug)}.html">${escapeHTML(other.title)}</a></li>`
+              )
+              .join('')}</ul></nav>`
+          : ''
+      }
+
       <footer class="systems-footer-links">
         <a href="${ASSET_PREFIX}/#projects">All projects</a>
         <a href="${ASSET_PREFIX}/">Portfolio home</a>
