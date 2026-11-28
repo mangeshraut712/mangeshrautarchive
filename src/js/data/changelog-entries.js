@@ -54,6 +54,23 @@ export const CHANGELOG_TAGS = [
 /** @type {ChangelogEntry[]} */
 export const changelogEntries = [
   {
+    id: '2026-11-28-visible-journal-search',
+    date: '2026-11-28',
+    type: 'fix',
+    title: 'Search journal cards by visible copy',
+    summary:
+      'Indexes the excerpt and category shown on article cards so journal search matches words readers can see.',
+    tags: ['blog'],
+    model: 'GPT-6 / Codex',
+    ide: 'Codex',
+    purpose:
+      'Fix journal search for visible excerpt and category text and record the release trail.',
+    reasoning: 'unavailable',
+    usage: 'unavailable',
+    sha: null,
+    commitVerified: false,
+  },
+  {
     id: '2026-11-28-upstream-case-studies',
     date: '2026-11-28',
     type: 'improvement',

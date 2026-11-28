@@ -32,6 +32,25 @@ test('journal search includes the lead article and combines with topic filters',
   expect(titles).toEqual([...titles].sort((a, b) => a.trim().localeCompare(b.trim())));
 });
 
+test('journal search matches the visible excerpt and category on an article card', async ({
+  page,
+}) => {
+  await page.goto(`${base.replace(/\/$/, '')}/blog/`);
+  const card = page.locator('[data-id="openrouter-ai-usb-hub-routing-2026"]');
+  const search = page.getByLabel('Search the journal');
+  await expect(card.locator('.blog-summary')).toContainText('beauty contest');
+  await expect(card.locator('.blog-kicker')).toHaveText('Model gateways');
+
+  for (const query of ['beauty contest', 'Model gateways']) {
+    await search.fill(query);
+    await expect(card).toBeVisible();
+  }
+
+  await expect(page.locator('.blog-card[data-search*="undefined"]')).toHaveCount(0);
+  await search.fill('undefined');
+  await expect(page.locator('#blog-posts-container .blog-card:visible')).toHaveCount(0);
+});
+
 test('article progress ends at the body and sharing copies the canonical URL', async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', {
