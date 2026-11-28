@@ -59,7 +59,7 @@ export const changelogEntries = [
     type: 'improvement',
     title: 'Seven upstream fixes, from reproduction to merge',
     summary:
-      'Case studies from Google, Microsoft, AWS Labs, IBM and Salesforce document the failure, focused validation and maintainer merge.',
+      'Case studies from Google, Microsoft, AWS Labs, IBM and Salesforce document the failure, focused validation and maintainer merge. The homepage links directly to the five selected engineering contributions.',
     tags: ['systems'],
     model: 'GPT-6 / Codex',
     ide: 'Codex',
