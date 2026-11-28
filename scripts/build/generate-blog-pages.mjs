@@ -215,7 +215,7 @@ function renderBlogIndex(posts, tags) {
   const cards = archivePosts
     .map(
       post => `
-    <article class="blog-card blog-card--editorial"${post.id === featured.id ? ' data-featured="true" hidden' : ''} data-id="${post.id}" data-date="${escapeHTML(post.publishedAt || post.date)}" data-search="${escapeHTML([post.title, post.summary, ...(post.tags || [])].join(' '))}" data-tags="${escapeHTML((post.tags || []).join(','))}">
+    <article class="blog-card blog-card--editorial"${post.id === featured.id ? ' data-featured="true" hidden' : ''} data-id="${post.id}" data-date="${escapeHTML(post.publishedAt || post.date)}" data-search="${escapeHTML([post.title, post.summary, post.readerPromise, post.kicker || 'Field notes', ...(post.tags || [])].join(' '))}" data-tags="${escapeHTML((post.tags || []).join(','))}">
       <a class="blog-card-media blog-media--${getBlogPostImageFit(post)}" href="${blogPostHref(post.id)}" tabindex="-1" aria-hidden="true">
         <img src="../${escapeHTML(postImagePath(post))}" alt="" width="1600" height="900" loading="lazy" decoding="async" />
         <span class="blog-card-media-shine" aria-hidden="true"></span>
