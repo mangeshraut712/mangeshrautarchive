@@ -57,9 +57,9 @@ export const changelogEntries = [
     id: '2026-11-28-upstream-case-studies',
     date: '2026-11-28',
     type: 'improvement',
-    title: 'Two upstream fixes, from reproduction to merge',
+    title: 'Seven upstream fixes, from reproduction to merge',
     summary:
-      'Carbon DatePicker and AWS Labs audit-test case studies document the failure, focused validation and maintainer merge.',
+      'Case studies from Google, Microsoft, AWS Labs, IBM and Salesforce document the failure, focused validation and maintainer merge.',
     tags: ['systems'],
     model: 'GPT-6 / Codex',
     ide: 'Codex',
