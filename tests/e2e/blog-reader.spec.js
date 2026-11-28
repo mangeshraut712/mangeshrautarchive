@@ -45,6 +45,10 @@ test('journal search matches the visible excerpt and category on an article card
     await search.fill(query);
     await expect(card).toBeVisible();
   }
+
+  await expect(page.locator('.blog-card[data-search*="undefined"]')).toHaveCount(0);
+  await search.fill('undefined');
+  await expect(page.locator('#blog-posts-container .blog-card:visible')).toHaveCount(0);
 });
 
 test('article progress ends at the body and sharing copies the canonical URL', async ({ page }) => {
